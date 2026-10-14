@@ -6,7 +6,7 @@ Repository นี้มีเฉพาะหน้า Portal และไฟล�
 
 ## ระบบที่เชื่อมต่อ
 
-- ระบบงานงบประมาณและเอกสาร: https://drivekup01.github.io/School-Procurement/budget-dashboard.html
+- ระบบงานงบประมาณและเอกสาร: https://drivekup01.github.io/School-Budget/
 - ระบบจัดตารางสอน: https://drivekup01.github.io/School-OS/
 
 ## ไฟล์
