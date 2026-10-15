@@ -10,6 +10,6 @@
   const sidebar=document.querySelector('.home-sidebar');if(sidebar)sidebar.inert=true;
   const finish=()=>{document.documentElement.classList.remove('home-intro-active');main.inert=false;if(sidebar)sidebar.inert=false;splash.hidden=true};
   splash.querySelector('img').addEventListener('error',finish,{once:true});
-  setTimeout(finish,1250);
+  setTimeout(finish,850);
  },{once:true});
 })();
