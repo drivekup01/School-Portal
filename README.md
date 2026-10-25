@@ -29,3 +29,7 @@ workflow sync-attendance.yml ใช้ scripts/sync-attendance.py คัดล�
 
 เผยแพร่ผ่าน GitHub Pages จาก branch `main` ที่ root ของ repository
 
+## แอปติดตั้งบนโทรศัพท์
+
+ใช้ PWA ชื่อ KBW School จากหน้าหลักเดียวกัน มีปุ่มติดตั้งและคำแนะนำ Android/iPhone
+รายละเอียดไฟล์ ขอบเขตแคช และวิธีทดสอบอยู่ใน [PWA.md](PWA.md)
