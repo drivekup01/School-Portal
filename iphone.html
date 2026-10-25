@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<link rel="apple-touch-icon" href="https://drivekup01.github.io/School-Portal/iphone-school-logo.png">
+<link rel="icon" type="image/png" href="https://drivekup01.github.io/School-Portal/iphone-school-logo.png">
+
+
+
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>หน้าหลัก · ระบบงานโรงเรียน</title>
+
+<link rel="stylesheet" href="system-home.css?v=20261014-3">
+<link rel="stylesheet" href="home-intro.css?v=20261015-perf1">
+<link rel="stylesheet" href="home-landing.css?v=20261025-colors1"><script src="home-intro.js?v=20261015-perf1"></script>
+<style>.account-bar{display:flex;gap:12px;align-items:center;justify-content:center;flex-wrap:wrap;margin:0 auto 24px;color:#543273;font:14px Tahoma,sans-serif}.account-bar button,.account-bar a{font:inherit;border:1px solid #ddccec;border-radius:12px;padding:10px 16px;background:white;color:#653695;text-decoration:none}.account-bar [hidden]{display:none}@media(min-width:1000px){.school-home .system-cards{grid-template-columns:repeat(3,minmax(0,1fr))}.school-home .system-card{padding:25px}.school-home .system-card strong{font-size:23px}}.school-home .attendance-home{background:linear-gradient(135deg,#eee3f7,#faf6fe)}.school-home .attendance-home .system-card-description{margin-bottom:24px}</style>
+<script type="module" src="portal-user.js?v=20261025-firebase2"></script>
+<meta name="theme-color" content="#663394">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="KBW School">
+
+<link rel="stylesheet" href="pwa-install.css?v=20261025-pwa1">
+<script defer src="pwa-install.js?v=20261025-pwa1"></script>
+</head>
+<body class="portal-page school-home">
+<div class="school-splash" id="schoolSplash" aria-hidden="true"><img src="school-logo.svg" alt=""><p>โรงเรียนค่ายบางระจันวิทยาคม</p><small>ระบบงานโรงเรียน</small></div>
+<div class="landing-shell">
+<main class="portal-main">
+<div class="home-intro school-identity"><img class="home-school-logo" src="school-logo.svg" alt="ตราโรงเรียนค่ายบางระจันวิทยาคม"><h1>โรงเรียนค่ายบางระจันวิทยาคม</h1><p>เลือกเข้าใช้งานระบบของโรงเรียน</p></div>
+<div class="account-bar" id="accountBar"><span id="accountLabel">ใช้บัญชี Google เดียวกันทุกระบบ</span><button id="portalLogin">เข้าสู่ระบบด้วย Google</button><button id="portalLogout" hidden>ออกจากระบบ</button><a href="users.html" id="manageUsers" hidden>จัดการผู้ใช้</a></div>
+<p class="pwa-notice" id="pwaOfflineNotice" role="status" hidden>ขณะนี้ออฟไลน์ กรุณาต่ออินเทอร์เน็ตก่อนเปิดระบบและบันทึกข้อมูลจริง</p>
+<p class="pwa-notice" id="pwaUpdateNotice" role="status" hidden>มีแอปเวอร์ชันใหม่ <button type="button" class="pwa-button" id="pwaUpdate">อัปเดตแอป</button></p>
+<section class="pwa-install-panel" id="pwaInstallPanel" aria-label="ติดตั้งแอปโรงเรียน">
+<img src="icons/app-192.png" alt="" width="46" height="46">
+<div class="pwa-install-copy"><strong>ติดตั้งแอปโรงเรียน</strong><small id="pwaInstallStatus">เปิดจากหน้าจอโฮม แล้วเลือกใช้ทั้งสามระบบ</small></div>
+<div class="pwa-install-actions"><button type="button" id="pwaInstall" class="pwa-button">ติดตั้งแอป</button><button type="button" id="pwaHelp" class="pwa-help-button">วิธีติดตั้ง</button></div>
+</section>
+<div class="system-cards">
+<a class="system-card budget-landing" href="https://drivekup01.github.io/School-Budget/budget-dashboard.html" target="_top"><span class="system-card-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M6 3h9l3 3v15H6zM14 3v4h4M9 11h6M9 15h6M9 18h4"/></svg></span><span class="system-card-tag">งานบริหารโรงเรียน</span><span class="bento-art budget-art" aria-hidden="true"><span class="art-sheet"><i></i><i></i><i></i><b>฿</b></span><span class="art-bars"><i></i><i></i><i></i></span></span><strong>ระบบงานงบประมาณ</strong><span class="system-card-description">งานงบประมาณ และจัดทำเอกสาร<br>จัดซื้อ / จัดจ้าง</span><span class="system-card-action">เข้าสู่ระบบ <span aria-hidden="true">→</span></span></a>
+<a class="system-card schedule-home" href="https://drivekup01.github.io/School-OS/" target="_top"><span class="system-card-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4M17 3v4M3 10h18M7 14h3M14 14h3M7 18h3M14 18h3"/></svg></span><span class="system-card-tag">งานวิชาการ</span><span class="bento-art calendar-art" aria-hidden="true"><span class="calendar-top"></span><span class="calendar-cells"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span></span><strong>ระบบจัดตารางสอน</strong><span class="system-card-description">เข้าสู่ School-OS เพื่อจัดการ<br>งานตารางสอนของโรงเรียน</span><span class="system-card-action">เข้าสู่ระบบ <span aria-hidden="true">→</span></span></a>
+<a class="system-card schedule-home attendance-home" href="attendance/" target="_top"><span class="system-card-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="5" y="4" width="14" height="18" rx="2"/><path d="M9 4V2h6v2M8 10l2 2 4-4M8 17h8"/></svg></span><span class="system-card-tag">งานดูแลนักเรียน</span><strong>ระบบเช็คชื่อ</strong><span class="system-card-description">เข้าแถวเช้า รายวิชา / สอนแทน<br>ความประพฤติ และรายงาน</span><span class="system-card-action">เข้าสู่ระบบ <span aria-hidden="true">→</span></span></a>
+</div>
+<footer>โรงเรียนค่ายบางระจันวิทยาคม</footer>
+</main></div>
+<dialog id="pwaInstallHelp" class="pwa-install-dialog" aria-labelledby="pwaHelpTitle">
+<h2 id="pwaHelpTitle">ติดตั้งแอปโรงเรียน</h2>
+<p>ใช้ไอคอน KBW School บนหน้าจอโฮม เพื่อเปิดระบบของโรงเรียนได้สะดวกขึ้น</p>
+<section><h3>Android · Google Chrome</h3><ol><li>เปิดหน้าโรงเรียนใน Chrome</li><li>แตะเมนู ⋮ แล้วเลือก “ติดตั้งแอป” หรือ “เพิ่มลงในหน้าจอหลัก”</li><li>ยืนยันการติดตั้งตามที่โทรศัพท์แสดง</li></ol></section>
+<section><h3>iPhone · Safari</h3><ol><li>เปิดหน้าโรงเรียนใน Safari</li><li>แตะปุ่มแชร์ แล้วเลือก “เพิ่มไปยังหน้าจอโฮม” (Add to Home Screen)</li><li>หากมีตัวเลือก “เปิดเป็นเว็บแอป” ให้เปิด แล้วแตะ “เพิ่ม”</li></ol></section>
+<small>หากเปิดลิงก์จาก LINE หรือ Facebook ให้เลือกเปิดใน Chrome หรือ Safari ก่อนติดตั้ง<br>บนคอมพิวเตอร์ ใช้ปุ่มติดตั้งที่แถบที่อยู่ของ Chrome หรือ Edge หากเบราว์เซอร์แสดงปุ่มนั้น<br>การบันทึกข้อมูลจริงยังต้องเชื่อมต่ออินเทอร์เน็ต</small>
+<footer><button type="button" id="pwaHelpClose" class="pwa-button" autofocus>เข้าใจแล้ว</button></footer>
+</dialog>
+</body></html>
