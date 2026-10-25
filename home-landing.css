@@ -24,3 +24,17 @@
 .calendar-art{width:120px;height:110px;background:#fff8;border:1px solid #fff;border-radius:16px;transform:rotate(8deg);box-shadow:0 12px 25px #7842980b}.calendar-top{display:block;height:24px;border-radius:16px 16px 0 0;background:#d9c0eb80}.calendar-cells{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;padding:14px}.calendar-cells i{height:12px;border-radius:4px;background:#ece1f4}.calendar-cells i:nth-child(3n){background:#bd90d9}.calendar-cells i:nth-child(7){background:#9160b2}
 .school-home footer{padding:32px 0 10px;font-size:11px;color:#b1a3be}.school-splash{background:#faf8fd}.school-splash p{color:#583474}.school-splash small{color:#b09abc}
 @media(max-width:760px){.landing-shell{padding:32px 18px 16px}.school-home .school-identity h1{font-size:27px;letter-spacing:0}.school-home .home-school-logo{width:100px;height:100px}.school-home .system-cards{grid-template-columns:1fr;gap:18px}.school-home .system-card{min-height:330px;padding:26px;border-radius:24px}.school-home .system-card strong{font-size:23px}.bento-art{right:24px;top:30px}.school-home .school-identity p{font-size:12px}}
+
+/* Distinct system colors with high-contrast labels. */
+.school-home .system-card.schedule-home:not(.attendance-home){background:linear-gradient(135deg,#224d94,#326fbc);border-color:#285da6}
+.school-home .system-card.attendance-home{background:linear-gradient(135deg,#066257,#0c7b70);border-color:#087568}
+.school-home .system-card strong,.school-home .system-card .system-card-tag,.school-home .system-card .system-card-description,.school-home .system-card .system-card-action{color:#fff}
+.school-home .system-card .system-card-description{opacity:.94}
+.school-home .system-card .system-card-action{border-color:#ffffff45}
+.school-home .system-card .system-card-icon{color:#fff;background:#ffffff26;border:1px solid #ffffff40}
+.school-home .system-card .system-card-action span{background:#ffffff24;color:#fff}
+.school-home .schedule-home .calendar-art{background:#ffffffdf;border-color:#ffffffb3;box-shadow:0 12px 25px #13356725}
+.school-home .schedule-home .calendar-top{background:#bed8f4}
+.school-home .schedule-home .calendar-cells i{background:#d7e6f7}
+.school-home .schedule-home .calendar-cells i:nth-child(3n){background:#81afe2}
+.school-home .schedule-home .calendar-cells i:nth-child(7){background:#3d78bb}
