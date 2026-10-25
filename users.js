@@ -1,4 +1,4 @@
-import * as shared from './shared/school-auth.js';
+import * as shared from './shared/school-auth.js?v=20261025-firebase2';
 const el=id=>document.getElementById(id),e=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));let rows=[],pending=[],editingUid=null;
 const status=t=>{el('status').textContent=t;};
 function reset(){editingUid=null;el('userForm').reset();el('email').disabled=false;el('formTitle').textContent='อนุมัติบัญชีใหม่ด้วยอีเมล';}

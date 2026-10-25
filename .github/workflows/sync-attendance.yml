@@ -1,0 +1,36 @@
+name: Publish attendance entry
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '*/15 * * * *'
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/sync-attendance.py'
+      - '.github/workflows/sync-attendance.yml'
+permissions:
+  contents: write
+concurrency:
+  group: attendance-entry
+  cancel-in-progress: true
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: drivekup01/School-Attendance
+          path: .attendance-source
+          persist-credentials: false
+      - run: python scripts/sync-attendance.py .attendance-source
+      - name: Update published UI
+        run: |
+          if [ -z "$(git status --porcelain -- attendance/)" ]; then exit 0; fi
+          git config user.name 'school-portal-publish'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add attendance/
+          git commit -m 'Publish attendance UI from its source repository'
+          git pull --rebase origin main
+          git push origin main
