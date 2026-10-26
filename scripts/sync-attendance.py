@@ -7,7 +7,7 @@ target=(root/'attendance').resolve()
 assert target.parent==root and source!=target
 files=list(source.glob('*.html'))
 for folder in ['js','css','assets']:
- files.extend(p for p in (source/folder).rglob('*') if p.is_file() and p.suffix.lower() in {'.js','.css','.png','.svg','.ico','.txt'})
+ files.extend(p for p in (source/folder).rglob('*') if p.is_file() and p.suffix.lower() in {'.js','.css','.png','.svg','.ico','.txt','.ttf','.woff','.woff2'})
 for src in files:
  relative=src.relative_to(source)
  dest=target/relative
