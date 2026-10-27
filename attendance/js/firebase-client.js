@@ -21,15 +21,15 @@ export const real={
  async profile(){
    if(!settings.databaseReady)throw Error('กำลังเตรียมสิทธิ์ชุดข้อมูลเช็คชื่อ ยังไม่เปิดบันทึกข้อมูลจริง');
    const {auth}=await firebase();if(!auth.currentUser)return null;
-   const p=await (await import('./school-auth.js?v=20261027-readiness1')).profile();
+   const p=await (await import('./school-auth.js?v=20261027-periods1')).profile();
    if(!p?.active||!['teacher','admin','viewer'].includes(p.attendanceRole))throw Error('บัญชีนี้ยังไม่ได้รับสิทธิ์ระบบเช็คชื่อ กรุณาติดต่อผู้ดูแลบัญชีกลาง');
    return {...p,role:p.attendanceRole};
  },
- async assignments(){return (await import('./store.js?v=20261027-readiness1')).store.assignments();},
- async students(classId){return (await import('./store.js?v=20261027-readiness1')).store.students(classId);},
- async session(a,date){return (await import('./store.js?v=20261027-readiness1')).store.session(a,date);},
- async save(a,date,students,marks,revision){return (await import('./store.js?v=20261027-readiness1')).store.save(a,date,students,marks,revision);},
- async behavior(classId){return (await import('./store.js?v=20261027-readiness1')).store.behavior(classId);},
- async addBehavior(item){return (await import('./store.js?v=20261027-readiness1')).store.addBehavior(item);},
- async report(from,to,kind){return (await import('./store.js?v=20261027-readiness1')).store.report(from,to,kind);}
+ async assignments(){return (await import('./store.js?v=20261027-periods1')).store.assignments();},
+ async students(classId){return (await import('./store.js?v=20261027-periods1')).store.students(classId);},
+ async session(a,date){return (await import('./store.js?v=20261027-periods1')).store.session(a,date);},
+ async save(a,date,students,marks,revision){return (await import('./store.js?v=20261027-periods1')).store.save(a,date,students,marks,revision);},
+ async behavior(classId){return (await import('./store.js?v=20261027-periods1')).store.behavior(classId);},
+ async addBehavior(item){return (await import('./store.js?v=20261027-periods1')).store.addBehavior(item);},
+ async report(from,to,kind){return (await import('./store.js?v=20261027-periods1')).store.report(from,to,kind);}
 };

@@ -1,0 +1,2 @@
+export function weekDates(date){const base=new Date(date+'T12:00:00Z'),offset=(base.getUTCDay()+6)%7;base.setUTCDate(base.getUTCDate()-offset);return Array.from({length:5},(_,i)=>{const d=new Date(base);d.setUTCDate(d.getUTCDate()+i);return d.toISOString().slice(0,10);});}
+export function statusGroups(students,marks){const groups={present:[],absent:[],leave:[],late:[],unmarked:[]};for(const student of students){const status=marks[student.id]?.status;groups[Object.hasOwn(groups,status)?status:'unmarked'].push(student);}return groups;}
