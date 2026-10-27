@@ -2,10 +2,22 @@ import {roleGrants} from './school-roles.js?v=20261027-morning2';
 // Canonical shared identity client. Copies in each school app use the same
 // Firebase project, named app, Google session and school_users profile.
 import {firebaseConfig} from './firebase-config.js?v=20261025-firebase2';
-let cached;
-export async function firebase(){if(!cached)cached=(async()=>{const [P,A,F,H]=await Promise.all(['app','auth','firestore','functions'].map(n=>import(`https://www.gstatic.com/firebasejs/12.4.0/firebase-${n}.js`)));const app=P.getApps().find(a=>a.name==='school-budget')||P.initializeApp(firebaseConfig,'school-budget'),auth=A.getAuth(app),db=F.getFirestore(app),functions=H.getFunctions(app,'asia-southeast1');await auth.authStateReady();return {app,auth,db,functions,A,F,H};})().catch(e=>{cached=null;throw e;});return cached;}
-export async function login(){const c=await firebase(),provider=new c.A.GoogleAuthProvider();provider.setCustomParameters({prompt:'select_account'});try{return await c.A.signInWithPopup(c.auth,provider);}catch(e){if(['auth/popup-blocked','auth/operation-not-supported-in-this-environment'].includes(e.code))return loginRedirect();throw e;}}
-export async function loginRedirect(){const c=await firebase(),provider=new c.A.GoogleAuthProvider();provider.setCustomParameters({prompt:'select_account'});return c.A.signInWithRedirect(c.auth,provider);}
+let cached,ready;
+export async function firebase(){if(!cached)cached=(async()=>{const [P,A,F,H]=await Promise.all(['app','auth','firestore','functions'].map(n=>import(`https://www.gstatic.com/firebasejs/12.4.0/firebase-${n}.js`)));const app=P.getApps().find(a=>a.name==='school-budget')||P.initializeApp(firebaseConfig,'school-budget'),auth=A.getAuth(app),db=F.getFirestore(app),functions=H.getFunctions(app,'asia-southeast1');await auth.authStateReady();return ready={app,auth,db,functions,A,F,H};})().catch(e=>{cached=null;ready=null;throw e;});return cached;}
+// Prepare before a click: Safari can lose user activation while loading the SDK.
+firebase().catch(()=>{});
+export function login(){
+ if(!ready)return firebase().then(()=>{throw Object.assign(new Error('ระบบเข้าสู่ระบบพร้อมแล้ว กรุณากดเข้าสู่ระบบอีกครั้ง'),{code:'auth/login-ready'});});
+ const c=ready,provider=new c.A.GoogleAuthProvider();
+ provider.setCustomParameters({prompt:'select_account'});
+ return c.A.signInWithPopup(c.auth,provider).catch(e=>{
+  if(e.code==='auth/popup-blocked')throw Object.assign(new Error('เบราว์เซอร์บล็อกหน้าต่างเข้าสู่ระบบ กรุณาอนุญาตป๊อปอัปสำหรับเว็บไซต์นี้ แล้วกดเข้าสู่ระบบอีกครั้ง หากเปิดจากแอปอื่น ให้เปิดเว็บไซต์ใน Safari โดยตรง'),{code:e.code});
+  if(e.code==='auth/operation-not-supported-in-this-environment')throw Object.assign(new Error('กรุณาเปิดเว็บไซต์ใน Safari หรือ Chrome โดยตรง แล้วเข้าสู่ระบบอีกครั้ง'),{code:e.code});
+  throw e;
+ });
+}
+// Keep older callers working without returning to the cross-domain redirect flow.
+export function loginRedirect(){return login();}
 export async function logout(){const c=await firebase();return c.A.signOut(c.auth);}
 export async function call(name,data){const c=await firebase();try{return (await c.H.httpsCallable(c.functions,name,{timeout:120000})(data)).data;}catch(e){throw Object.assign(new Error(String(e.message||'ดำเนินการไม่สำเร็จ').replace(/^Firebase:\s*/,'')),{code:e.code});}}
 export async function profile(){const c=await firebase(),u=c.auth.currentUser;if(!u)return null;const snap=await c.F.getDocFromServer(c.F.doc(c.db,'school_users',u.uid));if(snap.exists()){const p=snap.data();if(!p.active)throw Error('บัญชีนี้ถูกระงับ');return {...p,...(p.schoolRole?roleGrants(p.schoolRole):{}),uid:u.uid,email:u.email,registered:true};}return call('schoolIdentity',{method:'resolveProfile'});}
