@@ -1,4 +1,4 @@
-import * as shared from './shared/school-auth.js?v=20261025-firebase2';
+import * as shared from './shared/school-auth.js?v=20261027-roles1';
 const el=id=>document.getElementById(id),status=text=>{el('status').textContent=text;};let preview;
 function summary(c){return `ครู: ${c.teachers} คน\nวิชา: ${c.subjects} รายการ\nห้องเรียน: ${c.rooms} ห้อง\nช่องตารางสอน: ${c.scheduleCells} ช่อง\nวันสอนแทนที่บันทึก: ${c.substituteDays} วัน\nประกาศ: ${c.announcements} รายการ${c.leaveRecords!==undefined?'\nประวัติลา: '+c.leaveRecords+' รายการ':''}`;}
 async function user(){const p=await shared.profile();el('identity').textContent=p?`${p.name} • ${p.email}${p.identityAdmin?' • ผู้ดูแลบัญชีกลาง':''}`:'ยังไม่เข้าสู่ระบบ';for(const id of ['preview','invite','verify','refreshLeave'])el(id).disabled=!p?.identityAdmin;return p;}
