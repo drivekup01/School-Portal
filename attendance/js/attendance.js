@@ -1,8 +1,8 @@
 import {displayDayFirst} from './date-input.js?v=20261025-date1';
-import {heading,empty,notify} from './shell.js?v=20261027-roles1';
+import {heading,empty,notify} from './shell.js?v=20261027-readiness1';
 import {today,thaiDate,assignmentsOn,counts,statuses,escapeHTML as e,validateMarks,validDate} from './core.js?v=20261025-firebase2';
 import {icon} from './icons.js?v=20261025-firebase2';
-import {isDemo} from './session.js?v=20261027-roles1';
+import {isDemo} from './session.js?v=20261027-readiness1';
 export async function attendancePage(ctx,kind){
  const morning=kind==='morning';let date=today(),assignment,students=[],marks={},revision=0,dirty=false,busy=false,loadVersion=0,savedAt='';
  const all=ctx.assignments.filter(a=>morning?a.kind==='morning':a.kind!=='morning');
