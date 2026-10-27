@@ -1,5 +1,5 @@
 import {escapeHTML as e,today,thaiDate} from './core.js?v=20261025-firebase2';
-import {heading,notify,empty} from './shell.js?v=20261027-periods1';
+import {heading,notify,empty} from './shell.js?v=20261027-morning2';
 const labels={pending:'รออนุมัติ',approved:'อนุมัติแล้ว · รอเพิ่มคะแนน',awarded:'อนุมัติแล้ว · เพิ่มคะแนนอัตโนมัติแล้ว'};
 const evidence={certificate:'สำเนาเกียรติบัตร',participation:'ใบรับรองการเข้าร่วมกิจกรรม',photo:'ภาพถ่ายการทำกิจกรรม',other:'อื่น ๆ'};
 const TYPES=['image/jpeg','image/png','image/webp'];
@@ -10,7 +10,7 @@ export async function mountRequests({host,setup,isDemo,behaviorCall,refreshScore
  let initialized=false,photos=[],rows=[],roster=[],saving=false,requestKey=null,detail=null,detailPhotos=[],detailsVersion=0,editing=null;
  const demoKey='school-behavior-requests-demo-v1';
  async function api(input){
-  if(!isDemo)return (await import('./school-auth.js?v=20261027-periods1')).call('attendanceBehaviorRequests',input);
+  if(!isDemo)return (await import('./school-auth.js?v=20261027-morning2')).call('attendanceBehaviorRequests',input);
   if(input.method==='printOptions')return {names:['ครูตัวอย่าง','นางสาวอรลักษณ์ ธูปบูชากรณ์','นายเรวัฒน์ พรหมสะโร']};
   const saved=JSON.parse(sessionStorage.getItem(demoKey)||'[]');
   if(input.method==='list')return {requests:saved.filter(d=>d.status!=='deleted').map(d=>({...d,count:d.students.length}))};

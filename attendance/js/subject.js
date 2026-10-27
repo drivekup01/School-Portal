@@ -1,16 +1,16 @@
 import {displayDayFirst} from './date-input.js?v=20261025-date1';
-import {boot,heading,empty} from './shell.js?v=20261027-periods1';
-import {attendancePage} from './attendance.js?v=20261027-periods1';
-import {isDemo,url} from './session.js?v=20261027-periods1';
+import {boot,heading,empty} from './shell.js?v=20261027-morning2';
+import {attendancePage} from './attendance.js?v=20261027-morning2';
+import {isDemo,url} from './session.js?v=20261027-morning2';
 import {today,thaiDate,validDate,assignmentsOn,escapeHTML as e} from './core.js?v=20261025-firebase2';
-import {weekDates,statusGroups} from './period-core.js?v=20261027-periods1';
+import {weekDates,statusGroups} from './period-core.js?v=20261027-morning2';
 const labels={present:'มา',absent:'ขาด',leave:'ลา',late:'สาย',unmarked:'ยังไม่เช็ค'};
 boot('subject',async ctx=>{
  if(isDemo||!ctx.user){await attendancePage(ctx,'subject');return;}
  const params=new URLSearchParams(location.search),day=validDate(params.get('date'))&&params.get('date')<=today()?params.get('date'):today();
  if(params.get('assignment')&&!params.get('teacher')){const selected=ctx.assignments.find(a=>a.id===params.get('assignment')&&a.kind!=='morning');if(selected){const editable=ctx.user.role==='admin'||selected.teacherUid===ctx.user.uid&&ctx.user.role!=='viewer';await attendancePage({...ctx,assignments:ctx.assignments.filter(a=>a.teacherUid===selected.teacherUid),user:{...ctx.user,role:editable?ctx.user.role:'viewer'}},'subject');const back=document.createElement('a');back.className='button secondary';back.href='subject.html?date='+day;back.textContent='← กลับตารางสอนและผลเช็คชื่อของครู';document.getElementById('pageContent').prepend(back);return;}}
  document.getElementById('pageContent').innerHTML='<p class="loading">กำลังโหลดตารางสอนของครู…</p>';
- const shared=await import('./school-auth.js?v=20261027-periods1'),data=await shared.call('schoolIdentity',{method:'attendanceSchedule',...(params.get('teacher')?{teacherId:params.get('teacher')}:{})});
+ const shared=await import('./school-auth.js?v=20261027-morning2'),data=await shared.call('schoolIdentity',{method:'attendanceSchedule',...(params.get('teacher')?{teacherId:params.get('teacher')}:{})});
  const assignments=ctx.provider?await ctx.provider.assignments():[],teacherJobs=assignments.filter(a=>a.teacherUid===data.teacherUid),target={...ctx,assignments:teacherJobs,user:{...ctx.user,role:data.canWrite?ctx.user.role:'viewer'}};
  const detail=params.get('assignment');
  function route(extra={}){return 'subject.html?'+new URLSearchParams({teacher:data.teacherId,date:day,...extra}).toString();}

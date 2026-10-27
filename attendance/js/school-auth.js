@@ -1,4 +1,4 @@
-import {roleGrants} from './school-roles.js?v=20261027-periods1';
+import {roleGrants} from './school-roles.js?v=20261027-morning2';
 // Canonical shared identity client. Copies in each school app use the same
 // Firebase project, named app, Google session and school_users profile.
 import {firebaseConfig} from './firebase-config.js?v=20261025-firebase2';
