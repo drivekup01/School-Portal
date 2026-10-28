@@ -39,19 +39,18 @@ function startSidebarClock(){
 function mountSchoolHomeButton(sidebar){
  if(!sidebar)return;
  sidebar.querySelectorAll('a.back-school,a[data-view="home"]').forEach(a=>a.remove());
- document.querySelectorAll('.school-portal-link,.school-home-area').forEach(a=>a.remove());
- const topbar=document.querySelector('.topbar');
- if(!topbar)return;
- const link=document.createElement('a');
- link.className='school-home-button';link.href=settings.schoolHome;link.target='_top';
- link.textContent='← กลับหน้าหลัก';
- topbar.prepend(link);
+ document.querySelectorAll('.school-portal-link').forEach(a=>a.remove());
+ const area=document.createElement('div');area.className='school-home-area';
+ const link=document.createElement('a');link.className='school-home-button';link.href='https://drivekup01.github.io/School-Portal/';link.target='_top';link.innerHTML='<span aria-hidden="true">←</span><span>หน้าหลักโรงเรียน</span>';link.setAttribute('aria-label','กลับหน้าหลักโรงเรียน');area.append(link);
+ const bottom=sidebar.querySelector('.sidebar-bottom');if(bottom)bottom.prepend(area);else sidebar.append(area);
  const style=document.createElement('style');style.textContent=`
- .topbar{position:sticky;top:0;z-index:30;height:auto;min-height:60px;padding:8px 16px;padding-top:max(8px,env(safe-area-inset-top));gap:12px;background:#faf8fd}
- a.school-home-button{display:inline-flex;align-items:center;justify-content:center;box-sizing:border-box;min-height:44px;flex-shrink:0;padding:10px 14px;border:1px solid #decaed;border-radius:10px;background:#f7f0fc;color:#663394;font:13px/1.5 Tahoma,system-ui,sans-serif;text-decoration:none;white-space:nowrap}
- a.school-home-button:hover{background:#eee3fa}a.school-home-button:focus-visible{outline:3px solid #ae80d3;outline-offset:2px}
- .topbar-title{margin-right:auto;min-width:0}
- @media(max-width:740px){.topbar-title{font-size:10px}.topbar .chip{display:none}}
- @media print{.topbar{display:none!important}}`;
+ .school-home-area{margin-top:auto;padding:16px 12px;flex-shrink:0;box-sizing:border-box}
+ .sidebar-bottom>.school-home-area{margin:0;padding:0 0 16px}
+ a.school-home-button{display:flex!important;align-items:center;justify-content:flex-start;gap:10px;box-sizing:border-box;min-height:44px;width:100%;padding:11px 14px!important;border:1px solid #ffffff30!important;border-radius:10px!important;background:#ffffff0c!important;color:#f0e5fa!important;font:13px/1.5 Tahoma,system-ui,sans-serif!important;text-decoration:none!important;white-space:nowrap}
+ a.school-home-button:hover{background:#ffffff20!important}a.school-home-button:focus-visible{outline:3px solid #cda4ed;outline-offset:3px}
+ #budgetSidebar>.school-account{margin-top:0!important}.sidebar-collapsed .school-home-area{padding:10px 7px}.sidebar-collapsed .school-home-button{padding:10px!important;justify-content:center}.sidebar-collapsed .school-home-button span+span{display:none}
+ @media(max-width:820px){body>.school-home-area{position:fixed;left:14px;bottom:84px;width:190px;z-index:45;padding:0}body>.school-home-area a.school-home-button{background:#472468!important;box-shadow:0 4px 14px #29174325}}
+ @media print{.school-home-area{display:none!important}}`;
  document.head.append(style);
+ const media=matchMedia('(max-width:820px)');function position(){if(media.matches)document.body.append(area);else if(bottom)bottom.prepend(area);else sidebar.insertBefore(area,sidebar.querySelector(':scope>.school-account'));}position();media.addEventListener('change',position);
 }
