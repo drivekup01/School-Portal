@@ -62,13 +62,15 @@ function gateState(title, message, showLogin = false) {
   $('gateMessage').textContent = message;
   $('gateLogin').hidden = !showLogin;
   gate.hidden = false;
-  shell.hidden = true;
+  shell.hidden = false;
+  document.getElementById('embeddedView').hidden = true;
+  document.getElementById('overview').hidden = true;
 }
 function roleFor(group) {
-  if (profile.identityAdmin) return 'admin';
+  if (profile?.identityAdmin) return 'admin';
   return shared.moduleRole(profile, group.role);
 }
-function groupVisible(group) { return roleFor(group) !== 'none'; }
+function groupVisible(group) { return !profile || roleFor(group) !== 'none'; }
 function routeVisible(routeId, group) {
   if (routeId === 'student-admin') return roleFor(group) === 'admin';
   if (group.key === 'academic' && roleFor(group) === 'viewer') {
@@ -86,6 +88,7 @@ function makeLink(routeId) {
   return link;
 }
 function renderNavigation() {
+  document.getElementById('staffNav').replaceChildren();
   const nav = $('staffNav');
   const home = document.createElement('a');
   home.className = 'nav-link active'; home.href = '#overview'; home.dataset.section = 'overview';
@@ -175,7 +178,9 @@ function showEmbedded(title,category,url,app) {
   else injectFrameStyle();
 }
 function openRoute(id) {
+  if (!profile) { gateState('เข้าสู่ระบบครูและบุคลากร','เข้าสู่ระบบด้วยบัญชีโรงเรียนเพื่อใช้งานเมนูนี้',true); return; }
   const route = routes[id]; if (!route) return;
+  gate.hidden = true;
   setActive(id);
   if (route.app === 'academic' && frame.dataset.app === 'academic' && frame.contentWindow?.nav) {
     pendingAcademicPage = null; showEmbedded(route.title,route.category,route.url,route.app); frame.contentWindow.nav(route.page); return;
@@ -190,6 +195,8 @@ function loadUrl(url,app,title) {
   pendingAcademicPage = null; showEmbedded(title,category,url,app);
 }
 function showOverview() {
+  if (!profile) { gateState('เข้าสู่ระบบครูและบุคลากร','ใช้บัญชีโรงเรียนเพื่อเข้าใช้งานทั้ง 3 ระบบ',true); return; }
+  gate.hidden = true;
   $('embeddedView').hidden = true; $('overview').hidden = false; $('pageCrumb').textContent = 'ภาพรวมวันนี้';
   document.querySelectorAll('[data-route]').forEach(el=>el.classList.remove('active'));
   document.querySelector('[data-section="overview"]')?.classList.add('active');
@@ -219,7 +226,7 @@ async function openWorkspace() {
     $('avatarInitial').textContent = (profile.name || profile.displayName || 'ผ').trim().charAt(0);
     $('todayDate').textContent = formatThaiDate();
     $('adminCenterLink').hidden = !profile.identityAdmin;
-    renderNavigation(); renderCards();
+    renderNavigation(); document.getElementById('systemCards').hidden = true; showOverview();
     gate.hidden = true; shell.hidden = false;
   } catch (error) { gateState('เข้าใช้งานไม่ได้',error?.message || 'ตรวจสอบการเชื่อมต่อแล้วลองใหม่'); }
 }
@@ -229,3 +236,6 @@ $('menuButton').addEventListener('click',()=>{const open=!$('sidebar').classList
 $('mobileScrim').addEventListener('click',closeMobileMenu);
 $('backToOverview').addEventListener('click',showOverview);
 openWorkspace();
+
+document.getElementById('appShell').querySelector('.main-area').append(gate);
+renderNavigation();
