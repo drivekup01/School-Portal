@@ -97,11 +97,11 @@ function renderNavigation() {
   for (const group of groups) {
     if (!groupVisible(group)) continue;
     const section = document.createElement('section');
-    section.className = 'nav-group open'; section.dataset.module = group.key;
+    section.className = 'nav-group'; section.dataset.module = group.key;
     const toggle = document.createElement('button');
-    toggle.className = 'nav-link group-toggle'; toggle.type = 'button'; toggle.setAttribute('aria-expanded','true');
+    toggle.className = 'nav-link group-toggle'; toggle.type = 'button'; toggle.setAttribute('aria-expanded','false');
     toggle.innerHTML = `<span class="nav-icon">${group.icon}</span><span>${group.label}</span><span class="chevron">⌄</span>`;
-    const sub = document.createElement('div'); sub.className = 'sub-nav';
+    const sub = document.createElement('div'); sub.className = 'sub-nav'; sub.hidden = true;
     if (group.key === 'academic' && roleFor(group) === 'viewer') group.items = ['academic-home','academic-teacher-view','academic-teacher-all','academic-substitute','academic-export','academic-announcements'];
     for (const routeId of group.items) {
       if (!routeVisible(routeId, group)) continue;
@@ -109,13 +109,9 @@ function renderNavigation() {
     }
     toggle.addEventListener('click', () => {
       const opening = !section.classList.contains('open');
-      nav.querySelectorAll('.nav-group').forEach(other => {
-        other.classList.toggle('open', other === section && opening);
-        const otherSub = other.querySelector('.sub-nav');
-        const otherToggle = other.querySelector('.group-toggle');
-        otherSub.hidden = !(other === section && opening);
-        otherToggle.setAttribute('aria-expanded', String(other === section && opening));
-      });
+      section.classList.toggle('open', opening);
+      sub.hidden = !opening;
+      toggle.setAttribute('aria-expanded', String(opening));
     });
     section.append(toggle,sub); nav.append(section);
   }
@@ -130,11 +126,9 @@ function setActive(id) {
   const active = document.querySelector(`[data-route="${id}"]`);
   const group = active?.closest('.nav-group');
   if (group) {
-    document.querySelectorAll('.nav-group').forEach(other => {
-      const selected = other === group;
-      other.classList.toggle('open',selected); other.querySelector('.sub-nav').hidden = !selected;
-      other.querySelector('.group-toggle').setAttribute('aria-expanded',String(selected));
-    });
+    group.classList.add('open');
+    group.querySelector('.sub-nav').hidden = false;
+    group.querySelector('.group-toggle').setAttribute('aria-expanded','true');
   }
 }
 function injectFrameStyle() {
