@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#663394">
+  <meta name="description" content="ระบบงานครูและบุคลากร โรงเรียนค่ายบางระจันวิทยาคม">
+  <title>ระบบงานครูและบุคลากร · โรงเรียนค่ายบางระจันวิทยาคม</title>
+  <link rel="icon" href="../favicon.png">
+  <link rel="stylesheet" href="../admin/admin.css?v=20261029-unified1">
+  <link rel="stylesheet" href="staff.css?v=20261029-staff1">
+</head>
+<body>
+  <div class="auth-gate staff-gate" id="authGate" role="status" aria-live="polite">
+    <img src="../school-logo.svg" alt="ตราโรงเรียน">
+    <p class="eyebrow">โรงเรียนค่ายบางระจันวิทยาคม</p>
+    <h1 id="gateTitle">กำลังตรวจสอบบัญชี</h1>
+    <p id="gateMessage">โปรดรอสักครู่</p>
+    <button class="button primary" id="gateLogin" hidden>เข้าสู่ระบบด้วย Google</button>
+    <a class="button secondary" href="../index.html">กลับหน้าหลัก</a>
+  </div>
+
+  <div class="app-shell" id="appShell" hidden>
+    <div class="mobile-scrim" id="mobileScrim"></div>
+    <aside class="sidebar" id="sidebar" aria-label="เมนูระบบงานโรงเรียน">
+      <a class="brand" href="#overview"><img src="../school-logo.svg" alt=""><span><strong>ค่ายบางระจันวิทยาคม</strong><small>ระบบงานครูและบุคลากร</small></span></a>
+      <div class="nav-caption">ระบบงานโรงเรียน</div>
+      <nav class="side-nav" id="staffNav"></nav>
+      <div class="sidebar-footer">
+        <div class="security-note"><span class="status-dot"></span><span>ใช้บัญชีโรงเรียนชุดเดียวกัน</span></div>
+        <a class="back-link" href="../index.html">← หน้าหลักโรงเรียน</a>
+      </div>
+    </aside>
+
+    <main class="main-area">
+      <header class="topbar">
+        <button class="icon-button menu-button" id="menuButton" aria-label="เปิดเมนู" aria-expanded="false">☰</button>
+        <div class="breadcrumbs"><span>ระบบงานโรงเรียน</span><b>/</b><strong id="pageCrumb">ภาพรวมวันนี้</strong></div>
+        <div class="top-actions">
+          <a class="admin-badge" id="adminCenterLink" href="../admin/" hidden><i></i> ศูนย์ผู้ดูแล</a>
+          <div class="account-menu"><span class="avatar" id="avatarInitial">ผ</span><span class="account-copy"><strong id="staffName">บุคลากร</strong><small id="staffEmail"></small></span><button class="text-button" id="logoutButton" type="button">ออกจากระบบ</button></div>
+        </div>
+      </header>
+
+      <div class="page-content" id="overview">
+        <section class="welcome-row">
+          <div><p class="eyebrow">STAFF WORKSPACE</p><h1 id="welcomeTitle">ภาพรวมวันนี้</h1><p class="muted">เข้าใช้งานงานโรงเรียนที่ได้รับสิทธิ์จากเมนูเดียว</p></div>
+          <div class="date-chip"><span class="date-icon">▦</span><span><small>วันที่วันนี้</small><strong id="todayDate">—</strong></span></div>
+        </section>
+        <section class="staff-systems" id="systemCards" aria-label="ระบบงานที่ได้รับสิทธิ์"></section>
+        <section class="lower-grid staff-note-grid">
+          <article class="panel"><div class="panel-heading"><div><p class="eyebrow">ONE WORKSPACE</p><h2>ทำงานต่อเนื่องในหน้าเดียว</h2></div><span class="summary-icon icon-lavender">▦</span></div><p class="staff-note">เลือกหมวดงานจากเมนูด้านข้าง ระบบจะเปิดหน้าที่เกี่ยวข้องในพื้นที่ทำงานกลาง โดยแต่ละระบบยังใช้ข้อมูลและสิทธิ์เดิมของโรงเรียน</p></article>
+          <article class="panel"><div class="panel-heading"><div><p class="eyebrow">ACCESS</p><h2>เมนูตามสิทธิ์บัญชี</h2></div><span class="summary-icon icon-green">✓</span></div><p class="staff-note">หากไม่เห็นระบบที่ต้องใช้ ให้ติดต่อผู้ดูแลระบบเพื่อเพิ่มสิทธิ์ในบัญชีกลาง</p></article>
+        </section>
+        <footer class="page-footer">โรงเรียนค่ายบางระจันวิทยาคม <span>•</span> ระบบงานครูและบุคลากร</footer>
+      </div>
+
+      <section class="embedded-view" id="embeddedView" hidden aria-label="หน้าระบบที่เลือก">
+        <div class="embedded-toolbar"><button class="back-to-overview" id="backToOverview">← ภาพรวมวันนี้</button><div><small id="embeddedCategory">ระบบงานโรงเรียน</small><strong id="embeddedTitle">กำลังเปิดระบบ</strong></div><a id="openStandalone" href="#" target="_blank" rel="noopener">เปิดเต็มหน้า ↗</a></div>
+        <iframe id="systemFrame" title="พื้นที่ทำงานระบบโรงเรียน" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+      </section>
+    </main>
+  </div>
+  <script type="module" src="staff.js?v=20261029-staff1"></script>
+</body>
+</html>
