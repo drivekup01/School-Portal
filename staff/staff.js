@@ -233,3 +233,17 @@ openWorkspace();
 
 document.getElementById('appShell').querySelector('.main-area').append(gate);
 renderNavigation();
+
+// Show the complete mobile sidebar on first entry; users can dismiss it themselves.
+const sidebarClose = document.createElement('button');
+sidebarClose.type = 'button';
+sidebarClose.className = 'sidebar-close';
+sidebarClose.textContent = '×';
+sidebarClose.setAttribute('aria-label','ซ่อนแถบเมนู');
+sidebarClose.addEventListener('click',closeMobileMenu);
+$('sidebar').prepend(sidebarClose);
+if (window.matchMedia('(max-width:760px)').matches) {
+  $('sidebar').classList.add('is-open');
+  $('mobileScrim').classList.add('is-visible');
+  $('menuButton').setAttribute('aria-expanded','true');
+}
