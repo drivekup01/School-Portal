@@ -9,3 +9,4 @@
 /* Menu rows keep their natural height; only expanded children add space. */
 .side-nav{align-content:start;grid-auto-rows:max-content;gap:5px}.side-nav>.nav-link,.group-toggle{min-height:44px;height:44px}.nav-group{align-self:start}.side-nav>.nav-link.active{color:#fff;background:#8145b4}.sub-nav{align-content:start}
 #staffNav{display:flex;flex-direction:column;justify-content:flex-start;align-items:stretch;gap:5px}#staffNav>.nav-link,#staffNav>.nav-group{flex:0 0 auto}#staffNav>.nav-link,#staffNav .group-toggle{height:44px;min-height:44px;max-height:44px}#staffNav .sub-nav[hidden]{display:none!important}
+.sidebar-close{display:none}@media(max-width:760px){.sidebar-close{display:grid;place-items:center;position:absolute;right:13px;top:13px;width:36px;height:36px;border:1px solid #e4d9ed;border-radius:10px;background:#fff;color:#4b2866;font-size:26px;cursor:pointer}}

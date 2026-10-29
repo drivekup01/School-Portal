@@ -97,11 +97,11 @@ function renderNavigation() {
   for (const group of groups) {
     if (!groupVisible(group)) continue;
     const section = document.createElement('section');
-    section.className = 'nav-group open'; section.dataset.module = group.key;
+    section.className = 'nav-group'; section.dataset.module = group.key;
     const toggle = document.createElement('button');
-    toggle.className = 'nav-link group-toggle'; toggle.type = 'button'; toggle.setAttribute('aria-expanded','true');
+    toggle.className = 'nav-link group-toggle'; toggle.type = 'button'; toggle.setAttribute('aria-expanded','false');
     toggle.innerHTML = `<span class="nav-icon">${group.icon}</span><span>${group.label}</span><span class="chevron">⌄</span>`;
-    const sub = document.createElement('div'); sub.className = 'sub-nav'; sub.hidden = false;
+    const sub = document.createElement('div'); sub.className = 'sub-nav'; sub.hidden = true;
     if (group.key === 'academic' && roleFor(group) === 'viewer') group.items = ['academic-home','academic-teacher-view','academic-teacher-all','academic-substitute','academic-export','academic-announcements'];
     for (const routeId of group.items) {
       if (!routeVisible(routeId, group)) continue;
@@ -233,3 +233,17 @@ openWorkspace();
 
 document.getElementById('appShell').querySelector('.main-area').append(gate);
 renderNavigation();
+
+// Show the complete mobile sidebar on first entry; users can dismiss it themselves.
+const sidebarClose = document.createElement('button');
+sidebarClose.type = 'button';
+sidebarClose.className = 'sidebar-close';
+sidebarClose.textContent = '×';
+sidebarClose.setAttribute('aria-label','ซ่อนแถบเมนู');
+sidebarClose.addEventListener('click',closeMobileMenu);
+$('sidebar').prepend(sidebarClose);
+if (window.matchMedia('(max-width:760px)').matches) {
+  $('sidebar').classList.add('is-open');
+  $('mobileScrim').classList.add('is-visible');
+  $('menuButton').setAttribute('aria-expanded','true');
+}
