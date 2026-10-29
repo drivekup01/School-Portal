@@ -1,4 +1,8 @@
 import * as shared from './shared/school-auth.js?v=20261027-roles1';
-const bar=document.getElementById('accountBar'),label=document.getElementById('accountLabel'),login=document.getElementById('portalLogin'),logout=document.getElementById('portalLogout'),manage=document.getElementById('manageUsers');
-async function render(){try{const p=await shared.profile();label.textContent=p?p.name+' • '+p.email:'ใช้บัญชี Google เดียวกันทุกระบบ';login.hidden=!!p;logout.hidden=!p;manage.hidden=!p?.identityAdmin;document.getElementById('adminHomeLink').hidden=!p?.identityAdmin;document.getElementById('readinessLink').hidden=!p?.identityAdmin;if(p?.active)import('./shared/access-check.js?v=20261027-readiness1').then(m=>m.run()).catch(()=>{});}catch(e){label.textContent='ระบบบัญชีกลางกำลังเตรียมใช้งาน';}}
-login.onclick=async()=>{try{await shared.login();await render();}catch(e){label.textContent=e.message;}};logout.onclick=async()=>{await shared.logout();await render();};render();
+
+try {
+  const profile = await shared.profile();
+  if (profile?.active) window.location.replace('staff/');
+} catch {
+  // The landing page remains available if identity services are temporarily offline.
+}
