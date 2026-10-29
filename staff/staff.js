@@ -97,11 +97,11 @@ function renderNavigation() {
   for (const group of groups) {
     if (!groupVisible(group)) continue;
     const section = document.createElement('section');
-    section.className = 'nav-group'; section.dataset.module = group.key;
+    section.className = 'nav-group open'; section.dataset.module = group.key;
     const toggle = document.createElement('button');
-    toggle.className = 'nav-link group-toggle'; toggle.type = 'button'; toggle.setAttribute('aria-expanded','false');
+    toggle.className = 'nav-link group-toggle'; toggle.type = 'button'; toggle.setAttribute('aria-expanded','true');
     toggle.innerHTML = `<span class="nav-icon">${group.icon}</span><span>${group.label}</span><span class="chevron">⌄</span>`;
-    const sub = document.createElement('div'); sub.className = 'sub-nav'; sub.hidden = true;
+    const sub = document.createElement('div'); sub.className = 'sub-nav'; sub.hidden = false;
     if (group.key === 'academic' && roleFor(group) === 'viewer') group.items = ['academic-home','academic-teacher-view','academic-teacher-all','academic-substitute','academic-export','academic-announcements'];
     for (const routeId of group.items) {
       if (!routeVisible(routeId, group)) continue;
