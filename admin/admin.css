@@ -25,3 +25,4 @@
 .embedded-view iframe{display:block;width:100%;height:calc(100% - 52px);flex:1;border:0;background:#f8f7fa}
 @media(max-width:1100px) and (min-width:761px){.embedded-view{left:232px}}
 @media(max-width:760px){.embedded-view{inset:61px 0 0}.embedded-toolbar{flex-basis:47px;padding-inline:12px}.embedded-view iframe{height:calc(100% - 47px)}}
+.sub-nav[hidden],.nav-group:not(.open)>.sub-nav{display:none!important}
