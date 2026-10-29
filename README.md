@@ -23,6 +23,7 @@ workflow sync-attendance.yml ใช้ scripts/sync-attendance.py คัดล�
 
 - `index.html` หน้าแรก
 - `admin/index.html` ศูนย์ผู้ดูแลระบบ แยกจากหน้ารวมระบบและแสดงเฉพาะบัญชีผู้ดูแล
+- `users.html` จัดการบัญชีกลาง สิทธิ์ และสถานะการใช้งาน โดยใช้ระบบยืนยันตัวตนชุดเดิม
 - `system-home.css` รูปแบบพื้นฐานของ Portal
 - `home-landing.css` การ์ด Bento และสีโรงเรียน
 - `home-intro.css` / `home-intro.js` เอฟเฟกต์โลโก้ก่อนเปิดหน้า
