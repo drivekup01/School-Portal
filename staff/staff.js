@@ -9,7 +9,9 @@ const routes = {};
 const appBase = 'https://drivekup01.github.io/';
 
 function addRoute(id, title, category, app, path, page) {
-  routes[id] = { id, title, category, app, url: appBase + path, page };
+  const target = new URL(path,appBase);
+  if (app === 'budget' || app === 'procurement') target.searchParams.set('ui','20261029-ui2');
+  routes[id] = { id, title, category, app, url: target.href, page };
 }
 addRoute('budget-home','ภาพรวมงบประมาณ','งานงบประมาณ','budget','School-Budget/budget-dashboard.html');
 addRoute('budget-projects','โครงการและกิจกรรม','งานงบประมาณ','budget','School-Budget/budget-projects.html');
@@ -184,6 +186,7 @@ function openRoute(id) {
   showEmbedded(route.title,route.category,route.url,route.app);
 }
 function loadUrl(url,app,title) {
+  if (app === 'budget' || app === 'procurement') { const target = new URL(url); target.searchParams.set('ui','20261029-ui2'); url = target.href; }
   const category = categoryName(app);
   const guess = Object.values(routes).find(route => route.url === url || route.url.startsWith(url.split('#')[0]));
   if (guess) setActive(guess.id); else document.querySelectorAll('[data-route]').forEach(el=>el.classList.remove('active'));

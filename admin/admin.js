@@ -104,6 +104,9 @@ const routes = {
   'student-reports': { title: 'รายงานและส่งออก', category: 'ดูแลนักเรียน', app: 'attendance', url: appBase + 'School-Portal/attendance/reports.html' },
   'student-admin': { title: 'จัดการข้อมูลและสิทธิ์', category: 'ดูแลนักเรียน', app: 'attendance', url: appBase + 'School-Portal/attendance/admin.html' }
 };
+for (const route of Object.values(routes)) {
+  if (route.app === 'budget' || route.app === 'procurement') { const target = new URL(route.url); target.searchParams.set('ui','20261029-ui2'); route.url = target.href; }
+}
 let pendingAcademicPage = null;
 const embeddedStyles = {
   accounts: '#workspace .sidebar,#workspace .topbar,.access-bar,.global-status,#mobileScrim{display:none!important}#workspace .main-area{margin-left:0!important}#workspace .page-content{padding:20px!important}',
@@ -227,6 +230,7 @@ function showEmbedded(title, category, url, app) {
 }
 
 function loadRouteUrl(url, app, title) {
+  if (app === 'budget' || app === 'procurement') { const target = new URL(url); target.searchParams.set('ui','20261029-ui2'); url = target.href; }
   const category = app === 'budget' || app === 'procurement' ? 'งานงบประมาณ' : app === 'academic' ? 'งานวิชาการ' : app === 'attendance' ? 'ดูแลนักเรียน' : 'ศูนย์ผู้ดูแลระบบ';
   showEmbedded(title, category, url, app);
   if (app === 'academic') pendingAcademicPage = null;
