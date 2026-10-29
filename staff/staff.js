@@ -232,7 +232,22 @@ async function openWorkspace() {
 }
 $('gateLogin').addEventListener('click',async()=>{try{await shared.login();await openWorkspace();}catch(error){gateState('เข้าสู่ระบบไม่สำเร็จ',error?.message||'ลองอีกครั้ง',true);}});
 $('logoutButton').addEventListener('click',async()=>{await shared.logout();gateState('ออกจากระบบแล้ว','เข้าสู่ระบบอีกครั้งด้วยบัญชีที่ได้รับสิทธิ์',true);});
-$('menuButton').addEventListener('click',()=>{const open=!$('sidebar').classList.contains('is-open');$('sidebar').classList.toggle('is-open',open);$('mobileScrim').classList.toggle('is-visible',open);$('menuButton').setAttribute('aria-expanded',String(open));});
+$('menuButton').addEventListener('click',()=>{
+  if (window.matchMedia('(min-width:761px)').matches) {
+    const collapsed = document.body.classList.toggle('sidebar-collapsed');
+    $('menuButton').setAttribute('aria-expanded',String(!collapsed));
+    $('menuButton').setAttribute('aria-label',collapsed?'ขยายเมนู':'ย่อเมนู');
+    return;
+  }
+  const open=!$('sidebar').classList.contains('is-open');$('sidebar').classList.toggle('is-open',open);$('mobileScrim').classList.toggle('is-visible',open);$('menuButton').setAttribute('aria-expanded',String(open));
+});
+$('staffNav').addEventListener('click',event=>{
+  if (event.target.closest('.group-toggle') && document.body.classList.contains('sidebar-collapsed')) {
+    document.body.classList.remove('sidebar-collapsed');
+    $('menuButton').setAttribute('aria-expanded','true');
+    $('menuButton').setAttribute('aria-label','ย่อเมนู');
+  }
+});
 $('mobileScrim').addEventListener('click',closeMobileMenu);
 $('backToOverview').addEventListener('click',showOverview);
 openWorkspace();
