@@ -11,7 +11,7 @@ const appBase = 'https://drivekup01.github.io/';
 function addRoute(id, title, category, app, path, page) {
   const target = new URL(path,appBase);
   if (app === 'budget' || app === 'procurement') target.searchParams.set('ui','20261029-ui2');
-  if (app === 'academic') target.searchParams.set('ui','20261030-ui1');
+  if (app === 'academic') target.searchParams.set('ui','20261030-ui2');
   routes[id] = { id, title, category, app, url: target.href, page };
 }
 addRoute('budget-home','ภาพรวมงบประมาณ','งานงบประมาณ','budget','School-Budget/budget-dashboard.html');
@@ -187,7 +187,7 @@ function openRoute(id) {
   showEmbedded(route.title,route.category,route.url,route.app);
 }
 function loadUrl(url,app,title) {
-  if (app === 'academic') { const target = new URL(url); target.searchParams.set('ui','20261030-ui1'); url = target.href; }
+  if (app === 'academic') { const target = new URL(url); target.searchParams.set('ui','20261030-ui2'); url = target.href; }
   if (app === 'budget' || app === 'procurement') { const target = new URL(url); target.searchParams.set('ui','20261029-ui2'); url = target.href; }
   const category = categoryName(app);
   const guess = Object.values(routes).find(route => route.url === url || route.url.startsWith(url.split('#')[0]));
