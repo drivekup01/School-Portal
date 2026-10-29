@@ -7,7 +7,7 @@
   <meta name="description" content="ศูนย์ผู้ดูแลระบบ โรงเรียนค่ายบางระจันวิทยาคม">
   <title>ศูนย์ผู้ดูแลระบบ · โรงเรียนค่ายบางระจันวิทยาคม</title>
   <link rel="icon" href="../favicon.png">
-  <link rel="stylesheet" href="admin.css?v=20261029-home1">
+  <link rel="stylesheet" href="admin.css?v=20261029-unified1">
 </head>
 <body>
   <div class="auth-gate" id="authGate" role="status" aria-live="polite">
@@ -29,13 +29,43 @@
       <div class="nav-caption">ศูนย์ควบคุม</div>
       <nav class="side-nav">
         <a class="nav-link active" href="#overview" data-section="overview"><span class="nav-icon">⌂</span><span>ภาพรวมระบบ</span></a>
-        <a class="nav-link" href="../users.html"><span class="nav-icon">♙</span><span>ผู้ใช้และสิทธิ์</span><span class="nav-count" id="navUserCount">—</span></a>
+        <a class="nav-link" href="../users.html" data-route="accounts"><span class="nav-icon">♙</span><span>ผู้ใช้และสิทธิ์</span><span class="nav-count" id="navUserCount">—</span></a>
         <div class="nav-group open">
-          <button class="nav-link group-toggle" type="button" aria-expanded="true"><span class="nav-icon">▦</span><span>ระบบของโรงเรียน</span><span class="chevron">⌄</span></button>
+          <button class="nav-link group-toggle" type="button" aria-expanded="true"><span class="nav-icon">฿</span><span>งานงบประมาณ</span><span class="chevron">⌄</span></button>
           <div class="sub-nav">
-            <a href="https://drivekup01.github.io/School-Budget/budget-dashboard.html" target="_top">งานงบประมาณ</a>
-            <a href="https://drivekup01.github.io/School-OS/" target="_top">งานวิชาการ</a>
-            <a href="../attendance/" target="_top">ดูแลนักเรียน</a>
+            <a href="#" data-route="budget-home">ภาพรวมงบประมาณ</a>
+            <a href="#" data-route="budget-projects">โครงการและกิจกรรม</a>
+            <a href="#" data-route="budget-reports">รายงานงบประมาณ</a>
+            <a href="#" data-route="budget-documents">เอกสารงบ 1 และงบ 2</a>
+            <a href="#" data-route="budget-disbursement">เอกสารเบิกจ่าย</a>
+            <a href="#" data-route="budget-procurement">จัดซื้อและจัดจ้าง</a>
+          </div>
+        </div>
+        <div class="nav-group">
+          <button class="nav-link group-toggle" type="button" aria-expanded="false"><span class="nav-icon">▦</span><span>งานวิชาการ</span><span class="chevron">⌄</span></button>
+          <div class="sub-nav" hidden>
+            <a href="#" data-route="academic-home">ภาพรวมวิชาการ</a>
+            <a href="#" data-route="academic-school">ข้อมูลโรงเรียน</a>
+            <a href="#" data-route="academic-teachers">ครูผู้สอน</a>
+            <a href="#" data-route="academic-subjects">รายวิชา</a>
+            <a href="#" data-route="academic-rooms">ห้องเรียน</a>
+            <a href="#" data-route="academic-timeslots">คาบเรียนและวันเรียน</a>
+            <a href="#" data-route="academic-builder">จัดตารางเรียน</a>
+            <a href="#" data-route="academic-teacher-view">ตารางสอนรายครู</a>
+            <a href="#" data-route="academic-workload">ภาระงานสอน</a>
+            <a href="#" data-route="academic-substitute">สอนแทนและแลกคาบ</a>
+            <a href="#" data-route="academic-announcements">ประกาศวิชาการ</a>
+          </div>
+        </div>
+        <div class="nav-group">
+          <button class="nav-link group-toggle" type="button" aria-expanded="false"><span class="nav-icon">✓</span><span>ดูแลนักเรียน</span><span class="chevron">⌄</span></button>
+          <div class="sub-nav" hidden>
+            <a href="#" data-route="student-home">ภาพรวมดูแลนักเรียน</a>
+            <a href="#" data-route="student-morning">เช็กชื่อเข้าแถวเช้า</a>
+            <a href="#" data-route="student-subject">เช็กชื่อรายคาบ</a>
+            <a href="#" data-route="student-behavior">ความประพฤติ</a>
+            <a href="#" data-route="student-reports">รายงานและส่งออก</a>
+            <a href="#" data-route="student-admin">จัดการข้อมูลและสิทธิ์</a>
           </div>
         </div>
         <a class="nav-link" href="#activity" data-section="activity"><span class="nav-icon">◷</span><span>ประวัติการใช้งาน</span><span class="soon-dot" title="รอเชื่อมข้อมูล">•</span></a>
@@ -72,13 +102,13 @@
 
         <section class="section-heading"><div><p class="eyebrow">SYSTEMS</p><h2>ระบบงานโรงเรียน</h2><p class="muted">เลือกเข้าสู่ระบบที่ต้องการจัดการ</p></div><span class="section-count">3 ระบบ</span></section>
         <section class="system-grid" aria-label="ระบบงานโรงเรียน">
-          <a class="system-card budget-card" href="https://drivekup01.github.io/School-Budget/budget-dashboard.html" target="_top">
+          <a class="system-card budget-card" href="#" data-route="budget-home">
             <div class="system-card-head"><span class="system-icon">฿</span><span class="open-arrow">↗</span></div><span class="system-kicker">FINANCE & PROCUREMENT</span><h3>ระบบงานงบประมาณ</h3><p>ภาพรวมงบ โครงการ เอกสารเบิกจ่าย และงานจัดซื้อจัดจ้าง</p><span class="system-link">เปิดระบบ <b>→</b></span>
           </a>
-          <a class="system-card academic-card" href="https://drivekup01.github.io/School-OS/" target="_top">
+          <a class="system-card academic-card" href="#" data-route="academic-home">
             <div class="system-card-head"><span class="system-icon">▦</span><span class="open-arrow">↗</span></div><span class="system-kicker">ACADEMIC</span><h3>ระบบงานวิชาการ</h3><p>ครู วิชา ห้องเรียน คาบเรียน ตารางสอน และการสอนแทน</p><span class="system-link">เปิดระบบ <b>→</b></span>
           </a>
-          <a class="system-card student-card" href="../attendance/" target="_top">
+          <a class="system-card student-card" href="#" data-route="student-home">
             <div class="system-card-head"><span class="system-icon">✓</span><span class="open-arrow">↗</span></div><span class="system-kicker">STUDENT SUPPORT</span><h3>ระบบดูแลนักเรียน</h3><p>เช็กชื่อเข้าแถว รายคาบ ความประพฤติ และรายงาน</p><span class="system-link">เปิดระบบ <b>→</b></span>
           </a>
         </section>
@@ -90,14 +120,18 @@
           </article>
           <article class="panel quick-panel" id="quickActions">
             <div class="panel-heading"><div><p class="eyebrow">QUICK ACTIONS</p><h2>จัดการด่วน</h2></div></div>
-            <a class="quick-action" href="../users.html"><span class="quick-icon">♙</span><span><strong>จัดการบัญชีและสิทธิ์</strong><small>เพิ่ม แก้ไข หรือระงับบัญชีผู้ใช้</small></span><b>→</b></a>
+            <a class="quick-action" href="#" data-route="accounts"><span class="quick-icon">♙</span><span><strong>จัดการบัญชีและสิทธิ์</strong><small>เพิ่ม แก้ไข หรือระงับบัญชีผู้ใช้</small></span><b>→</b></a>
             <a class="quick-action" href="../readiness.html"><span class="quick-icon quick-icon-alt">✓</span><span><strong>ตรวจความพร้อมบัญชีครู</strong><small>ดูสถานะการเชื่อมบัญชี</small></span><b>→</b></a>
           </article>
         </section>
         <footer class="page-footer">โรงเรียนค่ายบางระจันวิทยาคม <span>•</span> ศูนย์ผู้ดูแลระบบ</footer>
       </div>
+      <section class="embedded-view" id="embeddedView" hidden aria-label="ระบบงานที่เลือก">
+        <div class="embedded-toolbar"><button class="back-to-overview" id="backToOverview">← ภาพรวมระบบ</button><div><small id="embeddedCategory">ระบบงานโรงเรียน</small><strong id="embeddedTitle">กำลังเปิดระบบ</strong></div><a id="openStandalone" href="#" target="_blank" rel="noopener">เปิดเต็มหน้า ↗</a></div>
+        <iframe id="systemFrame" title="พื้นที่ทำงานระบบโรงเรียน" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+      </section>
     </main>
   </div>
-  <script type="module" src="admin.js?v=20261029-home1"></script>
+      <script type="module" src="admin.js?v=20261029-unified1"></script>
 </body>
 </html>
