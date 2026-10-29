@@ -1,4 +1,5 @@
 import * as shared from '../shared/school-auth.js?v=20261027-roles1';
+import {renderToday} from './today.js?v=20261029-today1';
 
 const $ = id => document.getElementById(id);
 const gate = $('authGate');
@@ -221,6 +222,10 @@ async function openWorkspace() {
     $('todayDate').textContent = formatThaiDate();
     $('adminCenterLink').hidden = !profile.identityAdmin;
     renderNavigation(); document.getElementById('systemCards').hidden = true; showOverview();
+    $('welcomeTitle').textContent = 'สวัสดี '+(profile.name || profile.displayName || 'คุณครู');
+    let todayHost = $('todayDashboard');
+    if (!todayHost) { todayHost = document.createElement('div'); todayHost.id = 'todayDashboard'; $('overview').querySelector('.welcome-row').after(todayHost); }
+    renderToday(todayHost,profile,openRoute,loadUrl).catch(()=>{todayHost.textContent='โหลดภาพรวมไม่สำเร็จ กรุณาโหลดหน้าใหม่';});
     gate.hidden = true; shell.hidden = false;
   } catch (error) { gateState('เข้าใช้งานไม่ได้',error?.message || 'ตรวจสอบการเชื่อมต่อแล้วลองใหม่'); }
 }
