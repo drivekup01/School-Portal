@@ -190,7 +190,7 @@ frame.addEventListener('load', () => {
     const page = pendingAcademicPage;
     pendingAcademicPage = null;
     if(frame.contentWindow)frame.contentWindow.schoolRequestedPage=page;
-    frame.contentWindow?.nav?.(page);
+    if(frame.contentWindow?.canAccessPage?.(page))frame.contentWindow?.nav?.(page);
   }
 });
 
@@ -245,7 +245,7 @@ function openRoute(routeId) {
   setActiveRoute(routeId);
   if (route.app === 'academic' && frame.dataset.app === 'academic' && frame.contentWindow?.nav) {
     pendingAcademicPage = null;
-    frame.contentWindow.schoolRequestedPage=route.page; frame.contentWindow.nav(route.page);
+    frame.contentWindow.schoolRequestedPage=route.page; if(frame.contentWindow.canAccessPage?.(route.page))frame.contentWindow.nav(route.page);
     showEmbedded(route.title, route.category, route.url, route.app);
     return;
   }
