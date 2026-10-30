@@ -25,9 +25,6 @@ workflow sync-attendance.yml ใช้ scripts/sync-attendance.py คัดล�
 - `admin/index.html` ศูนย์ผู้ดูแลระบบ แยกจากหน้ารวมระบบและแสดงเฉพาะบัญชีผู้ดูแล
 - ศูนย์ผู้ดูแลรวมทางเข้าระบบงบประมาณ วิชาการ ดูแลนักเรียน และบัญชีกลางไว้ใน shell เดียว โดยเปิดแต่ละหน้าภายในพื้นที่ทำงานเดียวกัน
 - `users.html` จัดการบัญชีกลาง สิทธิ์ และสถานะการใช้งาน โดยใช้ระบบยืนยันตัวตนชุดเดิม
-- `system-home.css` รูปแบบพื้นฐานของ Portal
-- `home-landing.css` การ์ด Bento และสีโรงเรียน
-- `home-intro.css` / `home-intro.js` เอฟเฟกต์โลโก้ก่อนเปิดหน้า
 - `school-logo.svg` โลโก้โรงเรียน
 
 เผยแพร่ผ่าน GitHub Pages จาก branch `main` ที่ root ของ repository
@@ -36,3 +33,5 @@ workflow sync-attendance.yml ใช้ scripts/sync-attendance.py คัดล�
 
 ใช้ PWA ชื่อ KBW School จากหน้าหลักเดียวกัน มีปุ่มติดตั้งและคำแนะนำ Android/iPhone
 รายละเอียดไฟล์ ขอบเขตแคช และวิธีทดสอบอยู่ใน [PWA.md](PWA.md)
+
+UI หน้าจอใช้ shared/school-ui.css และฟอนต์ใน shared/fonts ร่วมกับระบบงานทั้งหมด ดู docs/unified-ui.md

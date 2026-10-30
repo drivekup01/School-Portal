@@ -1,0 +1,18 @@
+{
+  "version": "20261030-unified1",
+  "shared": "https://drivekup01.github.io/School-Portal/shared/school-ui.css?v=20261030-unified1",
+  "bundles": {
+    "styles/staff.css": [
+      "admin/admin.css",
+      "staff/staff.css"
+    ],
+    "styles/admin.css": [
+      "admin/admin.css",
+      "admin/users-admin.css"
+    ],
+    "styles/attendance-base.css": [
+      "attendance/css/theme.css",
+      "attendance/css/sidebar.css"
+    ]
+  }
+}
