@@ -5,21 +5,51 @@
   "description": "ระบบงบประมาณ ตารางสอน เช็คชื่อ และดูแลนักเรียนของโรงเรียน",
   "lang": "th",
   "dir": "ltr",
-  "start_url": "/School-Portal/?source=pwa",
+  "start_url": "/School-Portal/staff/?source=pwa",
   "scope": "/",
   "display": "standalone",
   "background_color": "#faf8fd",
   "theme_color": "#663394",
-  "categories": ["education", "productivity"],
+  "categories": [
+    "education",
+    "productivity"
+  ],
   "prefer_related_applications": false,
   "icons": [
-    {"src": "icons/app-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
-    {"src": "icons/app-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"},
-    {"src": "icons/app-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+    {
+      "src": "icons/app-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/app-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/app-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
   ],
   "shortcuts": [
-    {"name": "ระบบเช็คชื่อ", "url": "/School-Portal/attendance/", "description": "เช็คชื่อและดูแลนักเรียน"},
-    {"name": "ระบบจัดตารางสอน", "url": "/School-OS/", "description": "ดูตารางสอนและจัดสอนแทน"},
-    {"name": "ระบบงานงบประมาณ", "url": "/School-Budget/budget-dashboard.html", "description": "งานงบประมาณของโรงเรียน"}
+    {
+      "name": "ระบบเช็คชื่อ",
+      "url": "/School-Portal/attendance/",
+      "description": "เช็คชื่อและดูแลนักเรียน"
+    },
+    {
+      "name": "ระบบจัดตารางสอน",
+      "url": "/School-OS/",
+      "description": "ดูตารางสอนและจัดสอนแทน"
+    },
+    {
+      "name": "ระบบงานงบประมาณ",
+      "url": "/School-Budget/budget-dashboard.html",
+      "description": "งานงบประมาณของโรงเรียน"
+    }
   ]
 }
