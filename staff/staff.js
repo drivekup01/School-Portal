@@ -10,7 +10,7 @@ const appBase = 'https://drivekup01.github.io/';
 
 function addRoute(id, title, category, app, path, page) {
   const target = new URL(path,appBase);
-  if (app === 'budget' || app === 'procurement') target.searchParams.set('ui','20261029-ui2');
+  if (app === 'budget' || app === 'procurement') target.searchParams.set('ui','20261030-mobile1');
   if (app === 'academic') target.searchParams.set('ui','20261030-compact1');
   routes[id] = { id, title, category, app, url: target.href, page };
 }
@@ -188,7 +188,7 @@ function openRoute(id) {
 }
 function loadUrl(url,app,title) {
   if (app === 'academic') { const target = new URL(url); target.searchParams.set('ui','20261030-compact1'); url = target.href; }
-  if (app === 'budget' || app === 'procurement') { const target = new URL(url); target.searchParams.set('ui','20261029-ui2'); url = target.href; }
+  if (app === 'budget' || app === 'procurement') { const target = new URL(url); target.searchParams.set('ui','20261030-mobile1'); url = target.href; }
   const category = categoryName(app);
   const guess = Object.values(routes).find(route => route.url === url || route.url.startsWith(url.split('#')[0]));
   if (guess) setActive(guess.id); else document.querySelectorAll('[data-route]').forEach(el=>el.classList.remove('active'));
