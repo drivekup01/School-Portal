@@ -1,0 +1,10 @@
+{
+  "private": true,
+  "scripts": {
+    "build": "node build.cjs"
+  },
+  "devDependencies": {
+    "postcss": "8.5.32",
+    "cssnano": "7.1.9"
+  }
+}

@@ -105,8 +105,8 @@ const routes = {
   'student-admin': { title: 'จัดการข้อมูลและสิทธิ์', category: 'ดูแลนักเรียน', app: 'attendance', url: appBase + 'School-Portal/attendance/admin.html' }
 };
 for (const route of Object.values(routes)) {
-  if (route.app === 'academic') { const target = new URL(route.url); target.searchParams.set('ui','20261030-compact1'); route.url = target.href; }
-  if (route.app === 'budget' || route.app === 'procurement') { const target = new URL(route.url); target.searchParams.set('ui','20261029-ui2'); route.url = target.href; }
+  if (route.app === 'academic') { const target = new URL(route.url); target.searchParams.set('ui','20261030-unified1'); route.url = target.href; }
+  if (route.app === 'budget' || route.app === 'procurement') { const target = new URL(route.url); target.searchParams.set('ui','20261030-unified1'); route.url = target.href; }
 }
 let pendingAcademicPage = null;
 const embeddedStyles = {
@@ -231,8 +231,8 @@ function showEmbedded(title, category, url, app) {
 }
 
 function loadRouteUrl(url, app, title) {
-  if (app === 'academic') { const target = new URL(url); target.searchParams.set('ui','20261030-compact1'); url = target.href; }
-  if (app === 'budget' || app === 'procurement') { const target = new URL(url); target.searchParams.set('ui','20261029-ui2'); url = target.href; }
+  if (app === 'academic') { const target = new URL(url); target.searchParams.set('ui','20261030-unified1'); url = target.href; }
+  if (app === 'budget' || app === 'procurement') { const target = new URL(url); target.searchParams.set('ui','20261030-unified1'); url = target.href; }
   const category = app === 'budget' || app === 'procurement' ? 'งานงบประมาณ' : app === 'academic' ? 'งานวิชาการ' : app === 'attendance' ? 'ดูแลนักเรียน' : 'ศูนย์ผู้ดูแลระบบ';
   showEmbedded(title, category, url, app);
   if (app === 'academic') pendingAcademicPage = null;
