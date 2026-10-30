@@ -21,7 +21,7 @@ addRoute('budget-import','อัปเดตรายรับจาก Excel','
 addRoute('budget-documents','เอกสารงบ 1 และงบ 2','งานงบประมาณ','budget','School-Budget/budget-documents.html');
 addRoute('budget-disbursement','เอกสารเบิกจ่าย','งานงบประมาณ','budget','School-Budget/disbursement.html');
 addRoute('budget-procurement','จัดซื้อและจัดจ้าง','งานงบประมาณ','procurement','School-Procurement/history.html#history');
-addRoute('budget-inventory','คุมพัสดุ / รับเข้าจากเอกสาร','งานงบประมาณ','budget','School-Budget/inventory.html?v=20261030-inventory1');
+addRoute('budget-inventory','คุมพัสดุ / รับเข้าจากเอกสาร','งานงบประมาณ','budget','School-Budget/inventory.html?v=20261030-inventory2');
 addRoute('academic-home','ภาพรวมวิชาการ','งานวิชาการ','academic','School-OS/','dashboard');
 addRoute('academic-school','ข้อมูลโรงเรียน','งานวิชาการ','academic','School-OS/','school');
 addRoute('academic-teachers','ครูผู้สอน','งานวิชาการ','academic','School-OS/','teachers');
