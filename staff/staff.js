@@ -17,11 +17,11 @@ function addRoute(id, title, category, app, path, page) {
 addRoute('budget-home','ภาพรวมงบประมาณ','งานงบประมาณ','budget','School-Budget/budget-dashboard.html');
 addRoute('budget-projects','โครงการและกิจกรรม','งานงบประมาณ','budget','School-Budget/budget-projects.html');
 addRoute('budget-reports','รายงานงบประมาณ','งานงบประมาณ','budget','School-Budget/budget-reports.html');
-addRoute('budget-import','อัปเดตรายรับจาก Excel','งานงบประมาณ','budget','School-Budget/budget-import.html?year=2570&v=20261030-allocation1');
+addRoute('budget-import','อัปเดตข้อมูลปีงบประมาณ','งานงบประมาณ','budget','School-Budget/budget-import.html?year=2570&v=20261030-allocation1');
 addRoute('budget-documents','เอกสารงบ 1 และงบ 2','งานงบประมาณ','budget','School-Budget/budget-documents.html');
 addRoute('budget-disbursement','เอกสารเบิกจ่าย','งานงบประมาณ','budget','School-Budget/disbursement.html');
 addRoute('budget-procurement','จัดซื้อและจัดจ้าง','งานงบประมาณ','procurement','School-Procurement/history.html#history');
-addRoute('budget-inventory','คุมพัสดุ / รับเข้าจากเอกสาร','งานงบประมาณ','budget','School-Budget/inventory.html?v=20261030-inventory2');
+addRoute('budget-inventory','ระบบคุมพัสดุ','งานงบประมาณ','budget','School-Budget/inventory.html?v=20261030-inventory2');
 addRoute('academic-home','ภาพรวมวิชาการ','งานวิชาการ','academic','School-OS/','dashboard');
 addRoute('academic-school','ข้อมูลโรงเรียน','งานวิชาการ','academic','School-OS/','school');
 addRoute('academic-teachers','ครูผู้สอน','งานวิชาการ','academic','School-OS/','teachers');
