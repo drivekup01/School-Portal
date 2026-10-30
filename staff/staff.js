@@ -21,6 +21,7 @@ addRoute('budget-import','อัปเดตรายรับจาก Excel','
 addRoute('budget-documents','เอกสารงบ 1 และงบ 2','งานงบประมาณ','budget','School-Budget/budget-documents.html');
 addRoute('budget-disbursement','เอกสารเบิกจ่าย','งานงบประมาณ','budget','School-Budget/disbursement.html');
 addRoute('budget-procurement','จัดซื้อและจัดจ้าง','งานงบประมาณ','procurement','School-Procurement/history.html#history');
+addRoute('budget-inventory','คุมพัสดุ / รับเข้าจากเอกสาร','งานงบประมาณ','budget','School-Budget/inventory.html?v=20261030-inventory1');
 addRoute('academic-home','ภาพรวมวิชาการ','งานวิชาการ','academic','School-OS/','dashboard');
 addRoute('academic-school','ข้อมูลโรงเรียน','งานวิชาการ','academic','School-OS/','school');
 addRoute('academic-teachers','ครูผู้สอน','งานวิชาการ','academic','School-OS/','teachers');
@@ -48,14 +49,14 @@ addRoute('student-reports','รายงานและส่งออก','ด�
 addRoute('student-admin','จัดการข้อมูลและสิทธิ์','ดูแลนักเรียน','attendance','School-Portal/attendance/admin.html');
 
 const embeddedStyles = {
-  budget: '#budgetSidebar{display:none!important}body.has-budget-sidebar:not([data-document-view])>main{margin-left:0!important}body.has-budget-sidebar[data-document-view]{padding-left:0!important}body.has-budget-sidebar[data-document-view] #documentManager{margin:20px!important;max-width:none!important}',
+  budget: '.inventory-app>#mobileMenu,.inventory-app>#scrim{display:none!important}#budgetSidebar{display:none!important}body.has-budget-sidebar:not([data-document-view])>main{margin-left:0!important}body.has-budget-sidebar[data-document-view]{padding-left:0!important}body.has-budget-sidebar[data-document-view] #documentManager{margin:20px!important;max-width:none!important}',
   procurement: '#budgetSidebar{display:none!important}body.has-budget-sidebar:not([data-document-view])>main{margin-left:0!important}',
   academic: '.school-topbar,.app-shell>.sidebar{display:none!important}body{min-height:100%!important}.app-shell{display:block!important;min-height:0!important;height:auto!important}.app-shell>.main{width:100%!important;min-width:0!important}',
   attendance: '#shell>.sidebar,.mobile-nav{display:none!important}.workspace{margin-left:0!important;padding-bottom:0!important}.workspace>main{max-width:none!important}'
 };
 
 const groups = [
-  { key:'budget', role:'budget', id:'budget', label:'งานงบประมาณ', icon:'฿', items:['budget-home','budget-projects','budget-reports','budget-documents','budget-disbursement','budget-procurement','budget-import'] },
+  { key:'budget', role:'budget', id:'budget', label:'งานงบประมาณ', icon:'฿', items:['budget-home','budget-projects','budget-reports','budget-documents','budget-disbursement','budget-procurement','budget-inventory','budget-import'] },
   { key:'academic', role:'timetable', id:'academic', label:'งานวิชาการ', icon:'▦', items:['academic-home','academic-school','academic-teachers','academic-subjects','academic-rooms','academic-timeslots','academic-builder','academic-teacher-builder','academic-auto','academic-teacher-view','academic-teacher-all','academic-workload','academic-conflict','academic-export','academic-substitute','academic-exchange','academic-leave','academic-announcements','academic-storage'] },
   { key:'attendance', role:'attendance', id:'student', label:'ดูแลนักเรียน', icon:'✓', items:['student-home','student-morning','student-subject','student-behavior','student-reports','student-admin'] }
 ];
@@ -77,6 +78,7 @@ function roleFor(group) {
 }
 function groupVisible(group) { return !profile || roleFor(group) !== 'none'; }
 function routeVisible(routeId, group) {
+  if (routeId === 'budget-inventory') return profile?.identityAdmin || ['admin','budget','procurement'].includes(profile?.schoolRole);
   if (routeId === 'budget-import') return profile?.identityAdmin || profile?.schoolRole === 'budget';
   if (routeId === 'student-admin') return roleFor(group) === 'admin';
   if (group.key === 'academic' && roleFor(group) === 'viewer') {
