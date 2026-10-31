@@ -9,11 +9,11 @@ allowed = {'.js', '.css', '.png', '.svg', '.ico', '.txt', '.ttf', '.woff', '.wof
 for folder in ['js', 'css', 'assets', 'styles']:
     files.extend(p for p in (source / folder).rglob('*') if p.is_file() and
                  (p.suffix.lower() in allowed or p.relative_to(source).as_posix() == 'styles/ui-manifest.json'))
-# Mirror only executable/style UI files. Never prune records, configuration or images.
+# Mirror retired styles only. Preserve Portal helper modules, records, configuration and images.
 expected = {src.relative_to(source) for src in files}
-for folder in ['js', 'css', 'styles']:
+for folder in ['css', 'styles']:
     for stale in (target / folder).rglob('*'):
-        if stale.is_file() and stale.suffix in {'.js', '.css'} and stale.relative_to(target) not in expected:
+        if stale.is_file() and stale.suffix == '.css' and stale.relative_to(target) not in expected:
             assert stale.resolve().is_relative_to(target)
             stale.unlink()
 for src in files:

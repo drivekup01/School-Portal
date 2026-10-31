@@ -26,7 +26,7 @@ class AttendancePublishTest(unittest.TestCase):
             self.assertEqual((target / 'styles/student-workspace.css').read_text(), 'new-ui{}')
             self.assertFalse((target / 'css/theme.css').exists())
             self.assertFalse((target / 'styles/attendance-base.css').exists())
-            self.assertFalse((target / 'js/retired.js').exists())
+            self.assertEqual((target / 'js/retired.js').read_text(), 'old-code')
             self.assertEqual((target / 'records.json').read_text(), 'important records')
             self.assertEqual((target / 'assets/logo.png').read_bytes(), b'keep-image')
             self.assertEqual(json.loads((target / 'source.json').read_text())['commit'], 'revision-new')
