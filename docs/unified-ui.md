@@ -12,4 +12,4 @@ With these repositories checked out as sibling folders, install pinned dev depen
 
 School-OS classic scripts retain their execution boundaries. timetable-app.js, timetable-head.js and timetable-runtime-*.js are the readable canonical runtime sources extracted from HTML; edit them directly. Keep their classic script order and boundaries. vendor/docx.min.js and vendor/html2canvas.min.js load on the first matching export; subsequent exports reuse the same library. No data or authorization backend changes are required.
 
-School-Attendance remains the canonical attendance UI. Portal/scripts/sync-attendance.py copies its static pages, whose common bundle URL points to School-Portal/styles/attendance-base.css. Publish the Portal shared assets first.
+School-Attendance remains the canonical attendance UI. Portal/scripts/sync-attendance.py copies its static pages, including the local attendance/styles/student-workspace.css bundle. The legacy attendance-base.css is retired. Sync also prunes obsolete CSS files; helper modules, records and images are preserved.

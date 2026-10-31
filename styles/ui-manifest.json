@@ -9,10 +9,6 @@
     "styles/admin.css": [
       "admin/admin.css",
       "admin/users-admin.css"
-    ],
-    "styles/attendance-base.css": [
-      "attendance/css/theme.css",
-      "attendance/css/sidebar.css"
     ]
   }
 }
