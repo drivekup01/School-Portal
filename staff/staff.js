@@ -12,6 +12,7 @@ function addRoute(id, title, category, app, path, page) {
   const target = new URL(path,appBase);
   if (app === 'budget' || app === 'procurement') target.searchParams.set('ui','20261030-unified2');
   if (app === 'academic') target.searchParams.set('ui','20261030-unified2');
+  if(app === 'attendance')target.searchParams.set('ui','20261031-student1');
   routes[id] = { id, title, category, app, url: target.href, page };
 }
 addRoute('budget-home','ภาพรวมงบประมาณ','งานงบประมาณ','budget','School-Budget/budget-dashboard.html');
@@ -52,7 +53,7 @@ const embeddedStyles = {
   budget: '.inventory-app>#mobileMenu,.inventory-app>#scrim{display:none!important}#budgetSidebar{display:none!important}body.has-budget-sidebar:not([data-document-view])>main{margin-left:0!important}body.has-budget-sidebar[data-document-view]{padding-left:0!important}body.has-budget-sidebar[data-document-view] #documentManager{margin:20px!important;max-width:none!important}',
   procurement: '#budgetSidebar{display:none!important}body.has-budget-sidebar:not([data-document-view])>main{margin-left:0!important}',
   academic: '.school-topbar,.app-shell>.sidebar{display:none!important}body{min-height:100%!important}.app-shell{display:block!important;min-height:0!important;height:auto!important}.app-shell>.main{width:100%!important;min-width:0!important}',
-  attendance: '#shell>.sidebar,.mobile-nav{display:none!important}.workspace{margin-left:0!important;padding-bottom:0!important}.workspace>main{max-width:none!important}'
+  attendance: '.student-embedded .student-workspace{margin-left:0!important}'
 };
 
 const groups = [
@@ -192,6 +193,7 @@ function openRoute(id) {
   showEmbedded(route.title,route.category,route.url,route.app);
 }
 function loadUrl(url,app,title) {
+  if(app === "attendance"){const target=new URL(url);target.searchParams.set("ui","20261031-student1");url=target.href;}
   if (app === 'academic') { const target = new URL(url); target.searchParams.set('ui','20261030-unified2'); url = target.href; }
   if (app === 'budget' || app === 'procurement') { const target = new URL(url); target.searchParams.set('ui','20261030-unified2'); url = target.href; }
   const category = categoryName(app);
