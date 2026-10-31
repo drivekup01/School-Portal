@@ -15,7 +15,7 @@ function addRoute(id, title, category, app, path, page) {
   if(app === 'attendance')target.searchParams.set('ui','20261031-student1');
   routes[id] = { id, title, category, app, url: target.href, page };
 }
-addRoute('budget-home','ภาพรวมงบประมาณ','งานงบประมาณ','budget','School-Budget/budget-dashboard.html');
+addRoute('budget-home','ภาพรวมงบประมาณ','งานงบประมาณ','budget','School-Budget/budget-dashboard.html?v=20261031-colors1');
 addRoute('budget-projects','โครงการและกิจกรรม','งานงบประมาณ','budget','School-Budget/budget-projects.html');
 addRoute('budget-reports','รายงานงบประมาณ','งานงบประมาณ','budget','School-Budget/budget-reports.html');
 addRoute('budget-import','อัปเดตข้อมูลปีงบประมาณ','งานงบประมาณ','budget','School-Budget/budget-import.html?year=2570&v=20261030-allocation1');
@@ -193,6 +193,7 @@ function openRoute(id) {
   showEmbedded(route.title,route.category,route.url,route.app);
 }
 function loadUrl(url,app,title) {
+  {const target=new URL(url);if(target.pathname === "/School-Budget/budget-dashboard.html")target.searchParams.set("v","20261031-colors1");url=target.href;}
   if(app === "attendance"){const target=new URL(url);target.searchParams.set("ui","20261031-student1");url=target.href;}
   if (app === 'academic') { const target = new URL(url); target.searchParams.set('ui','20261030-unified2'); url = target.href; }
   if (app === 'budget' || app === 'procurement') { const target = new URL(url); target.searchParams.set('ui',app === 'budget' ? '20261031-compact1' : '20261030-unified2'); url = target.href; }
