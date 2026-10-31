@@ -80,7 +80,7 @@ const frame = $('systemFrame');
 const appBase = 'https://drivekup01.github.io/';
 const routes = {
   accounts: { title: 'ผู้ใช้และสิทธิ์', category: 'ศูนย์ผู้ดูแลระบบ', app: 'accounts', url: appBase + 'School-Portal/users.html' },
-  'budget-home': { title: 'ภาพรวมงบประมาณ', category: 'งานงบประมาณ', app: 'budget', url: appBase + 'School-Budget/budget-dashboard.html' },
+  'budget-home': { title: 'ภาพรวมงบประมาณ', category: 'งานงบประมาณ', app: 'budget', url: appBase + 'School-Budget/budget-dashboard.html?v=20261031-colors1' },
   'budget-projects': { title: 'โครงการและกิจกรรม', category: 'งานงบประมาณ', app: 'budget', url: appBase + 'School-Budget/budget-projects.html' },
   'budget-reports': { title: 'รายงานงบประมาณ', category: 'งานงบประมาณ', app: 'budget', url: appBase + 'School-Budget/budget-reports.html' },
   'budget-documents': { title: 'เอกสารงบ 1 และงบ 2', category: 'งานงบประมาณ', app: 'budget', url: appBase + 'School-Budget/budget-documents.html' },
@@ -233,6 +233,7 @@ function showEmbedded(title, category, url, app) {
 }
 
 function loadRouteUrl(url, app, title) {
+  {const target=new URL(url);if(target.pathname === "/School-Budget/budget-dashboard.html")target.searchParams.set("v","20261031-colors1");url=target.href;}
   if(app === "attendance"){const target=new URL(url);target.searchParams.set("ui","20261031-student1");url=target.href;}
   if (app === 'academic') { const target = new URL(url); target.searchParams.set('ui','20261030-unified2'); url = target.href; }
   if (app === 'budget' || app === 'procurement') { const target = new URL(url); target.searchParams.set('ui',app === 'budget' ? '20261031-compact1' : '20261030-unified2'); url = target.href; }
