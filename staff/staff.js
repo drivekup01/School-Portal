@@ -11,7 +11,7 @@ const appBase = 'https://drivekup01.github.io/';
 function addRoute(id, title, category, app, path, page) {
   const target = new URL(path,appBase);
   if (app === 'budget' || app === 'procurement') target.searchParams.set('ui',app === 'budget' ? '20261031-compact1' : '20261030-unified2');
-  if (app === 'academic') target.searchParams.set('ui','20261030-unified2');
+  if (app === 'academic') target.searchParams.set('ui','20261103-png1');
   if(app === 'attendance')target.searchParams.set('ui','20261031-student1');
   routes[id] = { id, title, category, app, url: target.href, page };
 }
@@ -198,7 +198,7 @@ function openRoute(id) {
 function loadUrl(url,app,title) {
   {const target=new URL(url);if(target.pathname === "/School-Budget/budget-dashboard.html")target.searchParams.set("v","20261031-colors1");url=target.href;}
   if(app === "attendance"){const target=new URL(url);target.searchParams.set("ui","20261031-student1");url=target.href;}
-  if (app === 'academic') { const target = new URL(url); target.searchParams.set('ui','20261030-unified2'); url = target.href; }
+  if (app === 'academic') { const target = new URL(url); target.searchParams.set('ui','20261103-png1'); url = target.href; }
   if (app === 'budget' || app === 'procurement') { const target = new URL(url); target.searchParams.set('ui',app === 'budget' ? '20261031-compact1' : '20261030-unified2'); url = target.href; }
   const category = categoryName(app);
   const guess = Object.values(routes).find(route => route.url === url || route.url.startsWith(url.split('#')[0]));
