@@ -184,6 +184,9 @@ function showEmbedded(title,category,url,app) {
 function openRoute(id) {
   if (!profile) { gateState('เข้าสู่ระบบครูและบุคลากร','เข้าสู่ระบบด้วยบัญชีโรงเรียนเพื่อใช้งานเมนูนี้',true); return; }
   const route = routes[id]; if (!route) return;
+  const group = groups.find(group => group.items.includes(id));
+  if (!group || !groupVisible(group) || !routeVisible(id,group)) return;
+  history.replaceState(null,'','#'+id);
   gate.hidden = true;
   setActive(id);
   if (route.app === 'academic' && frame.dataset.app === 'academic' && frame.contentWindow?.nav) {
@@ -200,14 +203,22 @@ function loadUrl(url,app,title) {
   const category = categoryName(app);
   const guess = Object.values(routes).find(route => route.url === url || route.url.startsWith(url.split('#')[0]));
   if (guess) setActive(guess.id); else document.querySelectorAll('[data-route]').forEach(el=>el.classList.remove('active'));
+  if (guess) history.replaceState(null,'','#'+guess.id);
   pendingAcademicPage = null; showEmbedded(title,category,url,app);
 }
 function showOverview() {
   if (!profile) { gateState('เข้าสู่ระบบครูและบุคลากร','ใช้บัญชีโรงเรียนเพื่อเข้าใช้งานทั้ง 3 ระบบ',true); return; }
   gate.hidden = true;
+  history.replaceState(null,'','#overview');
   $('embeddedView').hidden = true; $('overview').hidden = false; $('pageCrumb').textContent = 'ภาพรวมวันนี้';
   document.querySelectorAll('[data-route]').forEach(el=>el.classList.remove('active'));
   document.querySelector('[data-section="overview"]')?.classList.add('active');
+}
+function restoreWorkspaceRoute() {
+  const id = location.hash.slice(1);
+  const group = groups.find(group => group.items.includes(id));
+  if (routes[id] && group && groupVisible(group) && routeVisible(id,group)) openRoute(id);
+  else showOverview();
 }
 function renderCards() {
   const box = $('systemCards');
@@ -234,7 +245,8 @@ async function openWorkspace() {
     $('avatarInitial').textContent = (profile.name || profile.displayName || 'ผ').trim().charAt(0);
     $('todayDate').textContent = formatThaiDate();
     $('adminCenterLink').hidden = !profile.identityAdmin;
-    renderNavigation(); document.getElementById('systemCards').hidden = true; showOverview();
+    renderNavigation(); document.getElementById('systemCards').hidden = true;
+    restoreWorkspaceRoute();
     $('welcomeTitle').textContent = 'สวัสดี '+(profile.name || profile.displayName || 'คุณครู');
     let todayHost = $('todayDashboard');
     if (!todayHost) { todayHost = document.createElement('div'); todayHost.id = 'todayDashboard'; $('overview').querySelector('.welcome-row').after(todayHost); }
