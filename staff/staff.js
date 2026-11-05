@@ -198,6 +198,8 @@ function openRoute(id) {
   showEmbedded(route.title,route.category,route.url,route.app);
 }
 function loadUrl(url,app,title) {
+  {const target=new URL(url);if(target.pathname==='/School-Budget/budget-reports.html'){const q=target.searchParams,funds=['เงินอุดหนุนรายหัว','เงินกิจกรรมพัฒนาผู้เรียน','เงินรายได้สถานศึกษา','อื่น ๆ'];title=[q.get('projectName')||(q.has('project')?'โครงการ '+q.get('project'):'ทุกโครงการ'),funds[q.get('fund')]||'ทุกประเภทเงิน',q.get('department')||'ทุกฝ่าย'].join(' · ');}}
+
   {const target=new URL(url);if(target.pathname === "/School-Budget/budget-dashboard.html")target.searchParams.set("v","20261031-colors1");url=target.href;}
   if(app === "attendance"){const target=new URL(url);target.searchParams.set("ui","20261031-student1");url=target.href;}
   if (app === 'academic') { const target = new URL(url); target.searchParams.set('ui','20261104-groups1'); url = target.href; }
