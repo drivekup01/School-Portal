@@ -82,3 +82,5 @@ Backend ใช้ Node.js 22 ติดตั้ง dependencies ใน functions
 เรียก node --test functions/test/content.test.js เพื่อตรวจ validation, draft/public separation, role denial, revocation และ concurrent edits
 เผยแพร่เฉพาะ backend นี้: firebase deploy --only functions:school-portal --project school-budget-3e69d
 pnpm-workspace.yaml อนุญาต build scripts เฉพาะ @firebase/util และ protobufjs ที่ dependencies ต้องใช้
+
+การเรียก schoolHomepage ผ่านเบราว์เซอร์ต้องให้ Cloud Run service schoolhomepage มี roles/run.invoker สำหรับ allUsers เช่นเดียวกับ callable schoolIdentity เดิม การอนุญาตนี้ทำให้ CORS และ Firebase callable handler รับคำขอได้ ส่วนการอ่านฉบับร่าง บันทึก และเผยแพร่ยังถูกตรวจสิทธิ์ผู้ดูแลใน handler ทุกครั้ง
