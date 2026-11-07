@@ -88,6 +88,7 @@ const routes = {
   accounts: { title: 'ผู้ใช้และสิทธิ์', category: 'ศูนย์ผู้ดูแลระบบ', app: 'accounts', url: appBase + 'School-Portal/users.html?v=20261107-permissions1' },
   'budget-home': { title: 'ภาพรวมงบประมาณ', category: 'งานงบประมาณ', app: 'budget', url: appBase + 'School-Budget/budget-dashboard.html?v=20261031-colors1' },
   'budget-projects': { title: 'โครงการและกิจกรรม', category: 'งานงบประมาณ', app: 'budget', url: appBase + 'School-Budget/budget-projects.html' },
+  'budget-import': { title: 'อัปเดตข้อมูลปีงบประมาณ', category: 'งานงบประมาณ', app: 'budget', url: appBase + 'School-Budget/budget-import.html?year=2570&v=20261030-allocation1' },
   'budget-reports': { title: 'รายงานงบประมาณ', category: 'งานงบประมาณ', app: 'budget', url: appBase + 'School-Budget/budget-reports.html' },
   'budget-documents': { title: 'เอกสารงบ 1 และงบ 2', category: 'งานงบประมาณ', app: 'budget', url: appBase + 'School-Budget/budget-documents.html' },
   'budget-disbursement': { title: 'เอกสารเบิกจ่าย', category: 'งานงบประมาณ', app: 'budget', url: appBase + 'School-Budget/disbursement.html' },
