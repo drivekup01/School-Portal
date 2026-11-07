@@ -1,0 +1,5 @@
+'use strict';
+const {test}=require('node:test'),assert=require('node:assert/strict');
+require('../../admin/backup-crypto.js');
+const C=globalThis.KBWBackupCrypto;
+test('encrypted backup round-trips offline and rejects wrong passwords, modified ciphertext and excessive KDF parameters',async()=>{const source=new TextEncoder().encode('PK Thai backup ข้อมูลนักเรียน'),password='backup-password-123',packed=await C.pack(source,password,'school-roster.zip'),result=await C.unpack(packed,password);assert.equal(result.filename,'school-roster.zip');assert.deepEqual(result.bytes,source);await assert.rejects(C.unpack(packed,'wrong-password'));const changed=packed.slice();changed[changed.length-1]^=1;await assert.rejects(C.unpack(changed,password));const bad=packed.slice(),text=new TextDecoder().decode(bad),offset=text.indexOf('310000');assert(offset>0);bad.set(new TextEncoder().encode('999999'),offset);await assert.rejects(C.unpack(bad,password),/รูปแบบไฟล์/);await assert.rejects(C.pack(source,'short','school-roster.zip'));});
