@@ -1,5 +1,7 @@
 import * as shared from '../shared/school-auth.js?v=20261027-roles1';
 
+import {mountActivity} from './activity.js?v=20261107-usage1';
+let activityView;
 const $ = id => document.getElementById(id);
 const gate = $('authGate');
 const shell = $('appShell');
@@ -36,6 +38,8 @@ async function openDashboard() {
     gate.hidden = true;
     shell.hidden = false;
     await loadUserSummary();
+    activityView ||= mountActivity($('activity'));
+    if(location.hash==='#activity')showDashboard();
   } catch (error) {
     gateState('เชื่อมต่อระบบบัญชีไม่ได้', error?.message || 'ลองโหลดหน้าใหม่อีกครั้ง');
   }
@@ -145,7 +149,8 @@ document.querySelectorAll('.group-toggle').forEach(button => button.addEventList
   event.currentTarget.setAttribute('aria-expanded', String(open));
   group.querySelector('.sub-nav').hidden = !open;
 }));
-document.querySelectorAll('[data-section]').forEach(link => link.addEventListener('click', () => {
+document.querySelectorAll('[data-section]').forEach(link => link.addEventListener('click', event => {
+  event.preventDefault();history.replaceState(null,'',link.href);
   document.querySelectorAll('.nav-link[data-section]').forEach(item => item.classList.toggle('active', item === link));
   $('pageCrumb').textContent = link.textContent.trim();
   showDashboard();
@@ -266,7 +271,8 @@ function showDashboard() {
   dashboardView.hidden = false;
   $('pageCrumb').textContent = 'ภาพรวมระบบ';
   document.querySelectorAll('[data-route]').forEach(item => item.classList.remove('active'));
-  document.querySelector('[data-section="overview"]')?.classList.add('active');
+  document.querySelectorAll('[data-section]').forEach(link=>link.classList.toggle('active',link.dataset.section===(location.hash==='#activity'?'activity':location.hash==='#quickActions'?'quickActions':'overview')));
+  if(location.hash==='#activity')activityView?.refresh();
   if (location.hash === '#activity' || location.hash === '#quickActions') document.querySelector(location.hash)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
 
