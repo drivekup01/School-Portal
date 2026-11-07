@@ -84,3 +84,33 @@ Backend ใช้ Node.js 22 ติดตั้ง dependencies ใน functions
 pnpm-workspace.yaml อนุญาต build scripts เฉพาะ @firebase/util และ protobufjs ที่ dependencies ต้องใช้
 
 การเรียก schoolHomepage ผ่านเบราว์เซอร์ต้องให้ Cloud Run service schoolhomepage มี roles/run.invoker สำหรับ allUsers เช่นเดียวกับ callable schoolIdentity เดิม การอนุญาตนี้ทำให้ CORS และ Firebase callable handler รับคำขอได้ ส่วนการอ่านฉบับร่าง บันทึก และเผยแพร่ยังถูกตรวจสิทธิ์ผู้ดูแลใน handler ทุกครั้ง
+
+## ระบบนักเรียน
+
+- student/index.html: หน้าหลักส่วนตัว แสดงข้อมูลนักเรียน ครูที่ปรึกษา สรุปการมาเรียนรายเดือน ตารางเรียนวันนี้ และคะแนนความประพฤติ
+- admin/students.html: ผู้ดูแลผูก/ยกเลิกอีเมล Google กับรายชื่อนักเรียน และตรวจคำขอแก้ไขข้อมูล
+- ปุ่มนักเรียนบนหน้าแรกเชื่อมไป student/ แล้ว
+- ก่อนใช้งานจริง ผู้ดูแลต้องเลือก “บัญชีนักเรียน” → เลือกห้อง/นักเรียน → ผูกอีเมล Google นักเรียน ไม่มีการเดารายชื่อจากชื่อ Google หรือให้นักเรียนเลือกรหัสของผู้อื่นเอง
+- รูปใช้ photoUrl/photoURL จากทะเบียนถ้ามี มิฉะนั้นใช้รูปบัญชี Google พร้อมระบุที่มา หรือใช้อักษรชื่อเมื่อยังไม่มีรูป
+
+### แหล่งข้อมูลเดิม
+
+- อ่าน timetable_state/current และ timetable_versions/{version}/parts แบบตรวจ checksum จากระบบจัดตารางสอน เลือกห้องด้วยชื่อห้อง + ปีการศึกษา + ภาคเรียน ต้องตรงเพียงห้องเดียว
+- ตารางวันนี้อ่านเฉพาะคาบของห้องนั้น รวม exchanges และ substitute ที่บันทึกในต้นทาง ไม่ส่งฐานตารางทั้งหมดให้นักเรียน
+- ครูที่ปรึกษาอ้างอิง homeroom/homeroom2/homeroom3 ในห้องจากตารางสอน
+- รายชื่ออ้างอิง attendance_classes/{classId}/students/{studentId} ของระบบดูแลนักเรียน
+- เข้าแถวเช้ารวม attendance_morning_sessions กับ marks ของ assignment เก่า เลือกบันทึกล่าสุดต่อวัน และเลือก canonical เมื่อเวลาเท่ากัน
+- รายคาบอ่าน marks เฉพาะ studentId ของเจ้าของบัญชี รวมรายการครูร่วมสอน/สอนแทนซ้ำเป็นหนึ่งวัน+คาบ+วิชา ไม่รวมกับจำนวนวันเข้าแถว
+- เลือกดูการมาเรียนย้อนหลัง 12 เดือน นับเฉพาะรายการที่บันทึกจริง ไม่ถือว่าวันที่ไม่มีบันทึกเป็นขาด
+- ความประพฤติอ่าน attendance_behavior ของ classId+studentId ใช้ 100 + ผลรวม delta เหมือนระบบดูแลนักเรียน ไม่คำนวณคะแนนจากจำนวนสาย/ลา/ขาดซ้ำอีกครั้ง
+- การแจ้งเตือนส่วนบุคคลยังไม่เปิดใช้งาน มีเพียงข้อความแจ้งสถานะและลิงก์ข่าวโรงเรียน
+
+### สิทธิ์และคำขอแก้ไข
+
+Callable schoolStudent อยู่ใน Functions codebase school-portal และตรวจ Google provider + verified email
+school_student_accounts/{sha256(email)} และ school_student_bindings/{sha256([classId,studentId])} ผูกแบบหนึ่งต่อหนึ่งโดยผู้ดูแลเท่านั้น ไม่มีสิทธิ์เพิ่มบทบาทครูให้นักเรียน
+ทุกคำขอนักเรียนใช้ตัวตนจาก token และ mapping ฝั่งเซิร์ฟเวอร์ ไม่รับ classId/studentId จากหน้าจอ Dashboard และตรวจการผูกซ้ำก่อนคืนข้อมูล
+school_student_corrections เก็บคำขอส่วนตัว เปิดค้างได้หนึ่งคำขอต่ออีเมล ผู้ดูแลตรวจแล้วแจ้งผลกลับได้ ระบบไม่แก้ทะเบียนหรือคะแนนโดยอัตโนมัติ
+school_student_audit เก็บประวัติการผูก ยกเลิก และคำขอแก้ไข ใช้ Admin SDK ภายใต้ default deny เดิม ไม่เปิด collection ให้ client อ่านโดยตรง
+ไม่มีข้อมูลนักเรียนจริงหรืออีเมลจริงในชุดทดสอบ และไม่มีโหมดจำลอง/ข้ามสิทธิ์อยู่ในหน้าเว็บ production
+ทดสอบด้วย node --test functions/test/*.test.js

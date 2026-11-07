@@ -50,7 +50,6 @@ $('#detail').addEventListener('click',event=>{if(event.target!==$('#detail'))ret
 const menu=$('.menu'),nav=$('nav');
 menu.addEventListener('click',()=>{const open=nav.classList.toggle('open');menu.setAttribute('aria-expanded',String(open));menu.setAttribute('aria-label',open?'ปิดเมนู':'เปิดเมนู');});
 nav.querySelectorAll('a').forEach(link=>link.addEventListener('click',()=>{nav.classList.remove('open');menu.setAttribute('aria-expanded','false');menu.setAttribute('aria-label','เปิดเมนู');}));
-$('[data-detail="student"]').addEventListener('click',()=>showDetail('สำหรับนักเรียน','ส่วนบริการนักเรียนอยู่ระหว่างจัดเตรียม สามารถติดตามประกาศและปฏิทินได้จากหน้าแรกนี้'));
 $('[data-detail="contact"]').addEventListener('click',()=>{
 const c=current.contact;showDetail('ติดต่อ'+current.schoolName,[c.phone&&'โทรศัพท์: '+c.phone,c.email&&'อีเมล: '+c.email,c.address&&'ที่อยู่: '+c.address].filter(Boolean).join('\n')||'ยังไม่มีข้อมูลติดต่อที่ยืนยันแล้ว');
 const actions=$('#detail-actions');
