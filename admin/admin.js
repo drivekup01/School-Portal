@@ -79,6 +79,8 @@ const embeddedView = $('embeddedView');
 const frame = $('systemFrame');
 const appBase = 'https://drivekup01.github.io/';
 const routes = {
+  'student-accounts': { title: 'บัญชีนักเรียน', category: 'ศูนย์ผู้ดูแลระบบ', app: 'portal-admin', url: appBase + 'School-Portal/admin/students.html' },
+  homepage: { title: 'แก้ไขหน้าแรก', category: 'ศูนย์ผู้ดูแลระบบ', app: 'portal-admin', url: appBase + 'School-Portal/admin/homepage.html' },
   accounts: { title: 'ผู้ใช้และสิทธิ์', category: 'ศูนย์ผู้ดูแลระบบ', app: 'accounts', url: appBase + 'School-Portal/users.html' },
   'budget-home': { title: 'ภาพรวมงบประมาณ', category: 'งานงบประมาณ', app: 'budget', url: appBase + 'School-Budget/budget-dashboard.html?v=20261031-colors1' },
   'budget-projects': { title: 'โครงการและกิจกรรม', category: 'งานงบประมาณ', app: 'budget', url: appBase + 'School-Budget/budget-projects.html' },
@@ -111,6 +113,7 @@ for (const route of Object.values(routes)) {
 }
 let pendingAcademicPage = null;
 const embeddedStyles = {
+  'portal-admin': '#workspace>.topbar,#workspace .page-heading .back{display:none!important}#workspace>main{padding-top:20px}',
   accounts: '#workspace .sidebar,#workspace .topbar,.access-bar,.global-status,#mobileScrim{display:none!important}#workspace .main-area{margin-left:0!important}#workspace .page-content{padding:20px!important}',
   budget: '#budgetSidebar{display:none!important}body.has-budget-sidebar:not([data-document-view])>main{margin-left:0!important}body.has-budget-sidebar[data-document-view]{padding-left:0!important}body.has-budget-sidebar[data-document-view] #documentManager{margin:20px!important;max-width:none!important}',
   academic: '.school-topbar,.app-shell>.sidebar{display:none!important}body{min-height:100%!important}.app-shell{display:block!important;min-height:0!important;height:auto!important}.app-shell>.main{width:100%!important;min-width:0!important}',
@@ -164,6 +167,7 @@ function injectFrameStyle() {
       doc.addEventListener('click', event => {
         const anchor = event.target.closest?.('a');
         if (!anchor) return;
+        if(frame.dataset.app==='portal-admin'&&anchor.target==='_blank')return;
         const target = new URL(anchor.href, doc.location.href);
         if (target.origin !== location.origin || target.pathname === doc.location.pathname && target.hash && anchor.getAttribute('target') !== '_top') return;
         if (!anchor.hasAttribute('target') && !target.pathname.startsWith('/School-Portal/')) return;
@@ -196,6 +200,7 @@ frame.addEventListener('load', () => {
 });
 
 function setActiveRoute(routeId) {
+  document.querySelectorAll('[data-section]').forEach(item=>item.classList.remove('active'));
   document.querySelectorAll('[data-route]').forEach(item => item.classList.toggle('active', item.dataset.route === routeId));
   const activeLink = document.querySelector(`[data-route="${routeId}"]`);
   const group = activeLink?.closest('.nav-group');
