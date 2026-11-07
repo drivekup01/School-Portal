@@ -55,7 +55,7 @@ function service(db,stamp,clock=()=>new Date()){
     if(input.method==='adminRoster'){
       const [room,students,accounts,passwords]=await Promise.all([db.doc('attendance_classes/'+input.classId).get(),db.collection('attendance_classes/'+input.classId+'/students').get(),db.collection('school_student_accounts').where('classId','==',input.classId).get(),db.collection('school_student_passwords').where('classId','==',input.classId).get()]);
       if(!room.exists||room.data().active!==true)D.fail('ไม่พบห้องที่เปิดใช้งาน','not-found');
-      return {students:students.docs.filter(d=>d.data().active!==false).map(d=>({id:d.id,name:d.data().name,code:d.data().code||'',number:d.data().number??null,loginEnabled:passwords.docs.some(a=>a.data().active===true&&a.data().studentId===d.id&&a.data().code===d.data().code),email:accounts.docs.find(a=>a.data().active===true&&a.data().studentId===d.id)?.data().email||''})).sort((a,b)=>a.number-b.number)};
+      return {students:students.docs.filter(d=>d.data().active!==false).map(d=>({id:d.id,name:d.data().name,code:d.data().code||'',number:d.data().number??null,loginEnabled:passwords.docs.some(a=>a.data().active===true&&a.data().studentId===d.id&&a.data().code===d.data().code),hasBirthDate:passwords.docs.some(a=>a.data().studentId===d.id&&Boolean(a.data().birthDate)),email:accounts.docs.find(a=>a.data().active===true&&a.data().studentId===d.id)?.data().email||''})).sort((a,b)=>a.number-b.number)};
     }
     if(input.method==='adminRequests'){
       const records=await db.collection('school_student_corrections').where('status','==','pending').limit(101).get();

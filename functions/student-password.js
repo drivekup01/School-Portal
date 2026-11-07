@@ -1,6 +1,7 @@
 'use strict';
 const {scrypt,randomBytes,timingSafeEqual}=require('node:crypto'),{promisify}=require('node:util');
 const {hash,fail}=require('./student-data'),{assertAdmin}=require('./content-model');
+const {birthdayPassword}=require('./student-birthday');
 const derive=promisify(scrypt),validCode=v=>typeof v==='string'&&/^\d{1,20}$/.test(v),validId=v=>typeof v==='string'&&/^[A-Za-z0-9_-]{1,100}$/.test(v);
 const uidFor=code=>'student_'+hash(code);
 async function digest(password,salt){return (await derive(password,salt,64,{N:16384,r:8,p:1,maxmem:33554432})).toString('hex');}
@@ -31,12 +32,12 @@ function service(db,stamp,createToken,clock=()=>Date.now()){
   if(!roster.length||roster.length>100||roster.some(d=>!d.exists||!validCode(String(d.data().code).trim())))fail('รายชื่อนักเรียนหรือรหัสประจำตัวยังไม่พร้อม');
   if(new Set(roster.map(d=>String(d.data().code).trim())).size!==roster.length)fail('มีรหัสประจำตัวซ้ำในห้อง กรุณาแก้ไขข้อมูลต้นทางก่อน');
   // Hash the temporary password separately for every account. No plaintext password is stored.
-  const hashes=await Promise.all(roster.map(async d=>{const salt=randomBytes(24).toString('hex');return {studentId:d.id,code:String(d.data().code).trim(),salt,passwordHash:await digest('123456',salt)};}));
+  const hashes=[];for(const d of roster){const code=String(d.data().code).trim(),previous=(await ref(code).get()).data(),salt=randomBytes(24).toString('hex'),birthDate=previous?.birthDate||null;hashes.push({studentId:d.id,code,salt,birthDate,expectedVersion:previous?.version||0,passwordHash:await digest(birthDate?birthdayPassword(birthDate):'123456',salt)});}
   return db.runTransaction(async tx=>{
    await admin(request,tx);const room=await tx.get(db.doc('attendance_classes/'+input.classId));if(!room.exists||room.data().active!==true)fail('ห้องเรียนปิดใช้งานแล้ว','failed-precondition');
    const rows=await Promise.all(hashes.map(async h=>({h,student:await tx.get(db.doc('attendance_classes/'+input.classId+'/students/'+h.studentId)),old:await tx.get(ref(h.code))})));
-   for(const {h,student,old}of rows){if(!student.exists||student.data().active===false||String(student.data().code).trim()!==h.code)fail('ทะเบียนนักเรียนเปลี่ยนแล้ว กรุณาโหลดใหม่','aborted');const previous=old.data();if(previous?.active&&(previous.classId!==input.classId||previous.studentId!==h.studentId))fail('รหัสนักเรียนนี้ใช้งานกับรายชื่ออื่นอยู่ กรุณาตรวจสอบบัญชีเดิม','already-exists');if(['adminReset','adminDisable'].includes(input.method)&&(!previous||previous.classId!==input.classId||previous.studentId!==h.studentId))fail('ยังไม่เปิดบัญชีนักเรียนคนนี้','failed-precondition');}
-   let count=0;for(const {h,old}of rows){const previous=old.data();if(['adminEnable','adminEnableClass'].includes(input.method)&&previous?.active)continue;const next={code:h.code,classId:input.classId,studentId:h.studentId,active:input.method!=='adminDisable',version:(previous?.version||0)+1,updatedBy:request.auth.uid,updatedAt:stamp()};tx.set(ref(h.code),input.method==='adminDisable'?{...previous,...next}:{...next,salt:h.salt,passwordHash:h.passwordHash});count++;}
+   for(const {h,student,old}of rows){if(!student.exists||student.data().active===false||String(student.data().code).trim()!==h.code)fail('ทะเบียนนักเรียนเปลี่ยนแล้ว กรุณาโหลดใหม่','aborted');const previous=old.data();if((previous?.version||0)!==h.expectedVersion||(previous?.birthDate||null)!==h.birthDate)fail('ข้อมูลบัญชีเปลี่ยน กรุณาโหลดใหม่','aborted');if(previous?.active&&(previous.classId!==input.classId||previous.studentId!==h.studentId))fail('รหัสนักเรียนนี้ใช้งานกับรายชื่ออื่นอยู่ กรุณาตรวจสอบบัญชีเดิม','already-exists');if(['adminReset','adminDisable'].includes(input.method)&&(!previous||previous.classId!==input.classId||previous.studentId!==h.studentId))fail('ยังไม่เปิดบัญชีนักเรียนคนนี้','failed-precondition');}
+   let count=0;for(const {h,old}of rows){const previous=old.data();if(['adminEnable','adminEnableClass'].includes(input.method)&&previous?.active)continue;const next={code:h.code,classId:input.classId,studentId:h.studentId,active:input.method!=='adminDisable',version:(previous?.version||0)+1,updatedBy:request.auth.uid,updatedAt:stamp()};tx.set(ref(h.code),input.method==='adminDisable'?{...previous,...next}:{...previous,...next,salt:h.salt,passwordHash:h.passwordHash,passwordMode:h.birthDate?'birthday':'temporary'});count++;}
    tx.set(db.collection('school_student_audit').doc(),{action:input.method,classId:input.classId,studentIds:hashes.map(h=>h.studentId),count,uid:request.auth.uid,createdAt:stamp()});return {ok:true,count};
   });
  }
