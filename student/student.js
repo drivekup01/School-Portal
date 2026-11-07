@@ -1,4 +1,4 @@
-import {mountStudentReports} from './reports.js?v=20261107-grades1';
+import {mountStudentReports} from './reports.js?v=20261107-period3';
 import {firebase,logout,call} from '../shared/school-auth.js?v=20261027-roles1';
 const $=id=>document.getElementById(id),el=(tag,text,className)=>{const node=document.createElement(tag);if(text!=null)node.textContent=text;if(className)node.className=className;return node;};
 const labels={present:'มาเรียน',late:'สาย',leave:'ลา',absent:'ขาด'},thaiDate=value=>new Intl.DateTimeFormat('th-TH',{day:'numeric',month:'short',year:'numeric',timeZone:'Asia/Bangkok'}).format(new Date(value+'T12:00:00+07:00'));
