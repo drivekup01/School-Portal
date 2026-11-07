@@ -23,9 +23,9 @@ addRoute('budget-documents','เอกสารงบ 1 และงบ 2','ง�
 addRoute('budget-disbursement','เอกสารเบิกจ่าย','งานงบประมาณ','budget','School-Budget/disbursement.html');
 addRoute('budget-procurement','จัดซื้อและจัดจ้าง','งานงบประมาณ','procurement','School-Procurement/history.html#history');
 addRoute('budget-inventory','ระบบคุมพัสดุ','งานงบประมาณ','budget','School-Budget/inventory.html?v=20261030-inventory2');
-addRoute('academic-grade-import','นำเข้าผลการเรียน','ผลการเรียน','grades','School-OS/grades.html?mode=import&v=20261107-academic1');
-addRoute('academic-grades','รายงานผลการเรียน','ผลการเรียน','grades','School-OS/grades.html?mode=report&v=20261107-academic1');
-addRoute('academic-remedial','ผลการเรียน 0 ร มส มผ','ผลการเรียน','grades','School-OS/remedial.html?v=20261107-academic1');
+addRoute('academic-grade-import','นำเข้าผลการเรียน','ผลการเรียน','grades','School-OS/grades.html?mode=import&v=20261107-importui1');
+addRoute('academic-grades','รายงานผลการเรียน','ผลการเรียน','grades','School-OS/grades.html?mode=report&v=20261107-importui1');
+addRoute('academic-remedial','ผลการเรียน 0 ร มส มผ','ผลการเรียน','grades','School-OS/remedial.html?v=20261107-importui1');
 addRoute('academic-home','ภาพรวมวิชาการ','งานวิชาการ','academic','School-OS/','dashboard');
 addRoute('academic-school','ข้อมูลพื้นฐาน','งานวิชาการ','academic','School-OS/','school');
 addRoute('academic-teachers','ครูผู้สอน','งานวิชาการ','academic','School-OS/','teachers');
