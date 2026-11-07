@@ -14,7 +14,7 @@
   <link rel="icon" href="favicon.png">
   <link rel="stylesheet" href="https://drivekup01.github.io/School-Portal/styles/admin.css?v=20261030-unified1">
 
-<link rel="stylesheet" href="https://drivekup01.github.io/School-Portal/shared/school-ui.css?v=20261030-unified1"><script type="module" src="https://drivekup01.github.io/School-Portal/shared/usage-tracker.js?v=20261107-usage1"></script></head>
+<link rel="stylesheet" href="https://drivekup01.github.io/School-Portal/shared/school-ui.css?v=20261030-unified1"><link rel="stylesheet" href="admin/users-compact.css?v=20261107-compact1"><script type="module" src="https://drivekup01.github.io/School-Portal/shared/usage-tracker.js?v=20261107-usage1"></script></head>
 <body class="users-page">
   <header class="access-bar">
     <a href="admin/" class="access-brand"><img src="school-logo.svg" alt=""><span>ศูนย์ผู้ดูแลระบบ</span></a>
@@ -78,12 +78,12 @@
             <div class="fields">
               <label>อีเมล Google<input name="email" id="email" type="email" autocomplete="email" placeholder="name@school.ac.th" required></label>
               <label>ชื่อ–สกุล<input name="name" maxlength="160" autocomplete="name" placeholder="ชื่อ นามสกุล" required></label>
-              <label>รหัสครูในระบบตารางสอน <span class="optional">ไม่บังคับ</span><input name="teacherId" maxlength="100" placeholder="ใช้เชื่อมข้อมูลตารางสอนเดิม"></label>
               <label>บทบาท<select name="schoolRole" id="schoolRole"><option value="teacher">ครู / บุคลากร</option><option value="admin">ผู้ดูแลระบบ</option><option value="timetable">ฝ่ายวิชาการ</option><option value="budget">ฝ่ายงบประมาณ</option><option value="student_support">ฝ่ายดูแลนักเรียน</option></select></label><label id="academicScopeField" hidden>สิทธิ์ย่อยวิชาการ<select id="academicScope" name="academicScope"><option value="full">#1 จัดการงานวิชาการทั้งหมด</option><option value="scheduler">#2 จัดตารางและเพิ่มข้อมูลใหม่</option></select></label>
+              <label><span>รหัสครู <span class="optional">ไม่บังคับ</span></span><input name="teacherId" maxlength="100" placeholder="ใช้เชื่อมข้อมูลตารางสอนเดิม"></label>
             </div>
             <p id="roleDescription" class="role-description"></p>
-            <label class="check"><input type="checkbox" name="active" checked> เปิดใช้งานบัญชี</label>
-            <div class="form-actions"><button type="submit" id="save" class="button primary">บันทึกบัญชีและสิทธิ์</button><button type="button" id="new" class="button secondary">ล้างแบบฟอร์ม</button></div>
+            <div class="user-form-footer"><label class="check"><input type="checkbox" name="active" checked> เปิดใช้งานบัญชี</label>
+            <div class="form-actions"><button type="submit" id="save" class="button primary">บันทึกบัญชีและสิทธิ์</button><button type="button" id="new" class="button secondary">ล้างแบบฟอร์ม</button></div></div>
           </form>
         </section>
 
