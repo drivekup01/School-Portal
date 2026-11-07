@@ -1,4 +1,4 @@
-import * as shared from '../shared/school-auth.js?v=20261027-roles1';
+import * as shared from '../shared/school-auth.js?v=20261107-academic1';
 import {renderToday} from './today.js?v=20261029-today1';
 
 const $ = id => document.getElementById(id);
@@ -10,8 +10,8 @@ const appBase = 'https://drivekup01.github.io/';
 
 function addRoute(id, title, category, app, path, page) {
   const target = new URL(path,appBase);
-  if (app === 'budget' || app === 'procurement') target.searchParams.set('ui',app === 'budget' ? '20261107-permissions1' : '20261107-permissions1');
-  if (app === 'academic') target.searchParams.set('ui','20261107-permissions1');
+  if (app === 'budget' || app === 'procurement') target.searchParams.set('ui',app === 'budget' ? '20261107-academic1' : '20261107-academic1');
+  if (app === 'academic') target.searchParams.set('ui','20261107-academic1');
   if(app === 'attendance')target.searchParams.set('ui','20261031-student1');
   routes[id] = { id, title, category, app, url: target.href, page };
 }
@@ -23,13 +23,14 @@ addRoute('budget-documents','เอกสารงบ 1 และงบ 2','ง�
 addRoute('budget-disbursement','เอกสารเบิกจ่าย','งานงบประมาณ','budget','School-Budget/disbursement.html');
 addRoute('budget-procurement','จัดซื้อและจัดจ้าง','งานงบประมาณ','procurement','School-Procurement/history.html#history');
 addRoute('budget-inventory','ระบบคุมพัสดุ','งานงบประมาณ','budget','School-Budget/inventory.html?v=20261030-inventory2');
-addRoute('academic-grade-import','นำเข้าผลการเรียน','ผลการเรียน','grades','School-OS/grades.html?mode=import&v=20261107-layout1');
-addRoute('academic-grades','รายงานผลการเรียน','ผลการเรียน','grades','School-OS/grades.html?mode=report&v=20261107-layout1');
-addRoute('academic-remedial','ผลการเรียน 0 ร มส มผ','ผลการเรียน','grades','School-OS/remedial.html?v=20261107-purge1');
+addRoute('academic-grade-import','นำเข้าผลการเรียน','ผลการเรียน','grades','School-OS/grades.html?mode=import&v=20261107-academic1');
+addRoute('academic-grades','รายงานผลการเรียน','ผลการเรียน','grades','School-OS/grades.html?mode=report&v=20261107-academic1');
+addRoute('academic-remedial','ผลการเรียน 0 ร มส มผ','ผลการเรียน','grades','School-OS/remedial.html?v=20261107-academic1');
 addRoute('academic-home','ภาพรวมวิชาการ','งานวิชาการ','academic','School-OS/','dashboard');
 addRoute('academic-school','ข้อมูลพื้นฐาน','งานวิชาการ','academic','School-OS/','school');
 addRoute('academic-teachers','ครูผู้สอน','งานวิชาการ','academic','School-OS/','teachers');
 addRoute('academic-subjects','รายวิชา','งานวิชาการ','academic','School-OS/','subjects');
+addRoute('academic-students','ทะเบียนนักเรียน','งานวิชาการ','grades','School-OS/academic-students.html?v=20261107-academic1');
 addRoute('academic-rooms','ห้องเรียน','งานวิชาการ','academic','School-OS/','rooms');
 addRoute('academic-timeslots','คาบเรียนและวันเรียน','งานวิชาการ','academic','School-OS/','timeslots');
 addRoute('academic-builder','จัดตารางสอน','งานวิชาการ','academic','School-OS/','builder');
@@ -62,7 +63,7 @@ const embeddedStyles = {
 
 const groups = [
   { key:'budget', role:'budget', id:'budget', label:'งานงบประมาณ', icon:'฿', items:['budget-home','budget-projects','budget-reports','budget-documents','budget-disbursement','budget-procurement','budget-inventory','budget-import'] },
-  { key:'academic', role:'timetable', id:'academic', label:'งานวิชาการ', icon:'▦', items:['academic-home','academic-school','academic-teachers','academic-subjects','academic-rooms','academic-timeslots','academic-builder','academic-teacher-builder','academic-auto','academic-teacher-view','academic-teacher-all','academic-workload','academic-conflict','academic-export','academic-substitute','academic-exchange','academic-leave','academic-announcements','academic-storage'] },
+  { key:'academic', role:'timetable', id:'academic', label:'งานวิชาการ', icon:'▦', items:['academic-home','academic-school','academic-teachers','academic-subjects','academic-rooms','academic-students','academic-timeslots','academic-builder','academic-teacher-builder','academic-auto','academic-teacher-view','academic-teacher-all','academic-workload','academic-conflict','academic-export','academic-substitute','academic-exchange','academic-leave','academic-announcements','academic-storage'] },
   {key:'results',role:'timetable',id:'results',label:'ผลการเรียน',icon:'▤',items:['academic-grade-import','academic-grades','academic-remedial']},
   { key:'attendance', role:'attendance', id:'student', label:'ดูแลนักเรียน', icon:'✓', items:['student-home','student-morning','student-subject','student-behavior','student-reports','student-admin'] }
 ];
@@ -85,6 +86,7 @@ function roleFor(group) {
 function groupVisible(group) { return !profile || roleFor(group) !== 'none'; }
 function routeVisible(routeId, group) {
   if(['academic-grade-import','academic-grades'].includes(routeId))return roleFor(group)==='academic'||roleFor(group)==='admin';
+  if(group.key==='academic'&&roleFor(group)==='scheduler')return ['academic-home','academic-teachers','academic-subjects','academic-rooms','academic-students','academic-builder','academic-teacher-view','academic-teacher-all','academic-substitute','academic-export','academic-announcements'].includes(routeId);
   if (routeId === 'budget-inventory') return profile?.identityAdmin || ['admin','budget'].includes(profile?.schoolRole);
   if (routeId === 'budget-import') return profile?.identityAdmin || profile?.schoolRole === 'budget';
   if (routeId === 'student-admin') return roleFor(group) === 'admin';
@@ -119,7 +121,7 @@ function renderNavigation() {
     const sub = document.createElement('div'); sub.className = 'sub-nav'; sub.hidden = true;
     if (group.key === 'academic' && roleFor(group) === 'viewer') group.items = ['academic-home','academic-teacher-view','academic-teacher-all','academic-substitute','academic-export','academic-announcements'];
     for (const routeId of group.items) {
-      if(group.key==='academic'&&!['academic-grades','academic-home','academic-school','academic-builder','academic-teacher-view','academic-teacher-all','academic-substitute','academic-export','academic-announcements','academic-storage'].includes(routeId))continue;
+      if(group.key==='academic'&&!['academic-grades','academic-home','academic-school','academic-teachers','academic-subjects','academic-rooms','academic-students','academic-builder','academic-teacher-view','academic-teacher-all','academic-substitute','academic-export','academic-announcements','academic-storage'].includes(routeId))continue;
       if (!routeVisible(routeId, group)) continue;
       sub.append(makeLink(routeId));
     }
@@ -208,8 +210,8 @@ function loadUrl(url,app,title) {
 
   {const target=new URL(url);if(target.pathname === "/School-Budget/budget-dashboard.html")target.searchParams.set("v","20261031-colors1");url=target.href;}
   if(app === "attendance"){const target=new URL(url);target.searchParams.set("ui","20261031-student1");url=target.href;}
-  if (app === 'academic') { const target = new URL(url); target.searchParams.set('ui','20261107-permissions1'); url = target.href; }
-  if (app === 'budget' || app === 'procurement') { const target = new URL(url); target.searchParams.set('ui',app === 'budget' ? '20261107-permissions1' : '20261107-permissions1'); url = target.href; }
+  if (app === 'academic') { const target = new URL(url); target.searchParams.set('ui','20261107-academic1'); url = target.href; }
+  if (app === 'budget' || app === 'procurement') { const target = new URL(url); target.searchParams.set('ui',app === 'budget' ? '20261107-academic1' : '20261107-academic1'); url = target.href; }
   const category = categoryName(app);
   const guess = Object.values(routes).find(route => route.url === url || route.url.startsWith(url.split('#')[0]));
   if (guess) setActive(guess.id); else document.querySelectorAll('[data-route]').forEach(el=>el.classList.remove('active'));

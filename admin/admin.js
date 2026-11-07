@@ -1,4 +1,4 @@
-import * as shared from '../shared/school-auth.js?v=20261027-roles1';
+import * as shared from '../shared/school-auth.js?v=20261107-academic1';
 
 import {mountActivity} from './activity.js?v=20261107-usage1';
 let activityView;
@@ -85,7 +85,7 @@ const appBase = 'https://drivekup01.github.io/';
 const routes = {
   'student-accounts': { title: 'บัญชีนักเรียน', category: 'ศูนย์ผู้ดูแลระบบ', app: 'portal-admin', url: appBase + 'School-Portal/admin/students.html' },
   homepage: { title: 'แก้ไขหน้าแรก', category: 'ศูนย์ผู้ดูแลระบบ', app: 'portal-admin', url: appBase + 'School-Portal/admin/homepage.html' },
-  accounts: { title: 'ผู้ใช้และสิทธิ์', category: 'ศูนย์ผู้ดูแลระบบ', app: 'accounts', url: appBase + 'School-Portal/users.html?v=20261107-permissions1' },
+  accounts: { title: 'ผู้ใช้และสิทธิ์', category: 'ศูนย์ผู้ดูแลระบบ', app: 'accounts', url: appBase + 'School-Portal/users.html?v=20261107-academic1' },
   'budget-home': { title: 'ภาพรวมงบประมาณ', category: 'งานงบประมาณ', app: 'budget', url: appBase + 'School-Budget/budget-dashboard.html?v=20261031-colors1' },
   'budget-projects': { title: 'โครงการและกิจกรรม', category: 'งานงบประมาณ', app: 'budget', url: appBase + 'School-Budget/budget-projects.html' },
   'budget-import': { title: 'อัปเดตข้อมูลปีงบประมาณ', category: 'งานงบประมาณ', app: 'budget', url: appBase + 'School-Budget/budget-import.html?year=2570&v=20261030-allocation1' },
@@ -93,9 +93,10 @@ const routes = {
   'budget-documents': { title: 'เอกสารงบ 1 และงบ 2', category: 'งานงบประมาณ', app: 'budget', url: appBase + 'School-Budget/budget-documents.html' },
   'budget-disbursement': { title: 'เอกสารเบิกจ่าย', category: 'งานงบประมาณ', app: 'budget', url: appBase + 'School-Budget/disbursement.html' },
   'budget-procurement': { title: 'จัดซื้อและจัดจ้าง', category: 'งานงบประมาณ', app: 'procurement', url: appBase + 'School-Procurement/history.html#history' },
-  'academic-grade-import': {title:'นำเข้าผลการเรียน',category:'ผลการเรียน',app:'grades',url:appBase+'School-OS/grades.html?mode=import&v=20261107-layout1'},
-  'academic-grades': { title: 'รายงานผลการเรียน', category: 'ผลการเรียน', app: 'grades', url: appBase + 'School-OS/grades.html?mode=report&v=20261107-layout1' },
-  'academic-remedial': { title: 'ผลการเรียน 0 ร มส มผ', category: 'ผลการเรียน', app: 'grades', url: appBase + 'School-OS/remedial.html?v=20261107-purge1' },
+  'academic-grade-import': {title:'นำเข้าผลการเรียน',category:'ผลการเรียน',app:'grades',url:appBase+'School-OS/grades.html?mode=import&v=20261107-academic1'},
+  'academic-students': {title:'ทะเบียนนักเรียน',category:'งานวิชาการ',app:'grades',url:appBase+'School-OS/academic-students.html?v=20261107-academic1'},
+  'academic-grades': { title: 'รายงานผลการเรียน', category: 'ผลการเรียน', app: 'grades', url: appBase + 'School-OS/grades.html?mode=report&v=20261107-academic1' },
+  'academic-remedial': { title: 'ผลการเรียน 0 ร มส มผ', category: 'ผลการเรียน', app: 'grades', url: appBase + 'School-OS/remedial.html?v=20261107-academic1' },
   'academic-home': { title: 'ภาพรวมวิชาการ', category: 'งานวิชาการ', app: 'academic', url: appBase + 'School-OS/', page: 'dashboard' },
   'academic-school': { title: 'ข้อมูลโรงเรียน', category: 'งานวิชาการ', app: 'academic', url: appBase + 'School-OS/', page: 'school' },
   'academic-teachers': { title: 'ครูผู้สอน', category: 'งานวิชาการ', app: 'academic', url: appBase + 'School-OS/', page: 'teachers' },
@@ -116,8 +117,8 @@ const routes = {
 };
 for (const route of Object.values(routes)) {
   if(route.app === 'attendance'){const target=new URL(route.url);target.searchParams.set('ui','20261031-student1');route.url=target.href;}
-  if (route.app === 'academic') { const target = new URL(route.url); target.searchParams.set('ui','20261107-permissions1'); route.url = target.href; }
-  if (route.app === 'budget' || route.app === 'procurement') { const target = new URL(route.url); target.searchParams.set('ui',route.app === 'budget' ? '20261107-permissions1' : '20261107-permissions1'); route.url = target.href; }
+  if (route.app === 'academic') { const target = new URL(route.url); target.searchParams.set('ui','20261107-academic1'); route.url = target.href; }
+  if (route.app === 'budget' || route.app === 'procurement') { const target = new URL(route.url); target.searchParams.set('ui',route.app === 'budget' ? '20261107-academic1' : '20261107-academic1'); route.url = target.href; }
 }
 let pendingAcademicPage = null;
 const embeddedStyles = {
@@ -250,8 +251,8 @@ function showEmbedded(title, category, url, app) {
 function loadRouteUrl(url, app, title) {
   {const target=new URL(url);if(target.pathname === "/School-Budget/budget-dashboard.html")target.searchParams.set("v","20261031-colors1");url=target.href;}
   if(app === "attendance"){const target=new URL(url);target.searchParams.set("ui","20261031-student1");url=target.href;}
-  if (app === 'academic') { const target = new URL(url); target.searchParams.set('ui','20261107-permissions1'); url = target.href; }
-  if (app === 'budget' || app === 'procurement') { const target = new URL(url); target.searchParams.set('ui',app === 'budget' ? '20261107-permissions1' : '20261107-permissions1'); url = target.href; }
+  if (app === 'academic') { const target = new URL(url); target.searchParams.set('ui','20261107-academic1'); url = target.href; }
+  if (app === 'budget' || app === 'procurement') { const target = new URL(url); target.searchParams.set('ui',app === 'budget' ? '20261107-academic1' : '20261107-academic1'); url = target.href; }
   const category = app === 'budget' || app === 'procurement' ? 'งานงบประมาณ' : (app === 'academic'||app === 'grades') ? 'งานวิชาการ' : app === 'attendance' ? 'ดูแลนักเรียน' : 'ศูนย์ผู้ดูแลระบบ';
   showEmbedded(title, category, url, app);
   if (app === 'academic') pendingAcademicPage = null;
