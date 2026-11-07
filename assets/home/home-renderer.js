@@ -17,7 +17,7 @@ $('#detail').showModal();
 function bindDetail(button,item){button.addEventListener('click',()=>showDetail(item.title,item.body||'ยังไม่มีรายละเอียดเพิ่มเติม',item.link));}
 function renderNews(){
 const grid=$('.news-grid');grid.replaceChildren();
-const sorted=[...current.news].sort((a,b)=>Number(Boolean(b.pinned))-Number(Boolean(a.pinned))||b.date.localeCompare(a.date));
+const sorted=[...current.news].sort((a,b)=>Number(Boolean(b.pinned))-Number(Boolean(a.pinned))||(a.pinned&&b.pinned?0:b.date.localeCompare(a.date)));
 const featured=sorted[0], latest=sorted.slice(1), items=allNews?latest:latest.slice(0,4);
 function card(item,featured=false){const button=element('button',null,'news-card'+(featured?' news-featured':''));button.type='button';
 const url=safeUrl(item.image,true);if(url){const img=element('img');img.src=url;img.alt=item.title;img.loading='lazy';img.addEventListener('error',()=>img.remove(),{once:true});button.append(img);}
