@@ -26,7 +26,7 @@ function renderSchedule(){
  $('schedule-date').textContent=(plan.date===data.date?'วันนี้ · ':'')+thaiDate(plan.date||data.date);
  const lessons=$('lessons');lessons.replaceChildren();
 for(const lesson of plan.lessons){const row=el('article',null,'lesson'),period=el('div',null,'lesson-period');period.append(el('span',lesson.period),el('small','คาบ'));const info=el('div',null,'lesson-info');info.append(el('strong',lesson.subject),el('p',(lesson.teachers.join(' / ')||'ยังไม่ระบุครู')+' · '+lesson.room));const time=el('div',lesson.start+'–'+lesson.end,'lesson-time');if(lesson.change)time.append(el('small',lesson.change));row.append(period,info,time);lessons.append(row);}
-if(!plan.lessons.length)lessons.append(el('div',plan.ready?'วันนี้ไม่มีคาบเรียนตามตาราง':plan.reason,'empty'));
+if(!plan.lessons.length)lessons.append(el('div',plan.ready?'ไม่มีคาบเรียนในวันที่เลือกตามตาราง':plan.reason,'empty'));
 $('schedule-note').textContent=plan.ready?'ตารางของ '+data.student.className+' · รวมการแลกคาบและสอนแทนที่บันทึกในระบบต้นทางแล้ว':'กรุณาติดต่อผู้ดูแลหากห้องเรียนยังไม่ตรงกับระบบจัดตารางสอน';
  }
 function drawBehaviorDetails(){
