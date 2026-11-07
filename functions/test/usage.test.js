@@ -43,3 +43,5 @@ test('suspended accounts cannot append browser history and student claims cannot
 });
 
 test('opening pages and read-only API calls do not create usage history',async()=>{const db=memory(),api=service(db,stamp);await api.track('schoolIdentity',{auth,data:{method:'listUsers'}},async()=>({users:[]}));assert.equal([...db.values.keys()].filter(p=>p.startsWith('school_usage_events/')).length,0);assert.throws(()=>validateBrowser({...input(),kind:'visit'}),{code:'invalid-argument'});});
+
+test('administrator history includes permanent remedial deletion metadata without document content',async()=>{const db=memory({active:true,schoolRole:'admin',name:'ผู้ดูแล'}),api=service(db,stamp);for(const method of ['remedialPurgeBatch','remedialPurgeCase'])await api.track('schoolRemedial',{auth,data:{method,pdf:'PRIVATE-DOCUMENT',studentName:'PRIVATE-STUDENT'}},async()=>({ok:true}));const result=await api.handle({auth,data:{method:'list'}});assert.equal(result.events.length,2);assert(result.events.every(e=>e.module==='academic'&&e.action.includes('ถาวร')));assert(!JSON.stringify(result).includes('PRIVATE-'));});
