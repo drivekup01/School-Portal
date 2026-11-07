@@ -14,7 +14,7 @@ function service(db,storage,own){
   if(!Object.hasOwn(fields,input.method)||Object.keys(input).some(k=>!fields[input.method].includes(k))||input.method!=='list'&&!/^\d{4}_[12]_(final|midterm)$/.test(input.id||''))fail('คำขอผลการเรียนไม่ถูกต้อง','invalid-argument');
   const context=await own(request),code=String(context.student.code||'').trim();const ownership=ownerKey(code,context.student.name);if(!/^\d{1,20}$/.test(code))fail('ยังไม่พบรหัสนักเรียนที่พร้อมใช้งาน');
   const verify=async()=>{const live=await own(request);if(String(live.student.code).trim()!==code||ownerKey(code,live.student.name)!==ownership||live.link.classId!==context.link.classId||live.link.studentId!==context.link.studentId)fail('การผูกบัญชีเปลี่ยนแปลง กรุณาเข้าสู่ระบบใหม่');};
-  if(input.method==='list'){const snap=await db.collection(root(code)).orderBy('__name__','desc').limit(50).get();await verify();return {reports:snap.docs.filter(d=>d.data().published===true&&d.data().ownerKey===ownership).map(d=>summary(d.id,d.data()))};}
+  if(input.method==='list'){const snap=await db.collection(root(code)).limit(500).get();await verify();return {reports:snap.docs.filter(d=>d.data().published===true&&d.data().ownerKey===ownership).map(d=>summary(d.id,d.data())).sort((a,b)=>b.id.localeCompare(a.id)).slice(0,50)};}
   const ref=db.doc(root(code)+'/'+input.id),snap=await ref.get(),report=snap.data();if(!snap.exists||!report.published||report.code!==code||report.ownerKey!==ownership)fail('ยังไม่มีผลการเรียนที่เผยแพร่สำหรับบัญชีนี้','not-found');
   if(input.method==='get'){
    await verify();const live=(await ref.get()).data();if(!live?.published||live.batchId!==report.batchId)fail('ผลการเรียนเปลี่ยนแปลง กรุณาโหลดใหม่','aborted');

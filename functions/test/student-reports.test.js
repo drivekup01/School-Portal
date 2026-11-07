@@ -5,7 +5,7 @@ function fixture(){
  let currentCode='00123',published=true;const reads=[];
  const report={year:2569,term:1,kind:'final',code:'00123',ownerKey:hash(JSON.stringify(['00123','นักเรียนทดสอบ'])),batchId:'a'.repeat(64),page:1,className:'ม.2/3',publishedAt:{toDate:()=>new Date('2026-11-07')},courses:[{code:'ท22101',name:'ภาษาไทย',score:77,rawName:'PRIVATE RAW TEXT'}]};
  const snapshot=()=>({exists:true,data:()=>({...report,published})});
- const db={doc:path=>({get:async()=>{reads.push(path);return snapshot();}}),collection:path=>({orderBy(){reads.push(path);return this;},limit(){return this;},get:async()=>({docs:[{id:'2569_1_final',data:()=>({...report,published})}]})})};
+ const db={doc:path=>({get:async()=>{reads.push(path);return snapshot();}}),collection:path=>({orderBy(){throw Error('Student report listing must not require a descending document ID index');},limit(){return this;},get:async()=>{reads.push(path);return {docs:[{id:'2569_1_final',data:()=>({...report,published})}]};}})};
  const storage={bucket:()=>({file:path=>({download:async()=>{reads.push(path);return [Buffer.from('%PDF-one-page-only')];}})})};
  const own=async()=>({student:{code:currentCode,name:'นักเรียนทดสอบ'},link:{classId:'class',studentId:'student'}});
  return {api:service(db,storage,own),reads,revoke:()=>published=false,changeCode:()=>currentCode='99999'};
