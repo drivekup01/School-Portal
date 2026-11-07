@@ -35,7 +35,7 @@ function normalize(value) {
   const result = {
     schoolName:text(value.schoolName,150,true), headline:text(value.headline,150,true), motto:text(value.motto,150,true), heroImage:url(value.heroImage,true), sampleContent:value.sampleContent, contact,
     announcements:list(value.announcements,30,item => { object(item,['id','title','date','body','link','pinned']); if(typeof item.pinned !== 'boolean') fail('สถานะปักหมุดไม่ถูกต้อง'); return {id:id(item.id),title:text(item.title,250,true),date:date(item.date),body:text(item.body,6000),link:url(item.link),pinned:item.pinned}; }),
-    news:list(value.news,30,item => {object(item,['id','title','date','category','summary','body','image','link']);return {id:id(item.id),title:text(item.title,250,true),date:date(item.date),category:text(item.category,40,true),summary:text(item.summary,500),body:text(item.body,8000),image:url(item.image,true),link:url(item.link)};})
+    news:list(value.news,30,item => {item={pinned:false,...item};object(item,['id','title','date','category','summary','body','image','link','pinned']);if(typeof item.pinned !== 'boolean') fail('สถานะข่าวเด่นไม่ถูกต้อง');return {id:id(item.id),title:text(item.title,250,true),date:date(item.date),category:text(item.category,40,true),summary:text(item.summary,500),body:text(item.body,8000),image:url(item.image,true),link:url(item.link),pinned:item.pinned};})
   };
   if (Buffer.byteLength(JSON.stringify(result)) > 350000) fail('ข้อมูลรวมต้องไม่เกิน 350 KB');
   return result;

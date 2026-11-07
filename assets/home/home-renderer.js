@@ -1,4 +1,4 @@
-import {loadDefaults} from './content-schema.js';
+import {loadDefaults} from './content-schema.js?v=20261107-news1';
 const $ = selector => document.querySelector(selector);
 const element = (tag, text, className) => {const node=document.createElement(tag); if(text!=null)node.textContent=text; if(className)node.className=className; return node;};
 export function safeUrl(value, image=false) {
@@ -11,18 +11,22 @@ let current, allNews=false;
 export function showDetail(title, body, link='') {
 $('#detail-title').textContent=title;$('#detail-body').textContent=body;
 let actions=$('#detail-actions');if(!actions){actions=element('div',null,'detail-actions');actions.id='detail-actions';$('#detail').append(actions);}actions.replaceChildren();
-if(safeUrl(link)){const a=element('a','เปิดลิงก์แนบ ↗','detail-link');a.href=safeUrl(link);a.target='_blank';a.rel='noopener noreferrer';actions.append(a);}
+if(safeUrl(link)){const a=element('a',/^https:\/\/(www\.)?(facebook\.com|fb\.com|fb\.watch)\//i.test(link)?'ดูบน Facebook ↗':'เปิดลิงก์แนบ ↗','detail-link');a.href=safeUrl(link);a.target='_blank';a.rel='noopener noreferrer';actions.append(a);}
 $('#detail').showModal();
 }
 function bindDetail(button,item){button.addEventListener('click',()=>showDetail(item.title,item.body||'ยังไม่มีรายละเอียดเพิ่มเติม',item.link));}
 function renderNews(){
 const grid=$('.news-grid');grid.replaceChildren();
-const items=allNews?current.news:current.news.slice(0,2);
-for(const item of items){const card=element('button',null,'news-card');card.type='button';
-const image=safeUrl(item.image,true);if(image){const img=element('img');img.src=image;img.alt=item.title;img.loading='lazy';card.append(img);}
-const copy=element('span',null,'news-copy');copy.append(element('span',item.category,'tag'),element('strong',item.title),element('span',item.summary),element('small',fullDate(item.date)));card.append(copy);bindDetail(card,item);grid.append(card);}
-if(!items.length)grid.append(element('p','ยังไม่มีข่าวสารในขณะนี้','empty-content'));
-$('#all-news').textContent=allNews?'แสดงน้อยลง ↑':'ดูทั้งหมด →';$('#all-news').setAttribute('aria-expanded',String(allNews));$('#all-news').hidden=current.news.length<=2;
+const sorted=[...current.news].sort((a,b)=>Number(Boolean(b.pinned))-Number(Boolean(a.pinned))||b.date.localeCompare(a.date));
+const featured=sorted[0], latest=sorted.slice(1), items=allNews?latest:latest.slice(0,4);
+function card(item,featured=false){const button=element('button',null,'news-card'+(featured?' news-featured':''));button.type='button';
+const url=safeUrl(item.image,true);if(url){const img=element('img');img.src=url;img.alt=item.title;img.loading='lazy';img.addEventListener('error',()=>img.remove(),{once:true});button.append(img);}
+const copy=element('span',null,'news-copy');if(featured)copy.append(element('span','ข่าวเด่น','featured-label'));
+copy.append(element('span',item.category,'tag'),element('strong',item.title),element('span',item.summary),element('small',fullDate(item.date)),element('span','อ่านเรื่องราว →','news-read'));button.append(copy);bindDetail(button,item);return button;}
+if(featured)grid.append(card(featured,true));for(const item of items)grid.append(card(item));
+if(!sorted.length)grid.append(element('p','ยังไม่มีข่าวสารในขณะนี้','empty-content'));
+$('#all-news').textContent=allNews?'แสดงน้อยลง ↑':'ดูข่าวทั้งหมด →';$('#all-news').setAttribute('aria-expanded',String(allNews));$('#all-news').hidden=latest.length<=4;
+let facebook=$('#news-facebook');if(!facebook){facebook=element('a','ติดตามข่าวทั้งหมดบน Facebook ↗','news-facebook');facebook.id='news-facebook';facebook.target='_blank';facebook.rel='noopener noreferrer';grid.after(facebook);}facebook.href=safeUrl(current.contact.facebookUrl)||'https://www.facebook.com/kaibangrachan40';
 $('#news-note').hidden=!current.sampleContent;$('#news-note').textContent='ข้อมูลและภาพประกอบตัวอย่างจากแบบอ้างอิง';
 }
 export function renderHomepage(content){

@@ -1,4 +1,4 @@
-import {loadDefaults,renderHomepage,initializeInteractions} from './home-renderer.js?v=20261107-student1';
+import {loadDefaults,renderHomepage,initializeInteractions} from './home-renderer.js?v=20261107-news1';
 initializeInteractions();
 const defaults=await loadDefaults();renderHomepage(defaults);
 const preview=new URLSearchParams(location.search).get('preview')==='1'&&parent!==window;
