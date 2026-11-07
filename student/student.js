@@ -1,8 +1,10 @@
+import {mountStudentReports} from './reports.js?v=20261107-grades1';
 import {firebase,logout,call} from '../shared/school-auth.js?v=20261027-roles1';
 const $=id=>document.getElementById(id),el=(tag,text,className)=>{const node=document.createElement(tag);if(text!=null)node.textContent=text;if(className)node.className=className;return node;};
 const labels={present:'มาเรียน',late:'สาย',leave:'ลา',absent:'ขาด'},thaiDate=value=>new Intl.DateTimeFormat('th-TH',{day:'numeric',month:'short',year:'numeric',timeZone:'Asia/Bangkok'}).format(new Date(value+'T12:00:00+07:00'));
+const gradeReports=mountStudentReports($('grades'));
 let data=null,kind='morning',uid=null,sequence=0,sending=false,correctionId=null;
-function clearPrivate(){data=null;$('correction-dialog').close();$('correction-message').value='';for(const id of ['account-email','profile-heading','student-code','student-room','student-number','student-advisor','student-initial','correction-state','behavior-score','term','schedule-room','attendance-note','behavior-note','schedule-note','photo-note','count-present','count-late','count-leave','count-absent'])$(id).textContent='';for(const id of ['lessons','behavior-events','attendance-history'])$(id).replaceChildren();$('student-photo').removeAttribute('src');}
+function clearPrivate(){gradeReports.clear();data=null;$('correction-dialog').close();$('correction-message').value='';for(const id of ['account-email','profile-heading','student-code','student-room','student-number','student-advisor','student-initial','correction-state','behavior-score','term','schedule-room','attendance-note','behavior-note','schedule-note','photo-note','count-present','count-late','count-leave','count-absent'])$(id).textContent='';for(const id of ['lessons','behavior-events','attendance-history'])$(id).replaceChildren();$('student-photo').removeAttribute('src');}
 function gate(title,message,canLogin=true){$('app').hidden=true;$('gate').hidden=false;$('gate-title').textContent=title;$('gate-message').textContent=message;$('login-form').hidden=!canLogin;$('retry').hidden=false;$('login-password').value='';clearPrivate();}
 function status(message){$('status').textContent=message;}
 function renderCorrection(){
@@ -36,7 +38,7 @@ status([!data.attendance.ready&&data.attendance.reason,!data.behavior.ready&&dat
 }
 async function load(month){
 const ownUid=uid,request=++sequence;$('refresh').disabled=true;$('month').disabled=true;
-try{const result=await call('schoolStudent',{method:'dashboard',...(month?{month}:{})});if(request!==sequence||uid!==ownUid)return;data=result;render();}
+try{const result=await call('schoolStudent',{method:'dashboard',...(month?{month}:{})});if(request!==sequence||uid!==ownUid)return;data=result;render();void gradeReports.load();}
 catch(error){if(request!==sequence||uid!==ownUid)return;if(data&&!['functions/permission-denied','functions/unauthenticated'].includes(error.code)){status(error.message);$('month').value=data.month;}else gate('เข้าสู่ระบบนักเรียน',error.message);}
 finally{if(request===sequence){$('refresh').disabled=false;$('month').disabled=false;}}
 }

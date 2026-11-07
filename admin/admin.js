@@ -92,6 +92,7 @@ const routes = {
   'budget-documents': { title: 'เอกสารงบ 1 และงบ 2', category: 'งานงบประมาณ', app: 'budget', url: appBase + 'School-Budget/budget-documents.html' },
   'budget-disbursement': { title: 'เอกสารเบิกจ่าย', category: 'งานงบประมาณ', app: 'budget', url: appBase + 'School-Budget/disbursement.html' },
   'budget-procurement': { title: 'จัดซื้อและจัดจ้าง', category: 'งานงบประมาณ', app: 'procurement', url: appBase + 'School-Procurement/history.html#history' },
+  'academic-grades': { title: 'ผลการเรียนนักเรียน', category: 'งานวิชาการ', app: 'grades', url: appBase + 'School-OS/grades.html?v=20261107-grades1' },
   'academic-home': { title: 'ภาพรวมวิชาการ', category: 'งานวิชาการ', app: 'academic', url: appBase + 'School-OS/', page: 'dashboard' },
   'academic-school': { title: 'ข้อมูลโรงเรียน', category: 'งานวิชาการ', app: 'academic', url: appBase + 'School-OS/', page: 'school' },
   'academic-teachers': { title: 'ครูผู้สอน', category: 'งานวิชาการ', app: 'academic', url: appBase + 'School-OS/', page: 'teachers' },
@@ -117,6 +118,7 @@ for (const route of Object.values(routes)) {
 }
 let pendingAcademicPage = null;
 const embeddedStyles = {
+  grades: '.grade-header{display:none!important}',
   'portal-admin': '#workspace>.topbar,#workspace .page-heading .back{display:none!important}#workspace>main{padding-top:20px}',
   accounts: '#workspace .sidebar,#workspace .topbar,.access-bar,.global-status,#mobileScrim{display:none!important}#workspace .main-area{margin-left:0!important}#workspace .page-content{padding:20px!important}',
   budget: '#budgetSidebar{display:none!important}body.has-budget-sidebar:not([data-document-view])>main{margin-left:0!important}body.has-budget-sidebar[data-document-view]{padding-left:0!important}body.has-budget-sidebar[data-document-view] #documentManager{margin:20px!important;max-width:none!important}',
@@ -247,7 +249,7 @@ function loadRouteUrl(url, app, title) {
   if(app === "attendance"){const target=new URL(url);target.searchParams.set("ui","20261031-student1");url=target.href;}
   if (app === 'academic') { const target = new URL(url); target.searchParams.set('ui','20261030-unified2'); url = target.href; }
   if (app === 'budget' || app === 'procurement') { const target = new URL(url); target.searchParams.set('ui',app === 'budget' ? '20261031-compact1' : '20261030-unified2'); url = target.href; }
-  const category = app === 'budget' || app === 'procurement' ? 'งานงบประมาณ' : app === 'academic' ? 'งานวิชาการ' : app === 'attendance' ? 'ดูแลนักเรียน' : 'ศูนย์ผู้ดูแลระบบ';
+  const category = app === 'budget' || app === 'procurement' ? 'งานงบประมาณ' : (app === 'academic'||app === 'grades') ? 'งานวิชาการ' : app === 'attendance' ? 'ดูแลนักเรียน' : 'ศูนย์ผู้ดูแลระบบ';
   showEmbedded(title, category, url, app);
   if (app === 'academic') pendingAcademicPage = null;
 }

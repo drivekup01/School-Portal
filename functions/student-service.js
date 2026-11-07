@@ -80,6 +80,6 @@ function service(db,stamp,clock=()=>new Date()){
     });
   }
   async function handle(request){const input=request.data||{};authenticated(request);validate(input);if(input.method==='dashboard')return dashboard(request,input);if(input.method==='requestCorrection')return requestCorrection(request,input);return admin(request,input);}
-  return {handle};
+  return {handle,own};
 }
 module.exports={service,validate,authenticated};
