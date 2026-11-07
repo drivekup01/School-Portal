@@ -269,7 +269,7 @@ function openRoute(routeId) {
 function showDashboard() {
   embeddedView.hidden = true;
   dashboardView.hidden = false;
-  $('pageCrumb').textContent = 'ภาพรวมระบบ';
+  $('pageCrumb').textContent = location.hash==='#activity'?'ประวัติการใช้งาน':location.hash==='#quickActions'?'จัดการด่วน':'ภาพรวมระบบ';
   document.querySelectorAll('[data-route]').forEach(item => item.classList.remove('active'));
   document.querySelectorAll('[data-section]').forEach(link=>link.classList.toggle('active',link.dataset.section===(location.hash==='#activity'?'activity':location.hash==='#quickActions'?'quickActions':'overview')));
   if(location.hash==='#activity')activityView?.refresh();
@@ -280,6 +280,6 @@ document.querySelectorAll('[data-route]').forEach(link => link.addEventListener(
   event.preventDefault();
   openRoute(link.dataset.route);
 }));
-$('backToOverview').addEventListener('click', showDashboard);
+$('backToOverview').addEventListener('click', ()=>{history.replaceState(null,'','#overview');showDashboard();});
 
 openDashboard();
