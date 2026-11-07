@@ -25,7 +25,7 @@ addRoute('budget-procurement','จัดซื้อและจัดจ้า�
 addRoute('budget-inventory','ระบบคุมพัสดุ','งานงบประมาณ','budget','School-Budget/inventory.html?v=20261030-inventory2');
 addRoute('academic-grade-import','นำเข้าผลการเรียน','ผลการเรียน','grades','School-OS/grades.html?mode=import&v=20261107-layout1');
 addRoute('academic-grades','รายงานผลการเรียน','ผลการเรียน','grades','School-OS/grades.html?mode=report&v=20261107-layout1');
-addRoute('academic-remedial','ผลการเรียน 0 ร มส มผ','ผลการเรียน','grades','School-OS/remedial.html?v=20261107-allstates1');
+addRoute('academic-remedial','ผลการเรียน 0 ร มส มผ','ผลการเรียน','grades','School-OS/remedial.html?v=20261107-purge1');
 addRoute('academic-home','ภาพรวมวิชาการ','งานวิชาการ','academic','School-OS/','dashboard');
 addRoute('academic-school','ข้อมูลพื้นฐาน','งานวิชาการ','academic','School-OS/','school');
 addRoute('academic-teachers','ครูผู้สอน','งานวิชาการ','academic','School-OS/','teachers');
