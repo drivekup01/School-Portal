@@ -19,10 +19,9 @@ function renderNews(){
 const grid=$('.news-grid');grid.replaceChildren();
 const page='https://www.facebook.com/kaibangrachan40';
 let feed=$('#facebook-feed');if(!feed){feed=element('section',null,'facebook-feed');feed.id='facebook-feed';feed.setAttribute('aria-label','ข่าวล่าสุดจาก Facebook โรงเรียน');
-const intro=element('div',null,'facebook-feed-intro');intro.append(element('span','FACEBOOK · ข่าวจากโรงเรียน','featured-label'),element('h3','ติดตามทุกเรื่องราวของโรงเรียน'),element('p','ข่าวประชาสัมพันธ์ กิจกรรม และภาพบรรยากาศล่าสุดจากเพจโรงเรียน'));
-const open=element('a','เปิดเพจ Facebook ↗','detail-link');open.href=page;open.target='_blank';open.rel='noopener noreferrer';intro.append(open,element('small','หากฟีดไม่แสดง สามารถเปิดอ่านข่าวจากเพจได้โดยตรง'));
-const frame=element('iframe');frame.title='ข่าวล่าสุดจากเพจโรงเรียนค่ายบางระจันวิทยาคม';frame.src='https://www.facebook.com/plugins/page.php?'+new URLSearchParams({href:page,tabs:'timeline',width:'500',height:'650',small_header:'true',adapt_container_width:'true',hide_cover:'false',show_facepile:'false'});frame.loading='lazy';frame.referrerPolicy='strict-origin-when-cross-origin';frame.setAttribute('allow','encrypted-media; picture-in-picture; web-share');
-feed.append(intro,frame);grid.before(feed);}
+const intro=element('div',null,'facebook-feed-intro');intro.append(element('span','FACEBOOK · ข่าวจากโรงเรียน','featured-label'),element('h3','ติดตามทุกเรื่องราวของโรงเรียน'),element('p','อ่านข่าวประชาสัมพันธ์ กิจกรรม และภาพบรรยากาศบนเพจโรงเรียน'));
+const open=element('a','เปิดเพจ Facebook ↗','detail-link');open.href=page;open.target='_blank';open.rel='noopener noreferrer';intro.append(open);
+feed.append(intro);grid.before(feed);}
 grid.hidden=current.sampleContent;
 const sorted=[...current.news].sort((a,b)=>Number(Boolean(b.pinned))-Number(Boolean(a.pinned))||(a.pinned&&b.pinned?0:b.date.localeCompare(a.date)));
 const featured=sorted[0], latest=sorted.slice(1), items=allNews?latest:latest.slice(0,4);
@@ -33,7 +32,7 @@ copy.append(element('span',item.category,'tag'),element('strong',item.title),ele
 if(featured)grid.append(card(featured,true));for(const item of items)grid.append(card(item));
 if(!sorted.length)grid.append(element('p','ยังไม่มีข่าวสารในขณะนี้','empty-content'));
 $('#all-news').textContent=allNews?'แสดงน้อยลง ↑':'ดูข่าวทั้งหมด →';$('#all-news').setAttribute('aria-expanded',String(allNews));$('#all-news').hidden=current.sampleContent||latest.length<=4;
-let facebook=$('#news-facebook');if(!facebook){facebook=element('a','ติดตามข่าวทั้งหมดบน Facebook ↗','news-facebook');facebook.id='news-facebook';facebook.target='_blank';facebook.rel='noopener noreferrer';grid.after(facebook);}facebook.href=safeUrl(current.contact.facebookUrl)||'https://www.facebook.com/kaibangrachan40';
+let facebook=$('#news-facebook');if(!facebook){facebook=element('a','ติดตามข่าวทั้งหมดบน Facebook ↗','news-facebook');facebook.id='news-facebook';facebook.target='_blank';facebook.rel='noopener noreferrer';grid.after(facebook);}facebook.href=safeUrl(current.contact.facebookUrl)||'https://www.facebook.com/kaibangrachan40';facebook.hidden=current.sampleContent;
 $('#news-note').hidden=true;
 }
 export function renderHomepage(content){

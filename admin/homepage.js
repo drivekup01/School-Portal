@@ -1,6 +1,6 @@
 import * as auth from '../shared/school-auth.js?v=20261027-roles1';
-import {sections,loadDefaults} from '../assets/home/content-schema.js?v=20261107-facebook1';
-import {safeUrl} from '../assets/home/home-renderer.js?v=20261107-facebook1';
+import {sections,loadDefaults} from '../assets/home/content-schema.js?v=20261107-facebook2';
+import {safeUrl} from '../assets/home/home-renderer.js?v=20261107-facebook2';
 const $=id=>document.getElementById(id);
 const element=(tag,text,className)=>{const node=document.createElement(tag);if(text!=null)node.textContent=text;if(className)node.className=className;return node;};
 let content=null, revision=0, publishedRevision=0, section='announcements', selected=0, dirty=false, busy=false, epoch=0, observerStarted=false, activeUid=null, pendingConfirm=null;
