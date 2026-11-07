@@ -95,7 +95,7 @@ const routes = {
   'budget-procurement': { title: 'จัดซื้อและจัดจ้าง', category: 'งานงบประมาณ', app: 'procurement', url: appBase + 'School-Procurement/history.html#history' },
   'academic-grade-import': {title:'นำเข้าผลการเรียน',category:'ผลการเรียน',app:'grades',url:appBase+'School-OS/grades.html?mode=import&v=20261107-layout1'},
   'academic-grades': { title: 'รายงานผลการเรียน', category: 'ผลการเรียน', app: 'grades', url: appBase + 'School-OS/grades.html?mode=report&v=20261107-layout1' },
-  'academic-remedial': { title: 'ผลการเรียน 0 ร มส มผ', category: 'ผลการเรียน', app: 'grades', url: appBase + 'School-OS/remedial.html?v=20261107-optionalnote1' },
+  'academic-remedial': { title: 'ผลการเรียน 0 ร มส มผ', category: 'ผลการเรียน', app: 'grades', url: appBase + 'School-OS/remedial.html?v=20261107-allstates1' },
   'academic-home': { title: 'ภาพรวมวิชาการ', category: 'งานวิชาการ', app: 'academic', url: appBase + 'School-OS/', page: 'dashboard' },
   'academic-school': { title: 'ข้อมูลโรงเรียน', category: 'งานวิชาการ', app: 'academic', url: appBase + 'School-OS/', page: 'school' },
   'academic-teachers': { title: 'ครูผู้สอน', category: 'งานวิชาการ', app: 'academic', url: appBase + 'School-OS/', page: 'teachers' },
