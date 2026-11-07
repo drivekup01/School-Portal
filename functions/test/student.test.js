@@ -51,3 +51,14 @@ await s.handle(request('requestCorrection',input));assert.equal(db.docs.get('sch
 test('live admin revocation inside transaction prevents account linking',async()=>{
 const db=F.memory();db.onTransaction(()=>db.docs.set('school_users/admin',{active:false,schoolRole:'admin'}));await assert.rejects(api(db).handle(request('adminLink',{classId:'c1',studentId:'s2',email:'two@example.invalid'},F.auth('admin@example.invalid','admin'))),{code:'permission-denied'});assert.equal(db.docs.has('school_student_accounts/'+D.hash('two@example.invalid')),false);
 });
+
+test('weekday selection is the current Monday-Friday week and remains bound to the student room',()=>{
+ const room={name:'ม.1/1',academicYear:2569,term:2};for(const today of ['2026-11-07','2026-11-08','2026-11-06']){const week=D.scheduleWeek(F.table,room,today);assert.deepEqual(week.map(d=>d.date),['2026-11-02','2026-11-03','2026-11-04','2026-11-05','2026-11-06']);assert.deepEqual(week.map(d=>d.weekday),[1,2,3,4,5]);assert.equal(week[4].lessons.length,2);assert(!JSON.stringify(week).includes('PRIVATE-'));}
+});
+test('behavior detail includes complete own ledger and correction records without leaking source IDs or other students',async()=>{
+ const db=F.memory();for(let i=0;i<11;i++)db.docs.set('attendance_behavior/extra'+i,{classId:'c1',studentId:'s1',day:F.T('2026-11-05'),createdAt:F.T('2026-11-05T05:00:00Z'),delta:1,reason:'กิจกรรม',authorName:'ครูทดสอบ'});db.docs.set('attendance_behavior/correction',{classId:'c1',studentId:'s1',day:F.T('2026-11-06'),createdAt:F.T('2026-11-06T05:00:00Z'),delta:3,reason:'แก้ไขคำร้อง source-id',sourceRequestId:'source-id',requestRevision:1,authorName:'ครูผู้แก้ไข'});
+ const detail=await api(db).handle(request('behaviorDetails')),dashboard=await api(db).handle(request('dashboard'));assert.equal(detail.events.length,14);assert.equal(detail.score,dashboard.behavior.score);assert.equal(dashboard.behavior.events.length,10);const correction=detail.events.find(r=>r.kind==='correction');assert.equal(correction.delta,3);assert.equal(correction.author,'ครูผู้แก้ไข');assert(!JSON.stringify(detail).includes('source-id'));assert(!JSON.stringify(detail).includes('PRIVATE-'));await assert.rejects(api(db).handle(request('behaviorDetails',{studentId:'s2'})),{code:'invalid-argument'});
+});
+test('an in-flight revoked student binding cannot return behavior detail',async()=>{
+ const db=F.memory();db.onQuery(path=>{if(path==='attendance_behavior')db.docs.get('school_student_accounts/'+D.hash('one@example.invalid')).active=false;});await assert.rejects(api(db).handle(request('behaviorDetails')),{code:'permission-denied'});
+});
