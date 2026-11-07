@@ -85,7 +85,7 @@ const appBase = 'https://drivekup01.github.io/';
 const routes = {
   'student-accounts': { title: 'บัญชีนักเรียน', category: 'ศูนย์ผู้ดูแลระบบ', app: 'portal-admin', url: appBase + 'School-Portal/admin/students.html' },
   homepage: { title: 'แก้ไขหน้าแรก', category: 'ศูนย์ผู้ดูแลระบบ', app: 'portal-admin', url: appBase + 'School-Portal/admin/homepage.html' },
-  accounts: { title: 'ผู้ใช้และสิทธิ์', category: 'ศูนย์ผู้ดูแลระบบ', app: 'accounts', url: appBase + 'School-Portal/users.html' },
+  accounts: { title: 'ผู้ใช้และสิทธิ์', category: 'ศูนย์ผู้ดูแลระบบ', app: 'accounts', url: appBase + 'School-Portal/users.html?v=20261107-permissions1' },
   'budget-home': { title: 'ภาพรวมงบประมาณ', category: 'งานงบประมาณ', app: 'budget', url: appBase + 'School-Budget/budget-dashboard.html?v=20261031-colors1' },
   'budget-projects': { title: 'โครงการและกิจกรรม', category: 'งานงบประมาณ', app: 'budget', url: appBase + 'School-Budget/budget-projects.html' },
   'budget-reports': { title: 'รายงานงบประมาณ', category: 'งานงบประมาณ', app: 'budget', url: appBase + 'School-Budget/budget-reports.html' },
@@ -113,8 +113,8 @@ const routes = {
 };
 for (const route of Object.values(routes)) {
   if(route.app === 'attendance'){const target=new URL(route.url);target.searchParams.set('ui','20261031-student1');route.url=target.href;}
-  if (route.app === 'academic') { const target = new URL(route.url); target.searchParams.set('ui','20261030-unified2'); route.url = target.href; }
-  if (route.app === 'budget' || route.app === 'procurement') { const target = new URL(route.url); target.searchParams.set('ui',route.app === 'budget' ? '20261031-compact1' : '20261030-unified2'); route.url = target.href; }
+  if (route.app === 'academic') { const target = new URL(route.url); target.searchParams.set('ui','20261107-permissions1'); route.url = target.href; }
+  if (route.app === 'budget' || route.app === 'procurement') { const target = new URL(route.url); target.searchParams.set('ui',route.app === 'budget' ? '20261107-permissions1' : '20261107-permissions1'); route.url = target.href; }
 }
 let pendingAcademicPage = null;
 const embeddedStyles = {
@@ -247,8 +247,8 @@ function showEmbedded(title, category, url, app) {
 function loadRouteUrl(url, app, title) {
   {const target=new URL(url);if(target.pathname === "/School-Budget/budget-dashboard.html")target.searchParams.set("v","20261031-colors1");url=target.href;}
   if(app === "attendance"){const target=new URL(url);target.searchParams.set("ui","20261031-student1");url=target.href;}
-  if (app === 'academic') { const target = new URL(url); target.searchParams.set('ui','20261030-unified2'); url = target.href; }
-  if (app === 'budget' || app === 'procurement') { const target = new URL(url); target.searchParams.set('ui',app === 'budget' ? '20261031-compact1' : '20261030-unified2'); url = target.href; }
+  if (app === 'academic') { const target = new URL(url); target.searchParams.set('ui','20261107-permissions1'); url = target.href; }
+  if (app === 'budget' || app === 'procurement') { const target = new URL(url); target.searchParams.set('ui',app === 'budget' ? '20261107-permissions1' : '20261107-permissions1'); url = target.href; }
   const category = app === 'budget' || app === 'procurement' ? 'งานงบประมาณ' : (app === 'academic'||app === 'grades') ? 'งานวิชาการ' : app === 'attendance' ? 'ดูแลนักเรียน' : 'ศูนย์ผู้ดูแลระบบ';
   showEmbedded(title, category, url, app);
   if (app === 'academic') pendingAcademicPage = null;

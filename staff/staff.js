@@ -10,8 +10,8 @@ const appBase = 'https://drivekup01.github.io/';
 
 function addRoute(id, title, category, app, path, page) {
   const target = new URL(path,appBase);
-  if (app === 'budget' || app === 'procurement') target.searchParams.set('ui',app === 'budget' ? '20261031-compact1' : '20261030-unified2');
-  if (app === 'academic') target.searchParams.set('ui','20261104-groups1');
+  if (app === 'budget' || app === 'procurement') target.searchParams.set('ui',app === 'budget' ? '20261107-permissions1' : '20261107-permissions1');
+  if (app === 'academic') target.searchParams.set('ui','20261107-permissions1');
   if(app === 'attendance')target.searchParams.set('ui','20261031-student1');
   routes[id] = { id, title, category, app, url: target.href, page };
 }
@@ -81,7 +81,7 @@ function roleFor(group) {
 }
 function groupVisible(group) { return !profile || roleFor(group) !== 'none'; }
 function routeVisible(routeId, group) {
-  if (routeId === 'budget-inventory') return profile?.identityAdmin || ['admin','budget','procurement'].includes(profile?.schoolRole);
+  if (routeId === 'budget-inventory') return profile?.identityAdmin || ['admin','budget'].includes(profile?.schoolRole);
   if (routeId === 'budget-import') return profile?.identityAdmin || profile?.schoolRole === 'budget';
   if (routeId === 'student-admin') return roleFor(group) === 'admin';
   if (group.key === 'academic' && roleFor(group) === 'viewer') {
@@ -115,7 +115,7 @@ function renderNavigation() {
     const sub = document.createElement('div'); sub.className = 'sub-nav'; sub.hidden = true;
     if (group.key === 'academic' && roleFor(group) === 'viewer') group.items = ['academic-home','academic-teacher-view','academic-teacher-all','academic-substitute','academic-export','academic-announcements'];
     for (const routeId of group.items) {
-      if(group.key==='academic'&&!['academic-grades','academic-home','academic-school','academic-builder','academic-substitute','academic-export','academic-announcements','academic-storage'].includes(routeId))continue;
+      if(group.key==='academic'&&!['academic-grades','academic-home','academic-school','academic-builder','academic-teacher-view','academic-teacher-all','academic-substitute','academic-export','academic-announcements','academic-storage'].includes(routeId))continue;
       if (!routeVisible(routeId, group)) continue;
       sub.append(makeLink(routeId));
     }
@@ -204,8 +204,8 @@ function loadUrl(url,app,title) {
 
   {const target=new URL(url);if(target.pathname === "/School-Budget/budget-dashboard.html")target.searchParams.set("v","20261031-colors1");url=target.href;}
   if(app === "attendance"){const target=new URL(url);target.searchParams.set("ui","20261031-student1");url=target.href;}
-  if (app === 'academic') { const target = new URL(url); target.searchParams.set('ui','20261104-groups1'); url = target.href; }
-  if (app === 'budget' || app === 'procurement') { const target = new URL(url); target.searchParams.set('ui',app === 'budget' ? '20261031-compact1' : '20261030-unified2'); url = target.href; }
+  if (app === 'academic') { const target = new URL(url); target.searchParams.set('ui','20261107-permissions1'); url = target.href; }
+  if (app === 'budget' || app === 'procurement') { const target = new URL(url); target.searchParams.set('ui',app === 'budget' ? '20261107-permissions1' : '20261107-permissions1'); url = target.href; }
   const category = categoryName(app);
   const guess = Object.values(routes).find(route => route.url === url || route.url.startsWith(url.split('#')[0]));
   if (guess) setActive(guess.id); else document.querySelectorAll('[data-route]').forEach(el=>el.classList.remove('active'));
@@ -246,6 +246,7 @@ async function openWorkspace() {
   try {
     profile = await shared.profile();
     if (!profile) { gateState('เข้าสู่ระบบครูและบุคลากร','ใช้บัญชี Google ที่ผู้ดูแลเพิ่มไว้ในระบบ เพื่อเข้าใช้ทั้งสามงานจากพื้นที่เดียว',true); return; }
+    if(profile.identityAdmin){location.replace('../admin/');return;}
     $('staffName').textContent = profile.name || profile.displayName || 'บุคลากร';
     $('staffEmail').textContent = profile.email || '';
     $('avatarInitial').textContent = (profile.name || profile.displayName || 'ผ').trim().charAt(0);

@@ -38,9 +38,9 @@
         <a class="nav-link" href="students.html" data-route="student-accounts"><span class="nav-icon">♧</span><span>บัญชีนักเรียน</span></a>
         <a class="nav-link" href="homepage.html" data-route="homepage"><span class="nav-icon">✎</span><span>แก้ไขหน้าแรก</span></a>
         <a class="nav-link" href="../users.html" data-route="accounts"><span class="nav-icon">♙</span><span>ผู้ใช้และสิทธิ์</span><span class="nav-count" id="navUserCount">—</span></a>
-        <div class="nav-group open">
-          <button class="nav-link group-toggle" type="button" aria-expanded="true"><span class="nav-icon">฿</span><span>งานงบประมาณ</span><span class="chevron">⌄</span></button>
-          <div class="sub-nav">
+        <div class="nav-group">
+          <button class="nav-link group-toggle" type="button" aria-expanded="false"><span class="nav-icon">฿</span><span>งานงบประมาณ</span><span class="chevron">⌄</span></button>
+          <div class="sub-nav" hidden>
             <a href="#" data-route="budget-home">ภาพรวมงบประมาณ</a>
             <a href="#" data-route="budget-projects">โครงการและกิจกรรม</a>
             <a href="#" data-route="budget-reports">รายงานงบประมาณ</a>
@@ -77,8 +77,6 @@
             <a href="#" data-route="student-admin">จัดการข้อมูลและสิทธิ์</a>
           </div>
         </div>
-        <a class="nav-link" href="#activity" data-section="activity"><span class="nav-icon">◷</span><span>ประวัติการใช้งาน</span></a>
-        <a class="nav-link" href="#quickActions" data-section="quickActions"><span class="nav-icon">⚙</span><span>จัดการด่วน</span></a>
       </nav>
       <div class="sidebar-footer">
         <div class="security-note"><span class="status-dot"></span><span>ลงชื่อเข้าใช้ด้วยบัญชีผู้ดูแล</span></div>
@@ -141,6 +139,6 @@
       </section>
     </main>
   </div>
-      <script type="module" src="admin.js?v=20261107-grades1"></script>
+      <script type="module" src="admin.js?v=20261107-permissions1"></script>
 </body>
 </html>

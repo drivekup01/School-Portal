@@ -79,7 +79,7 @@
               <label>อีเมล Google<input name="email" id="email" type="email" autocomplete="email" placeholder="name@school.ac.th" required></label>
               <label>ชื่อ–สกุล<input name="name" maxlength="160" autocomplete="name" placeholder="ชื่อ นามสกุล" required></label>
               <label>รหัสครูในระบบตารางสอน <span class="optional">ไม่บังคับ</span><input name="teacherId" maxlength="100" placeholder="ใช้เชื่อมข้อมูลตารางสอนเดิม"></label>
-              <label>บทบาท<select name="schoolRole" id="schoolRole"><option value="teacher">ครู</option><option value="admin">ผู้ดูแลระบบ</option><option value="director">ผู้อำนวยการ</option><option value="deputy">รองผู้อำนวยการ</option><option value="timetable">ผู้ดูแลตารางสอน</option><option value="budget">ฝ่ายงบประมาณ</option><option value="procurement">ฝ่ายพัสดุ</option><option value="student_support">ฝ่ายดูแลช่วยเหลือนักเรียน</option></select></label>
+              <label>บทบาท<select name="schoolRole" id="schoolRole"><option value="teacher">ครู / บุคลากร</option><option value="admin">ผู้ดูแลระบบ</option><option value="timetable">ฝ่ายวิชาการ</option><option value="budget">ฝ่ายงบประมาณ</option><option value="student_support">ฝ่ายดูแลนักเรียน</option></select></label>
             </div>
             <p id="roleDescription" class="role-description"></p>
             <label class="check"><input type="checkbox" name="active" checked> เปิดใช้งานบัญชี</label>
@@ -97,7 +97,7 @@
     </main>
   </div>
   <div class="mobile-scrim" id="mobileScrim"></div>
-  <script type="module" src="users.js?v=20261027-roles1"></script>
-  <script type="module" src="admin/users-admin.js?v=20261030-unified1"></script>
+  <script type="module" src="users.js?v=20261107-permissions1"></script>
+  <script type="module" src="admin/users-admin.js?v=20261107-permissions1"></script>
 </body>
 </html>

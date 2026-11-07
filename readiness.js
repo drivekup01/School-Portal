@@ -1,5 +1,5 @@
 import * as shared from './shared/school-auth.js?v=20261027-roles1';
-import {roleLabels} from './shared/school-roles.js?v=20261027-roles1';
+import {roleLabels} from './shared/school-roles.js?v=20261107-permissions1';
 const el=id=>document.getElementById(id),escape=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const states={issue:'ต้องตรวจแก้',pending:'รอเชื่อมบัญชี',unverified:'รอผลทดสอบอ่าน',ready:'ข้อมูลและผลอ่านผ่าน'},modules={attendance:'เช็คชื่อ',timetable:'ตารางสอน',budget:'งบประมาณ',procurement:'พัสดุ'};
 let rows=[],busy=false;
