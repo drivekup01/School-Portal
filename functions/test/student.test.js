@@ -46,6 +46,7 @@ assert.equal(db.docs.get('attendance_classes/c1/students/s1').name,'นักเ
 const admin=F.auth('admin@example.invalid','admin'),list=await s.handle(request('adminRequests',{},admin));assert.equal(list.requests.length,1);
 await s.handle(request('reviewCorrection',{id:list.requests[0].id,reply:'ตรวจสอบกับครูที่ปรึกษาแล้ว'},admin));
 const own=await s.handle(request('dashboard'));assert.equal(own.correction.status,'resolved');assert.equal(own.correction.reply,'ตรวจสอบกับครูที่ปรึกษาแล้ว');
+await s.handle(request('requestCorrection',input));assert.equal(db.docs.get('school_student_corrections/'+D.hash('one@example.invalid')).status,'resolved');
 });
 test('live admin revocation inside transaction prevents account linking',async()=>{
 const db=F.memory();db.onTransaction(()=>db.docs.set('school_users/admin',{active:false,schoolRole:'admin'}));await assert.rejects(api(db).handle(request('adminLink',{classId:'c1',studentId:'s2',email:'two@example.invalid'},F.auth('admin@example.invalid','admin'))),{code:'permission-denied'});assert.equal(db.docs.has('school_student_accounts/'+D.hash('two@example.invalid')),false);
