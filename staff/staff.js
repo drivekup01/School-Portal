@@ -23,7 +23,8 @@ addRoute('budget-documents','เอกสารงบ 1 และงบ 2','ง�
 addRoute('budget-disbursement','เอกสารเบิกจ่าย','งานงบประมาณ','budget','School-Budget/disbursement.html');
 addRoute('budget-procurement','จัดซื้อและจัดจ้าง','งานงบประมาณ','procurement','School-Procurement/history.html#history');
 addRoute('budget-inventory','ระบบคุมพัสดุ','งานงบประมาณ','budget','School-Budget/inventory.html?v=20261030-inventory2');
-addRoute('academic-grades','ผลการเรียนนักเรียน','งานวิชาการ','grades','School-OS/grades.html?v=20261107-grades1');
+addRoute('academic-grades','รายงานผลการเรียน','ผลการเรียน','grades','School-OS/grades.html?v=20261107-grades1');
+addRoute('academic-remedial','ผลการเรียน 0 ร มส มผ','ผลการเรียน','grades','School-OS/remedial.html?v=20261107-remedial1');
 addRoute('academic-home','ภาพรวมวิชาการ','งานวิชาการ','academic','School-OS/','dashboard');
 addRoute('academic-school','ข้อมูลพื้นฐาน','งานวิชาการ','academic','School-OS/','school');
 addRoute('academic-teachers','ครูผู้สอน','งานวิชาการ','academic','School-OS/','teachers');
@@ -60,7 +61,8 @@ const embeddedStyles = {
 
 const groups = [
   { key:'budget', role:'budget', id:'budget', label:'งานงบประมาณ', icon:'฿', items:['budget-home','budget-projects','budget-reports','budget-documents','budget-disbursement','budget-procurement','budget-inventory','budget-import'] },
-  { key:'academic', role:'timetable', id:'academic', label:'งานวิชาการ', icon:'▦', items:['academic-grades','academic-home','academic-school','academic-teachers','academic-subjects','academic-rooms','academic-timeslots','academic-builder','academic-teacher-builder','academic-auto','academic-teacher-view','academic-teacher-all','academic-workload','academic-conflict','academic-export','academic-substitute','academic-exchange','academic-leave','academic-announcements','academic-storage'] },
+  { key:'academic', role:'timetable', id:'academic', label:'งานวิชาการ', icon:'▦', items:['academic-home','academic-school','academic-teachers','academic-subjects','academic-rooms','academic-timeslots','academic-builder','academic-teacher-builder','academic-auto','academic-teacher-view','academic-teacher-all','academic-workload','academic-conflict','academic-export','academic-substitute','academic-exchange','academic-leave','academic-announcements','academic-storage'] },
+  {key:'results',role:'timetable',id:'results',label:'ผลการเรียน',icon:'▤',items:['academic-grades','academic-remedial']},
   { key:'attendance', role:'attendance', id:'student', label:'ดูแลนักเรียน', icon:'✓', items:['student-home','student-morning','student-subject','student-behavior','student-reports','student-admin'] }
 ];
 let profile;
@@ -81,6 +83,7 @@ function roleFor(group) {
 }
 function groupVisible(group) { return !profile || roleFor(group) !== 'none'; }
 function routeVisible(routeId, group) {
+  if(routeId==='academic-grades')return roleFor(group)==='academic'||roleFor(group)==='admin';
   if (routeId === 'budget-inventory') return profile?.identityAdmin || ['admin','budget'].includes(profile?.schoolRole);
   if (routeId === 'budget-import') return profile?.identityAdmin || profile?.schoolRole === 'budget';
   if (routeId === 'student-admin') return roleFor(group) === 'admin';
@@ -229,9 +232,9 @@ function restoreWorkspaceRoute() {
 function renderCards() {
   const box = $('systemCards');
   const cards = [
-    {group:groups[0],title:'ระบบงานงบประมาณ',desc:'โครงการ เอกสารเบิกจ่าย และงานจัดซื้อจัดจ้าง',icon:'฿',route:'budget-home',className:'budget-card'},
-    {group:groups[1],title:'ระบบงานวิชาการ',desc:'ข้อมูลครู วิชา ห้องเรียน และตารางสอน',icon:'▦',route:'academic-home',className:'academic-card'},
-    {group:groups[2],title:'ระบบดูแลนักเรียน',desc:'เช็กชื่อเข้าแถว รายคาบ ความประพฤติ และรายงาน',icon:'✓',route:'student-home',className:'student-card'}
+    {group:groups.find(g=>g.key==='budget'),title:'ระบบงานงบประมาณ',desc:'โครงการ เอกสารเบิกจ่าย และงานจัดซื้อจัดจ้าง',icon:'฿',route:'budget-home',className:'budget-card'},
+    {group:groups.find(g=>g.key==='academic'),title:'ระบบงานวิชาการ',desc:'ข้อมูลครู วิชา ห้องเรียน และตารางสอน',icon:'▦',route:'academic-home',className:'academic-card'},
+    {group:groups.find(g=>g.key==='attendance'),title:'ระบบดูแลนักเรียน',desc:'เช็กชื่อเข้าแถว รายคาบ ความประพฤติ และรายงาน',icon:'✓',route:'student-home',className:'student-card'}
   ].filter(item=>groupVisible(item.group));
   if (!cards.length) { box.innerHTML='<div class="panel"><h2>ยังไม่มีระบบที่ได้รับสิทธิ์</h2><p class="staff-note">ติดต่อผู้ดูแลระบบเพื่อกำหนดสิทธิ์การใช้งานให้บัญชีนี้</p></div>'; return; }
   box.innerHTML = cards.map(item=>`<button type="button" class="system-card ${item.className}" data-open="${item.route}"><span class="system-card-head"><span class="system-icon">${item.icon}</span><span class="open-arrow">→</span></span><span class="system-kicker">${item.group.label}</span><strong>${item.title}</strong><span class="system-card-description">${item.desc}</span><span class="system-link">เปิดระบบ <b>→</b></span></button>`).join('');
