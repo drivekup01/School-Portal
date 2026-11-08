@@ -39,3 +39,5 @@ h1{text-wrap:balance}h1>span{display:block;white-space:nowrap}.announcements{min
 
 /* Keep all news captions below the image in the six-card grid. */
 .news-card,.news-featured{grid-template-columns:minmax(0,1fr)}.news-card>img{grid-column:1;grid-row:1}.news-card>.news-copy{grid-column:1;grid-row:2}
+
+.news-card>img,.news-featured>img{object-position:center top}
