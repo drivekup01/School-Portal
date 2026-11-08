@@ -1,5 +1,5 @@
 import {moduleRole} from '../shared/school-auth.js?v=20261107-academic1';
-import {staffLinks} from './quick-links.js?v=20261108-shortcuts1';
+import {staffLinks} from './quick-links.js?v=20261108-shortcuts2';
 export async function renderToday(host,profile,openRoute){
  host.replaceChildren();
  const section=document.createElement('section');section.className='panel staff-shortcuts';section.setAttribute('aria-label','เมนูลัดสำหรับครู');
