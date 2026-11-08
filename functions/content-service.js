@@ -28,7 +28,8 @@ function service(db, stamp) {
       if (revision !== input.revision) fail('มีผู้ดูแลแก้ไขข้อมูลแล้ว กรุณาโหลดข้อมูลล่าสุดก่อนบันทึก', 'aborted');
       const metadata = {updatedBy:request.auth.uid, updatedAt:stamp()};
       if (input.method === 'saveDraft') {
-        tx.set(draftRef, {content, revision:revision + 1, ...metadata});
+        const next={...content};for(const key of ['heroLabel','schoolInfo','staff'])if(!Object.hasOwn(input.content,key)&&current.data()?.content?.[key]!==undefined)next[key]=current.data().content[key];
+        tx.set(draftRef, {content:normalize(next), revision:revision + 1, ...metadata});
         tx.set(db.collection('school_portal_audit').doc(), {action:'save-draft',revision:revision+1,...metadata});
         return {ok:true,revision:revision+1};
       }

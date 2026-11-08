@@ -26,13 +26,18 @@ function list(value, max, normalize) {
 }
 function id(value) { if (typeof value !== 'string' || !/^[a-zA-Z0-9_-]{1,64}$/.test(value)) fail('รหัสรายการไม่ถูกต้อง'); return value; }
 function normalize(value) {
-  object(value, ['schoolName','headline','motto','heroImage','sampleContent','announcements','news','contact']);
+  value={heroLabel:'พื้นที่แห่งการเรียนรู้',schoolInfo:{summary:'',history:'',vision:'',mission:''},staff:[],...value};
+  object(value, ['heroLabel','schoolInfo','staff','schoolName','headline','motto','heroImage','sampleContent','announcements','news','contact']);
   if (typeof value.sampleContent !== 'boolean') fail('สถานะข้อมูลตัวอย่างไม่ถูกต้อง');
   object(value.contact, ['phone','email','address','mapUrl','facebookUrl']);
   const contact = {phone:text(value.contact.phone,80), email:text(value.contact.email,254), address:text(value.contact.address,1000), mapUrl:url(value.contact.mapUrl), facebookUrl:url(value.contact.facebookUrl)};
   if (contact.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contact.email)) fail('อีเมลไม่ถูกต้อง');
   if (contact.phone && !/^[+0-9()\s.,-]+$/.test(contact.phone)) fail('หมายเลขโทรศัพท์ไม่ถูกต้อง');
+  object(value.schoolInfo,['summary','history','vision','mission']);
+  const schoolInfo={summary:text(value.schoolInfo.summary,2000),history:text(value.schoolInfo.history,6000),vision:text(value.schoolInfo.vision,3000),mission:text(value.schoolInfo.mission,6000)};
+  const staff=list(value.staff,100,item=>{object(item,['id','name','position','department','image']);return {id:id(item.id),name:text(item.name,160,true),position:text(item.position,160),department:text(item.department,160),image:url(item.image,true)};});
   const result = {
+    heroLabel:text(value.heroLabel,100),schoolInfo,staff,
     schoolName:text(value.schoolName,150,true), headline:text(value.headline,150,true), motto:text(value.motto,150,true), heroImage:url(value.heroImage,true), sampleContent:value.sampleContent, contact,
     announcements:list(value.announcements,30,item => { object(item,['id','title','date','body','link','pinned']); if(typeof item.pinned !== 'boolean') fail('สถานะปักหมุดไม่ถูกต้อง'); return {id:id(item.id),title:text(item.title,250,true),date:date(item.date),body:text(item.body,6000),link:url(item.link),pinned:item.pinned}; }),
     news:list(value.news,30,item => {item={pinned:false,...item};object(item,['id','title','date','category','summary','body','image','link','pinned']);if(typeof item.pinned !== 'boolean') fail('สถานะข่าวเด่นไม่ถูกต้อง');return {id:id(item.id),title:text(item.title,250,true),date:date(item.date),category:text(item.category,40,true),summary:text(item.summary,500),body:text(item.body,8000),image:url(item.image,true),link:url(item.link),pinned:item.pinned};})
