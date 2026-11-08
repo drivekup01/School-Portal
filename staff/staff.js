@@ -1,5 +1,5 @@
 import * as shared from '../shared/school-auth.js?v=20261107-academic1';
-import {renderToday} from './today.js?v=20261029-today1';
+import {renderToday} from './today.js?v=20261108-shortcuts1';
 
 const $ = id => document.getElementById(id);
 const gate = $('authGate');
@@ -69,8 +69,15 @@ const groups = [
 ];
 let profile;
 let pendingAcademicPage = null;
+let teacherSelectionObserver=null;
+function selectOwnTeacher(){
+ teacherSelectionObserver?.disconnect();
+ if(location.hash!=='#academic-teacher-view'||!profile?.teacherId)return;
+ try{const doc=frame.contentDocument,win=frame.contentWindow,teacherId=String(profile.teacherId);if(!doc)return;const select=()=>{if(location.hash!=='#academic-teacher-view'){teacherSelectionObserver?.disconnect();return true;}const options=doc.querySelector('#tvTeacherList');if(options&&[...options.options].some(o=>o.value===teacherId)&&typeof win.selectTeacherView==='function'){win.selectTeacherView(teacherId);teacherSelectionObserver?.disconnect();return true;}return false;};if(!select()){teacherSelectionObserver=new MutationObserver(select);teacherSelectionObserver.observe(doc.documentElement,{childList:true,subtree:true});}}catch{}
+}
 
 function gateState(title, message, showLogin = false) {
+  teacherSelectionObserver?.disconnect();
   $('gateTitle').textContent = title;
   $('gateMessage').textContent = message;
   $('gateLogin').hidden = !showLogin;
@@ -178,6 +185,7 @@ function injectFrameStyle() {
 }
 frame.addEventListener('load', () => {
   injectFrameStyle();
+  selectOwnTeacher();
   if (pendingAcademicPage && frame.dataset.app === 'academic') {
     const page = pendingAcademicPage; pendingAcademicPage = null;
     if(frame.contentWindow)frame.contentWindow.schoolRequestedPage=page;
@@ -200,7 +208,7 @@ function openRoute(id) {
   gate.hidden = true;
   setActive(id);
   if (route.app === 'academic' && frame.dataset.app === 'academic' && frame.contentWindow?.nav) {
-    pendingAcademicPage = null; showEmbedded(route.title,route.category,route.url,route.app); frame.contentWindow.schoolRequestedPage=route.page; if(frame.contentWindow.canAccessPage?.(route.page))frame.contentWindow.nav(route.page); return;
+    pendingAcademicPage = null; showEmbedded(route.title,route.category,route.url,route.app); frame.contentWindow.schoolRequestedPage=route.page; if(frame.contentWindow.canAccessPage?.(route.page))frame.contentWindow.nav(route.page); selectOwnTeacher(); return;
   }
   pendingAcademicPage = route.app === 'academic' ? route.page : null;
   showEmbedded(route.title,route.category,route.url,route.app);
@@ -219,6 +227,7 @@ function loadUrl(url,app,title) {
   pendingAcademicPage = null; showEmbedded(title,category,url,app);
 }
 function showOverview() {
+  teacherSelectionObserver?.disconnect();
   if (!profile) { gateState('เข้าสู่ระบบครูและบุคลากร','ใช้บัญชีโรงเรียนเพื่อเข้าใช้งานทั้ง 3 ระบบ',true); return; }
   gate.hidden = true;
   history.replaceState(null,'','#overview');
