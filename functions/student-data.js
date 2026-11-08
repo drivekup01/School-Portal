@@ -1,4 +1,5 @@
 'use strict';
+const Blocks=require('./attendance-blocks');
 const {createHash}=require('node:crypto');
 const fail=(message,code='invalid-argument')=>{throw Object.assign(Error(message),{code});};
 const dayAt=value=>new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Bangkok',year:'numeric',month:'2-digit',day:'2-digit'}).format(value);
@@ -54,7 +55,10 @@ function scheduleWeek(data,room,today){
 function summarizeMarks(rows){
   const latest=new Map();
   for(const row of rows){if(!['present','late','leave','absent'].includes(row.status))continue;const key=row.kind==='morning'?row.date:row.date+'|'+row.period+'|'+row.subject,old=latest.get(row.kind+'|'+key);if(!old||epoch(row.updatedAt)>epoch(old.updatedAt)||epoch(row.updatedAt)===epoch(old.updatedAt)&&row.canonical&&!old.canonical)latest.set(row.kind+'|'+key,row);}
-  const morning=zero(),subject=zero(),history=[...latest.values()].sort((a,b)=>b.date.localeCompare(a.date)||a.period-b.period);
+  const plans=new Map();for(const row of rows)if(row.kind==='subject')plans.set(row.date+'|'+row.period+'|'+row.subject,{...row,key:row.date+'|'+row.period+'|'+row.subject});
+  const projected=Blocks.project([...plans.values()],lesson=>latest.get('subject|'+lesson.key));
+  const effective=[...latest.values()].filter(row=>row.kind==='morning');for(const [key,lesson]of plans){const mark=projected.get(key);if(mark){const {key:ignored,planned,...base}=lesson;effective.push({...base,...(latest.get('subject|'+key)||{}),status:mark.status,note:mark.note||'',updatedAt:mark.updatedAt,blockPeriods:mark.blockPeriods,sourcePeriod:mark.sourcePeriod});}}
+  const morning=zero(),subject=zero(),history=effective.sort((a,b)=>b.date.localeCompare(a.date)||a.period-b.period);
   for(const row of history){const target=row.kind==='morning'?morning:subject;target[row.status]++;target.recorded++;}
   return {morning,subject,history:history.map(({updatedAt,canonical,...row})=>row)};
 }
@@ -66,13 +70,13 @@ async function attendance(db,classId,studentId,range){
     const date=day.toISOString().slice(0,10),key=date.replaceAll('-','');
     reads.push({ref:db.doc('attendance_morning_sessions/'+classId+'_'+key+'/marks/'+studentId),date,kind:'morning',period:0,subject:'เข้าแถวเช้า',canonical:true});
     for(const job of jobs){
-      const morning=job.kind==='morning';if(!morning&&(!['subject','substitute'].includes(job.kind)||date<dateOf(job.from)||date>dateOf(job.to)||(job.kind==='substitute'?dateOf(job.date)!==date:job.weekday!==day.getUTCDay())))continue;
-      reads.push({ref:db.doc('attendance_assignments/'+job.id+'/days/'+key+'/marks/'+studentId),date,kind:morning?'morning':'subject',period:job.period||0,subject:morning?'เข้าแถวเช้า':job.subject||''});
+      const morning=job.kind==='morning';if(!morning&&(!['subject','substitute'].includes(job.kind)||(job.excludedDates||[]).includes(date)||date<dateOf(job.from)||date>dateOf(job.to)||(job.kind==='substitute'?dateOf(job.date)!==date:job.weekday!==day.getUTCDay())))continue;
+      reads.push({ref:db.doc('attendance_assignments/'+job.id+'/days/'+key+'/marks/'+studentId),date,kind:morning?'morning':'subject',period:job.period||0,time:job.time||'',subject:morning?'เข้าแถวเช้า':job.subject||''});
     }
   }
   if(reads.length>2500)fail('รายการเช็คชื่อมากเกินขอบเขต กรุณาติดต่อผู้ดูแล','resource-exhausted');
   const rows=[];
-  for(let offset=0;offset<reads.length;offset+=200){const slice=reads.slice(offset,offset+200),snaps=await db.getAll(...slice.map(r=>r.ref));for(let i=0;i<snaps.length;i++){const value=snaps[i].data();if(!value||value.classId!==classId||value.studentId!==studentId)continue;const {ref,...source}=slice[i];rows.push({...source,status:value.status,note:String(value.note||'').slice(0,300),updatedAt:value.updatedAt});}}
+  for(let offset=0;offset<reads.length;offset+=200){const slice=reads.slice(offset,offset+200),snaps=await db.getAll(...slice.map(r=>r.ref));for(let i=0;i<snaps.length;i++){const value=snaps[i].data(),{ref,...source}=slice[i];if(!value){if(source.kind==='subject')rows.push({...source,planned:true});continue;}if(value.classId!==classId||value.studentId!==studentId)continue;rows.push({...source,status:value.status,note:String(value.note||'').slice(0,300),updatedAt:value.updatedAt});}}
   return {...summarizeMarks(rows),...range};
 }
 async function behavior(db,classId,studentId,detailed=false){
