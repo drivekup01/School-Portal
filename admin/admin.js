@@ -108,6 +108,7 @@ const routes = {
   'academic-teacher-view': { title: 'ตารางสอนรายครู', category: 'งานวิชาการ', app: 'academic', url: appBase + 'School-OS/', page: 'teacher-view' },
   'academic-workload': { title: 'ภาระงานสอน', category: 'งานวิชาการ', app: 'academic', url: appBase + 'School-OS/', page: 'workload' },
   'academic-substitute': { title: 'สอนแทนและแลกคาบ', category: 'งานวิชาการ', app: 'academic', url: appBase + 'School-OS/', page: 'substitute' },
+  'academic-calendar':{title:'ปฏิทินโรงเรียน',category:'งานวิชาการ',app:'calendar',url:appBase+'School-Portal/calendar/?mode=staff&v=20261108-calendar1'},
   'academic-announcements': { title: 'ประกาศวิชาการ', category: 'งานวิชาการ', app: 'academic', url: appBase + 'School-OS/', page: 'announcements' },
   'student-home': { title: 'ภาพรวมดูแลนักเรียน', category: 'ดูแลนักเรียน', app: 'attendance', url: appBase + 'School-Portal/attendance/index.html' },
   'student-morning': { title: 'เช็กชื่อเข้าแถวเช้า', category: 'ดูแลนักเรียน', app: 'attendance', url: appBase + 'School-Portal/attendance/morning.html' },

@@ -1,0 +1,13 @@
+# School calendar
+
+Source of truth is the supplied academic Google Sheet, tab `2/69` (gid `2064621928`). The fixed CSV export URL is fetched read-only from the backend; the source workbook is never modified. Thai displayed dates are parsed as Buddhist years, including same-month and cross-month/year ranges. Missing dates remain in an undated group. Unrecognized dates are shown for review rather than guessed or inherited from a preceding row.
+
+`schoolCalendar` reads and refreshes a private Firestore snapshot on demand with a four-minute cache TTL (shorter than the five-minute browser poll to prevent an early poll skipping a full cycle) and a transaction lease. The UI rechecks while visible every five minutes and on returning to the page. Admin/full academic refresh is limited to once per 30 seconds. Fetch timeouts, size limits and layout checks retain the last successful snapshot with a warning, so a temporary source outage cannot erase the calendar or pins.
+
+The staff/admin academic menus open `calendar/?mode=staff`. All active school personnel can read the full source calendar. Only administrator and academic #1/full can pin or unpin, with a fresh role check and optimistic pin revision inside the write transaction. Read-only public views expose only explicitly pinned events; no source-editor identity, pin revisions, unpinned event details or direct source link are returned publicly. Pending events can be pinned and move onto the correct calendar date when the Sheet is filled in.
+
+Homepage cards show up to three pinned activities (current/upcoming, undated, then recent past), with a link to the full pinned calendar. Every event opens its full details and responsible party. Events spanning a date range appear on every inclusive calendar day. A calendar month is a date display, not an attendance or SGS policy; this source does not automatically change attendance dates, semester settings, or grades.
+
+IDs derive from source, normalized heading/responsible party and occurrence among identical entries, so date edits and unrelated inserted rows keep pins. Rewriting a heading/responsible party may create a new item that requires pinning again. CSV row text is treated as untrusted display data and rendered using textContent. Source URL cannot be supplied by a client. New Firestore collections `school_calendar_sources`, `school_calendar_pins`, and `school_calendar_audit` are server-only under existing default-deny rules and included in homepage backups.
+
+Deployment adds no automatic pin selections. Pinning explicitly publishes that event to the public homepage. Calendar pin changes are included in the existing usage audit.

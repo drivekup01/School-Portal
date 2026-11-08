@@ -9,7 +9,9 @@ Object.assign(labels,{backupExport:'สร้างไฟล์สำรอง�
 writeMethods.add('studentImportApply');
 writeMethods.add('clearAttendance');
 writeMethods.add('saveRegularAttendance');
-const apiModules={schoolStudentImport:'students',schoolBackup:'backup',schoolAcademicStudents:'academic',schoolRemedial:'academic',schoolGrades:'academic',schoolHomepage:'homepage',schoolStudent:'students',schoolStudentLogin:'students',schoolIdentity:'accounts',timetableApi:'academic',budgetApi:'budget',attendanceAdmin:'attendance',attendanceOverview:'attendance',attendanceBehavior:'behavior',attendanceBehaviorRequests:'behavior'};
+writeMethods.add('setCalendarPin');
+labels.setCalendarPin='ปักหมุดหรือยกเลิกปักหมุดปฏิทินหน้าแรก';
+const apiModules={schoolCalendar:'academic',schoolStudentImport:'students',schoolBackup:'backup',schoolAcademicStudents:'academic',schoolRemedial:'academic',schoolGrades:'academic',schoolHomepage:'homepage',schoolStudent:'students',schoolStudentLogin:'students',schoolIdentity:'accounts',timetableApi:'academic',budgetApi:'budget',attendanceAdmin:'attendance',attendanceOverview:'attendance',attendanceBehavior:'behavior',attendanceBehaviorRequests:'behavior'};
 function moduleFor(path,section=''){
  if(/^(budget|procurement)/.test(section)||/^\/School-(Budget|Procurement)\//.test(path))return 'budget';
  if(/^academic/.test(section)||path.startsWith('/School-OS/'))return 'academic';

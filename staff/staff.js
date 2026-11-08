@@ -44,6 +44,7 @@ addRoute('academic-conflict','ตรวจตารางสอนชน','ง�
 addRoute('academic-substitute','จัดสอนแทน','งานวิชาการ','academic','School-OS/','substitute');
 addRoute('academic-exchange','แลกคาบ','งานวิชาการ','academic','School-OS/','exchange');
 addRoute('academic-leave','ประวัติการลาครู','งานวิชาการ','academic','School-OS/','leave-test');
+addRoute('academic-calendar','ปฏิทินโรงเรียน','งานวิชาการ','calendar','School-Portal/calendar/?mode=staff&v=20261108-calendar1');
 addRoute('academic-announcements','ประกาศ','งานวิชาการ','academic','School-OS/','announcements');
 addRoute('academic-storage','บันทึกและสำรองข้อมูล','งานวิชาการ','academic','School-OS/','storage');
 addRoute('student-home','ภาพรวมดูแลนักเรียน','ดูแลนักเรียน','attendance','School-Portal/attendance/index.html');
@@ -63,7 +64,7 @@ const embeddedStyles = {
 
 const groups = [
   { key:'budget', role:'budget', id:'budget', label:'งานงบประมาณ', icon:'฿', items:['budget-home','budget-projects','budget-reports','budget-documents','budget-disbursement','budget-procurement','budget-inventory','budget-import'] },
-  { key:'academic', role:'timetable', id:'academic', label:'งานวิชาการ', icon:'▦', items:['academic-home','academic-school','academic-teachers','academic-subjects','academic-rooms','academic-students','academic-timeslots','academic-builder','academic-teacher-builder','academic-auto','academic-teacher-view','academic-teacher-all','academic-workload','academic-conflict','academic-export','academic-substitute','academic-exchange','academic-leave','academic-announcements','academic-storage'] },
+  { key:'academic', role:'timetable', id:'academic', label:'งานวิชาการ', icon:'▦', items:['academic-home','academic-school','academic-teachers','academic-subjects','academic-rooms','academic-students','academic-timeslots','academic-builder','academic-teacher-builder','academic-auto','academic-teacher-view','academic-teacher-all','academic-workload','academic-conflict','academic-export','academic-substitute','academic-exchange','academic-leave','academic-calendar','academic-announcements','academic-storage'] },
   {key:'results',role:'timetable',id:'results',label:'ผลการเรียน',icon:'▤',items:['academic-grade-import','academic-grades','academic-remedial']},
   { key:'attendance', role:'attendance', id:'student', label:'ดูแลนักเรียน', icon:'✓', items:['student-home','student-morning','student-subject','student-behavior','student-reports','student-admin'] }
 ];
@@ -93,12 +94,12 @@ function roleFor(group) {
 function groupVisible(group) { return !profile || roleFor(group) !== 'none'; }
 function routeVisible(routeId, group) {
   if(['academic-grade-import','academic-grades'].includes(routeId))return roleFor(group)==='academic'||roleFor(group)==='admin';
-  if(group.key==='academic'&&roleFor(group)==='scheduler')return ['academic-home','academic-teachers','academic-subjects','academic-rooms','academic-students','academic-builder','academic-teacher-view','academic-teacher-all','academic-substitute','academic-export','academic-announcements'].includes(routeId);
+  if(group.key==='academic'&&roleFor(group)==='scheduler')return ['academic-home','academic-teachers','academic-subjects','academic-rooms','academic-students','academic-builder','academic-teacher-view','academic-teacher-all','academic-substitute','academic-export','academic-calendar','academic-announcements'].includes(routeId);
   if (routeId === 'budget-inventory') return profile?.identityAdmin || ['admin','budget'].includes(profile?.schoolRole);
   if (routeId === 'budget-import') return profile?.identityAdmin || profile?.schoolRole === 'budget';
   if (routeId === 'student-admin') return roleFor(group) === 'admin';
   if (group.key === 'academic' && roleFor(group) === 'viewer') {
-    return ['academic-home','academic-teacher-view','academic-teacher-all','academic-substitute','academic-export','academic-announcements'].includes(routeId);
+    return ['academic-home','academic-teacher-view','academic-teacher-all','academic-substitute','academic-export','academic-calendar','academic-announcements'].includes(routeId);
   }
   return true;
 }
@@ -126,9 +127,9 @@ function renderNavigation() {
     toggle.className = 'nav-link group-toggle'; toggle.type = 'button'; toggle.setAttribute('aria-expanded','false');
     toggle.innerHTML = `<span class="nav-icon">${group.icon}</span><span>${group.label}</span><span class="chevron">⌄</span>`;
     const sub = document.createElement('div'); sub.className = 'sub-nav'; sub.hidden = true;
-    if (group.key === 'academic' && roleFor(group) === 'viewer') group.items = ['academic-home','academic-teacher-view','academic-teacher-all','academic-substitute','academic-export','academic-announcements'];
+    if (group.key === 'academic' && roleFor(group) === 'viewer') group.items = ['academic-home','academic-teacher-view','academic-teacher-all','academic-substitute','academic-export','academic-calendar','academic-announcements'];
     for (const routeId of group.items) {
-      if(group.key==='academic'&&!['academic-grades','academic-home','academic-school','academic-teachers','academic-subjects','academic-rooms','academic-students','academic-builder','academic-teacher-view','academic-teacher-all','academic-substitute','academic-export','academic-announcements','academic-storage'].includes(routeId))continue;
+      if(group.key==='academic'&&!['academic-grades','academic-home','academic-school','academic-teachers','academic-subjects','academic-rooms','academic-students','academic-builder','academic-teacher-view','academic-teacher-all','academic-substitute','academic-export','academic-calendar','academic-announcements','academic-storage'].includes(routeId))continue;
       if (!routeVisible(routeId, group)) continue;
       sub.append(makeLink(routeId));
     }

@@ -1,5 +1,6 @@
-import {loadDefaults,renderHomepage,initializeInteractions} from './home-renderer.js?v=20261107-facebook2';
-initializeInteractions();
+import {startPublicCalendar} from './home-calendar.js?v=20261108-calendar1';
+import {loadDefaults,renderHomepage,initializeInteractions} from './home-renderer.js?v=20261108-calendar1';
+initializeInteractions();startPublicCalendar();
 const defaults=await loadDefaults();renderHomepage(defaults);
 const preview=new URLSearchParams(location.search).get('preview')==='1'&&parent!==window;
 if(preview){

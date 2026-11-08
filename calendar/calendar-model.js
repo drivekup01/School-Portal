@@ -1,0 +1,5 @@
+export const today=()=>new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Bangkok',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
+export const dayLabel=date=>new Intl.DateTimeFormat('th-TH',{day:'numeric',month:'long',year:'numeric',timeZone:'Asia/Bangkok'}).format(new Date(date+'T12:00:00+07:00'));
+export const eventsOn=(events,date)=>events.filter(e=>e.startDate&&e.startDate<=date&&e.endDate>=date).sort((a,b)=>a.startDate.localeCompare(b.startDate)||a.sourceRow-b.sourceRow);
+export function monthDays(month){const [year,m]=month.split('-').map(Number),first=new Date(Date.UTC(year,m-1,1)),offset=(first.getUTCDay()+6)%7,start=first.getTime()-offset*86400000;return Array.from({length:42},(_,i)=>new Date(start+i*86400000).toISOString().slice(0,10));}
+export function dateLabel(event){return !event.startDate?(event.dateState==='invalid'?'รอตรวจสอบวันที่จากเอกสาร':'ยังไม่กำหนดวันที่'):event.startDate===event.endDate?dayLabel(event.startDate):dayLabel(event.startDate)+' – '+dayLabel(event.endDate);}

@@ -47,12 +47,13 @@ for(const item of sorted){const button=element('button',null,'announcement');but
 if(!sorted.length)announcements.append(element('p','ยังไม่มีประกาศในขณะนี้','empty-content'));
 if(content.sampleContent)announcements.append(element('small','ข้อมูลตัวอย่างจากภาพอ้างอิง'));
 const list=$('.calendar ol');list.replaceChildren();
-list.append(element('li','กำลังเตรียมเชื่อมปฏิทินจากระบบครูและบุคลากร'));
+list.append(element('li','กำลังโหลดปฏิทินโรงเรียน…'));
 const sample=$('.calendar small');sample.hidden=true;
 const contact=$('.contact');contact.querySelectorAll('p').forEach(node=>node.remove());
 const phone=element('p');phone.append(element('span','☎'),element('span',content.contact.phone||'สอบถามข้อมูลทั่วไปของโรงเรียน'));phone.lastChild.className='contact-text';
 const address=element('p');address.append(element('span','⌖'),element('span',content.contact.address||'แผนที่และเส้นทางมาโรงเรียน'));address.lastChild.className='contact-text';contact.insertBefore(phone,contact.lastElementChild);contact.insertBefore(address,contact.lastElementChild);
 renderNews();
+document.dispatchEvent(new Event('school-homepage-rendered'));
 }
 export function initializeInteractions(){
 $('.close').addEventListener('click',()=>$('#detail').close());
