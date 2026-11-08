@@ -50,7 +50,7 @@ addRoute('student-home','ภาพรวมดูแลนักเรียน'
 addRoute('student-morning','เช็กชื่อเข้าแถวเช้า','ดูแลนักเรียน','attendance','School-Portal/attendance/morning.html');
 addRoute('student-subject','เช็กชื่อรายคาบ','ดูแลนักเรียน','attendance','School-Portal/attendance/subject.html');
 addRoute('student-behavior','ความประพฤติ','ดูแลนักเรียน','attendance','School-Portal/attendance/behavior.html');
-addRoute('student-reports','รายงานและส่งออก','ดูแลนักเรียน','attendance','School-Portal/attendance/reports.html?v=20261108-term1');
+addRoute('student-reports','รายงานและส่งออก','ดูแลนักเรียน','attendance','School-Portal/attendance/reports.html?v=20261108-pp5-1');
 addRoute('student-admin','จัดการข้อมูลและสิทธิ์','ดูแลนักเรียน','attendance','School-Portal/attendance/admin.html');
 
 const embeddedStyles = {

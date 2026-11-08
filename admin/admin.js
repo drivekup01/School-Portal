@@ -113,7 +113,7 @@ const routes = {
   'student-morning': { title: 'เช็กชื่อเข้าแถวเช้า', category: 'ดูแลนักเรียน', app: 'attendance', url: appBase + 'School-Portal/attendance/morning.html' },
   'student-subject': { title: 'เช็กชื่อรายคาบ', category: 'ดูแลนักเรียน', app: 'attendance', url: appBase + 'School-Portal/attendance/subject.html' },
   'student-behavior': { title: 'ความประพฤติ', category: 'ดูแลนักเรียน', app: 'attendance', url: appBase + 'School-Portal/attendance/behavior.html' },
-  'student-reports': { title: 'รายงานและส่งออก', category: 'ดูแลนักเรียน', app: 'attendance', url: appBase + 'School-Portal/attendance/reports.html?v=20261108-term1' },
+  'student-reports': { title: 'รายงานและส่งออก', category: 'ดูแลนักเรียน', app: 'attendance', url: appBase + 'School-Portal/attendance/reports.html?v=20261108-pp5-1' },
   'student-admin': { title: 'จัดการข้อมูลและสิทธิ์', category: 'ดูแลนักเรียน', app: 'attendance', url: appBase + 'School-Portal/attendance/admin.html' }
 };
 for (const route of Object.values(routes)) {
