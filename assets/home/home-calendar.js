@@ -1,5 +1,5 @@
 import {call} from '../../shared/school-auth.js?v=20261027-roles1';
-import {showDetail,setCalendarAnnouncements} from './home-renderer.js?v=20261108-news-six1';
+import {showDetail,setCalendarAnnouncements} from './home-renderer.js?v=20261108-live-content1';
 import {today,dateLabel} from '../../calendar/calendar-model.js?v=20261108-calendar1';
 const el=(tag,text,cls)=>{const n=document.createElement(tag);if(text!=null)n.textContent=text;if(cls)n.className=cls;return n;};let data=null,pending=null,last=0;
 function render(){const host=document.querySelector('.calendar'),list=host?.querySelector('ol');if(!list)return;list.replaceChildren();if(!data){list.append(el('li','กำลังโหลดปฏิทิน…'));return;}
@@ -11,4 +11,4 @@ function render(){const host=document.querySelector('.calendar'),list=host?.quer
  let link=host.querySelector('.calendar-all');if(!link){link=el('a','ดูปฏิทินกิจกรรม ↗','calendar-all');link.href='calendar/';host.append(link);}link.textContent='ดูปฏิทินทั้งหมด →';const small=host.querySelector('small');small.hidden=false;small.textContent=data.warning?'แสดงข้อมูลล่าสุดที่ดึงสำเร็จ · กดดูปฏิทินเพื่อตรวจสอบ':'ปรับตามปฏิทินวิชาการอัตโนมัติ';
 }
 async function load(){if(pending)return pending;if(data&&Date.now()-last<240000){render();return;}pending=call('schoolCalendar',{method:'getPublic'}).then(result=>{data=result;last=Date.now();render();if(result.syncing)setTimeout(()=>{last=0;load();},3000);}).catch(()=>{const list=document.querySelector('.calendar ol');if(list&&!data)list.replaceChildren(el('li','ยังโหลดปฏิทินไม่ได้ กรุณาลองใหม่ภายหลัง'));}).finally(()=>{pending=null;});return pending;}
-export function startPublicCalendar(){document.addEventListener('school-homepage-rendered',()=>{render();load();});setInterval(()=>{if(document.visibilityState==='visible')load();},300000);window.addEventListener('focus',()=>load());document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')load();});}
+export function startPublicCalendar(){load();document.addEventListener('school-homepage-rendered',()=>{render();load();});setInterval(()=>{if(document.visibilityState==='visible')load();},300000);window.addEventListener('focus',()=>load());document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')load();});}
