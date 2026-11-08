@@ -1,7 +1,7 @@
 import {mountHomeCalendarEditor} from './home-calendar-editor.js?v=20261108-home2';
 import * as auth from '../shared/school-auth.js?v=20261027-roles1';
 import {sections,loadDefaults,upgradeContent} from '../assets/home/content-schema.js?v=20261108-home2';
-import {safeUrl} from '../assets/home/home-renderer.js?v=20261108-news-slider1';
+import {safeUrl} from '../assets/home/home-renderer.js?v=20261108-news-list1';
 const $=id=>document.getElementById(id);
 const element=(tag,text,className)=>{const node=document.createElement(tag);if(text!=null)node.textContent=text;if(className)node.className=className;return node;};
 const single=name=>['banner','schoolInfo','contact'].includes(name),calendarSection=()=>['calendarAnnouncements','calendarActivities'].includes(section);let calendarEditor=null;
