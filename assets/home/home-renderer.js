@@ -1,5 +1,5 @@
-import {staffGroups} from './staff-model.js?v=20261108-directory-names1';
-import {loadDefaults,upgradeContent} from './content-schema.js?v=20261108-directory-names1';
+import {staffGroups} from './staff-model.js?v=20261108-staff-roles1';
+import {loadDefaults,upgradeContent} from './content-schema.js?v=20261108-staff-roles1';
 import {dateLabel} from '../../calendar/calendar-model.js?v=20261108-calendar1';
 const $=s=>document.querySelector(s),el=(tag,text,cls)=>{const n=document.createElement(tag);if(text!=null)n.textContent=text;if(cls)n.className=cls;return n;};
 export function safeUrl(value,image=false){if(typeof value!=='string'||!value)return '';if(image&&/^assets\/home\/[a-z0-9_-]+\.(jpg|png|webp)$/i.test(value))return new URL('../../'+value,import.meta.url).href;try{const u=new URL(value);return u.protocol==='https:'&&!u.username&&!u.password?u.href:'';}catch{return '';}}

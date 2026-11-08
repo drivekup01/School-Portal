@@ -40,7 +40,7 @@ function service(db, stamp, media=null) {
       if (revision !== input.revision) fail('มีผู้ดูแลแก้ไขข้อมูลแล้ว กรุณาโหลดข้อมูลล่าสุดก่อนบันทึก', 'aborted');
       const metadata = {updatedBy:request.auth.uid, updatedAt:stamp()};
       if (input.method === 'saveDraft') {
-        const next={...content};next.staff=next.staff.map(p=>{const submitted=input.content.staff?.find(v=>v.id===p.id),existing=current.data()?.content?.staff?.find(v=>v.id===p.id);for(const key of ['category','isHead','groupColor'])if(submitted&&!Object.hasOwn(submitted,key)&&existing?.[key]!==undefined)p[key]=existing[key];return p;});for(const key of ['heroLabel','schoolInfo','staff'])if(!Object.hasOwn(input.content,key)&&current.data()?.content?.[key]!==undefined)next[key]=current.data().content[key];
+        const next={...content};next.staff=next.staff.map(p=>{const submitted=input.content.staff?.find(v=>v.id===p.id),existing=current.data()?.content?.staff?.find(v=>v.id===p.id);for(const key of ['category','isHead','groupColor','assignments'])if(submitted&&!Object.hasOwn(submitted,key)&&existing?.[key]!==undefined)p[key]=existing[key];return p;});for(const key of ['heroLabel','schoolInfo','staff'])if(!Object.hasOwn(input.content,key)&&current.data()?.content?.[key]!==undefined)next[key]=current.data().content[key];
         tx.set(draftRef, {content:normalize(next), revision:revision + 1, ...metadata});
         tx.set(db.collection('school_portal_audit').doc(), {action:'save-draft',revision:revision+1,...metadata});
         return {ok:true,revision:revision+1};
