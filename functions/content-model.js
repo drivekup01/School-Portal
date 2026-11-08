@@ -25,6 +25,7 @@ function list(value, max, normalize) {
   return result;
 }
 function id(value) { if (typeof value !== 'string' || !/^[a-zA-Z0-9_-]{1,64}$/.test(value)) fail('รหัสรายการไม่ถูกต้อง'); return value; }
+function inferStaffCategory(p){return /รองผู้อำนวยการ/.test(p.position||'')?'deputy':/ผู้อำนวยการ/.test(p.position||'')?'director':/ครู/.test(p.position||'')||p.department?'subject':'staff';}
 function normalize(value) {
   value={heroLabel:'พื้นที่แห่งการเรียนรู้',schoolInfo:{summary:'',history:'',vision:'',mission:''},staff:[],...value};
   object(value, ['heroLabel','schoolInfo','staff','schoolName','headline','motto','heroImage','sampleContent','announcements','news','contact']);
@@ -35,7 +36,7 @@ function normalize(value) {
   if (contact.phone && !/^[+0-9()\s.,-]+$/.test(contact.phone)) fail('หมายเลขโทรศัพท์ไม่ถูกต้อง');
   object(value.schoolInfo,['summary','history','vision','mission']);
   const schoolInfo={summary:text(value.schoolInfo.summary,2000),history:text(value.schoolInfo.history,6000),vision:text(value.schoolInfo.vision,3000),mission:text(value.schoolInfo.mission,6000)};
-  const staff=list(value.staff,100,item=>{object(item,['id','name','position','department','image']);return {id:id(item.id),name:text(item.name,160,true),position:text(item.position,160),department:text(item.department,160),image:url(item.image,true)};});
+  const staff=list(value.staff,300,item=>{item={category:inferStaffCategory(item),...item};object(item,['id','name','position','department','image','category']);if(!['director','deputy','division','subject','staff'].includes(item.category))fail('หมวดบุคลากรไม่ถูกต้อง');return {id:id(item.id),name:text(item.name,160,true),position:text(item.position,160),department:text(item.department,160),image:url(item.image,true),category:item.category};});
   const result = {
     heroLabel:text(value.heroLabel,100),schoolInfo,staff,
     schoolName:text(value.schoolName,150,true), headline:text(value.headline,150,true), motto:text(value.motto,150,true), heroImage:url(value.heroImage,true), sampleContent:value.sampleContent, contact,
