@@ -1,5 +1,5 @@
-import {startPublicCalendar} from './home-calendar.js?v=20261108-directory1';
-import {loadDefaults,renderHomepage,initializeInteractions} from './home-renderer.js?v=20261108-directory1';
+import {startPublicCalendar} from './home-calendar.js?v=20261108-group-lead1';
+import {loadDefaults,renderHomepage,initializeInteractions} from './home-renderer.js?v=20261108-group-lead1';
 initializeInteractions();startPublicCalendar();
 const preview=new URLSearchParams(location.search).get('preview')==='1'&&parent!==window;
 if(preview){

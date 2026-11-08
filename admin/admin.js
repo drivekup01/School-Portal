@@ -84,7 +84,7 @@ const frame = $('systemFrame');
 const appBase = 'https://drivekup01.github.io/';
 const routes = {
   'student-accounts': { title: 'บัญชีนักเรียน', category: 'ศูนย์ผู้ดูแลระบบ', app: 'portal-admin', url: appBase + 'School-Portal/admin/students.html' },
-  homepage: { title: 'แก้ไขหน้าแรก', category: 'ศูนย์ผู้ดูแลระบบ', app: 'portal-admin', url: appBase + 'School-Portal/admin/homepage.html?v=20261108-photo-crop1' },
+  homepage: { title: 'แก้ไขหน้าแรก', category: 'ศูนย์ผู้ดูแลระบบ', app: 'portal-admin', url: appBase + 'School-Portal/admin/homepage.html?v=20261108-group-lead1' },
   backup: {title:'ส่งออก Backup',category:'ศูนย์ผู้ดูแลระบบ',app:'portal-admin',url:appBase+'School-Portal/admin/backup.html?v=20261107-backup1'},
   accounts: { title: 'ผู้ใช้และสิทธิ์', category: 'ศูนย์ผู้ดูแลระบบ', app: 'accounts', url: appBase + 'School-Portal/users.html?v=20261107-order1' },
   'budget-home': { title: 'ภาพรวมงบประมาณ', category: 'งานงบประมาณ', app: 'budget', url: appBase + 'School-Budget/budget-dashboard.html?v=20261031-colors1' },
