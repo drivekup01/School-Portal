@@ -1,5 +1,5 @@
 import {call} from '../../shared/school-auth.js?v=20261027-roles1';
-import {showDetail,setCalendarAnnouncements} from './home-renderer.js?v=20261108-news-image1';
+import {showDetail,setCalendarAnnouncements} from './home-renderer.js?v=20261108-news-slider1';
 import {today,dateLabel} from '../../calendar/calendar-model.js?v=20261108-calendar1';
 const el=(tag,text,cls)=>{const n=document.createElement(tag);if(text!=null)n.textContent=text;if(cls)n.className=cls;return n;};let data=null,pending=null,last=0;
 function render(){const host=document.querySelector('.calendar'),list=host?.querySelector('ol');if(!list)return;list.replaceChildren();if(!data){list.append(el('li','กำลังโหลดปฏิทิน…'));return;}
