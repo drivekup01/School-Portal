@@ -1,5 +1,5 @@
-import {startPublicCalendar} from './home-calendar.js?v=20261108-directory-poster1';
-import {loadDefaults,renderHomepage,initializeInteractions} from './home-renderer.js?v=20261108-directory-poster1';
+import {startPublicCalendar} from './home-calendar.js?v=20261108-directory-layout2';
+import {loadDefaults,renderHomepage,initializeInteractions} from './home-renderer.js?v=20261108-directory-layout2';
 initializeInteractions();startPublicCalendar();
 const preview=new URLSearchParams(location.search).get('preview')==='1'&&parent!==window;
 if(preview){
