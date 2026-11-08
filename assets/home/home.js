@@ -1,5 +1,5 @@
-import {startPublicCalendar} from './home-calendar.js?v=20261108-news-list1';
-import {loadDefaults,renderHomepage,initializeInteractions} from './home-renderer.js?v=20261108-news-list1';
+import {startPublicCalendar} from './home-calendar.js?v=20261108-news-six1';
+import {loadDefaults,renderHomepage,initializeInteractions} from './home-renderer.js?v=20261108-news-six1';
 initializeInteractions();startPublicCalendar();
 const defaults=await loadDefaults();renderHomepage(defaults);
 const preview=new URLSearchParams(location.search).get('preview')==='1'&&parent!==window;
