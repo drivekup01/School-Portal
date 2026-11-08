@@ -2,7 +2,7 @@
 const {normalize, assertAdmin, fail} = require('./content-model');
 // These documents are server-only under the existing default-deny rules.
 // getPublished never reads the draft or returns editor identity.
-function service(db, stamp) {
+function service(db, stamp, media=null) {
   const draftRef = db.doc('school_portal_content/homepage-draft');
   const publicRef = db.doc('school_portal_content/homepage-published');
   async function handle(request) {
@@ -11,11 +11,23 @@ function service(db, stamp) {
       const snap = await publicRef.get();
       return {content: snap.exists ? snap.data().content : null, revision: snap.exists ? snap.data().revision : 0};
     }
-    if (!['getDraft','saveDraft','publish'].includes(input.method)) fail('คำสั่งไม่ถูกต้อง');
+    if (!['getDraft','saveDraft','publish','getStaffCatalog','uploadStaffImage'].includes(input.method)) fail('คำสั่งไม่ถูกต้อง');
     if (!request.auth) fail('กรุณาเข้าสู่ระบบ', 'unauthenticated');
     const actorRef = db.doc('school_users/' + request.auth.uid);
     // Check before parsing submitted content, and again within the write transaction.
     assertAdmin(request.auth, (await actorRef.get()).data());
+    if(input.method==='getStaffCatalog'){
+      const table=await require('./student-data').readTimetable(db);
+      assertAdmin(request.auth,(await actorRef.get()).data());
+      if(!table)fail('ยังไม่มีข้อมูลครูจากระบบจัดตารางสอน','failed-precondition');
+      const seen=new Set(),staff=[];
+      for(const t of table.data.teachers||[]){const name=((t.prefix||'')+(t.first||'')+' '+(t.last||'')).trim();if(!name||t.active===false)continue;const id='teacher-'+require('node:crypto').createHash('sha256').update(String(t.id||name)).digest('hex').slice(0,24);if(seen.has(id))continue;seen.add(id);staff.push({id,name:name.slice(0,160),position:String(t.position||'ครู').slice(0,160),department:String(t.department||'').slice(0,160),image:''});}
+      return {staff,version:table.version};
+    }
+    if(input.method==='uploadStaffImage'){
+      if(!media)fail('ระบบอัปโหลดรูปยังไม่พร้อม','failed-precondition');
+      return media.upload(request,async()=>assertAdmin(request.auth,(await actorRef.get()).data()));
+    }
     if (input.method === 'getDraft') {
       const [draft, published] = await Promise.all([draftRef.get(), publicRef.get()]);
       return {content:draft.data()?.content || published.data()?.content || null, revision:draft.data()?.revision || 0, publishedRevision:published.data()?.revision || 0};

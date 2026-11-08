@@ -1,10 +1,12 @@
 'use strict';
-const {onCall,HttpsError} = require('firebase-functions/v2/https');
+const {onCall,onRequest,HttpsError} = require('firebase-functions/v2/https');
 const {initializeApp,getApps} = require('firebase-admin/app');
 const {getFirestore,FieldValue} = require('firebase-admin/firestore');
 const {getAuth} = require('firebase-admin/auth');
 if (!getApps().length) initializeApp();
-const content = require('./content-service').service(getFirestore(), () => FieldValue.serverTimestamp());
+const homepageMedia=require('./homepage-media').service(require('firebase-admin/storage').getStorage());
+const content = require('./content-service').service(getFirestore(), () => FieldValue.serverTimestamp(),homepageMedia);
+exports.schoolHomepagePhoto=onRequest({region:'asia-southeast1',invoker:'public',memory:'256MiB',maxInstances:3,timeoutSeconds:30},(req,res)=>homepageMedia.serve(req,res));
 exports.schoolHomepage=audited('schoolHomepage',{region:'asia-southeast1',invoker:'public',memory:'256MiB',maxInstances:3,timeoutSeconds:30,cors:['https://drivekup01.github.io','http://127.0.0.1:4173','http://localhost:4173']}, async request => {
   try { return await content.handle(request); }
   catch(error) {

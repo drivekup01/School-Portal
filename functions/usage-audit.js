@@ -9,7 +9,7 @@ Object.assign(labels,{backupExport:'สร้างไฟล์สำรอง�
 writeMethods.add('studentImportApply');
 writeMethods.add('clearAttendance');
 writeMethods.add('saveRegularAttendance');
-writeMethods.add('setCalendarPin');writeMethods.add('setCalendarAnnouncement');labels.setCalendarAnnouncement='เลือกหรือยกเลิกประกาศจากปฏิทินบนหน้าแรก';
+writeMethods.add('setCalendarPin');writeMethods.add('setCalendarAnnouncement');writeMethods.add('uploadStaffImage');labels.uploadStaffImage='อัปโหลดรูปบุคลากรสำหรับหน้าเว็บไซต์';labels.setCalendarAnnouncement='เลือกหรือยกเลิกประกาศจากปฏิทินบนหน้าแรก';
 labels.setCalendarPin='ปักหมุดหรือยกเลิกปักหมุดปฏิทินหน้าแรก';
 const apiModules={schoolCalendar:'academic',schoolStudentImport:'students',schoolBackup:'backup',schoolAcademicStudents:'academic',schoolRemedial:'academic',schoolGrades:'academic',schoolHomepage:'homepage',schoolStudent:'students',schoolStudentLogin:'students',schoolIdentity:'accounts',timetableApi:'academic',budgetApi:'budget',attendanceAdmin:'attendance',attendanceOverview:'attendance',attendanceBehavior:'behavior',attendanceBehaviorRequests:'behavior'};
 function moduleFor(path,section=''){
