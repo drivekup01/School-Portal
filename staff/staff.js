@@ -1,5 +1,5 @@
 import * as shared from '../shared/school-auth.js?v=20261107-academic1';
-import {renderToday} from './today.js?v=20261108-shortcuts2';
+import {renderToday} from './today.js?v=20261111-leave1';
 
 const $ = id => document.getElementById(id);
 const gate = $('authGate');
