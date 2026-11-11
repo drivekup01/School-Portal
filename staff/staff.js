@@ -30,7 +30,7 @@ addRoute('academic-home','ภาพรวมวิชาการ','งานว
 addRoute('academic-school','ข้อมูลพื้นฐาน','งานวิชาการ','academic','School-OS/','school');
 addRoute('academic-teachers','ครูผู้สอน','งานวิชาการ','academic','School-OS/','teachers');
 addRoute('academic-subjects','รายวิชา','งานวิชาการ','academic','School-OS/','subjects');
-addRoute('academic-students','ทะเบียนนักเรียน','งานวิชาการ','grades','School-OS/academic-students.html?v=20261107-academic1');
+addRoute('academic-students','ทะเบียนนักเรียน','งานวิชาการ','grades','School-OS/academic-students.html?v=20261111-transfer1');
 addRoute('academic-rooms','ห้องเรียน','งานวิชาการ','academic','School-OS/','rooms');
 addRoute('academic-timeslots','คาบเรียนและวันเรียน','งานวิชาการ','academic','School-OS/','timeslots');
 addRoute('academic-builder','จัดตารางสอน','งานวิชาการ','academic','School-OS/','builder');
@@ -66,7 +66,7 @@ const embeddedStyles = {
 
 const groups = [
   { key:'budget', role:'budget', id:'budget', label:'งานงบประมาณ', icon:'฿', items:['budget-home','budget-projects','budget-reports','budget-documents','budget-disbursement','budget-procurement','budget-inventory','budget-import'] },
-  { key:'academic', role:'timetable', id:'academic', label:'งานวิชาการ', icon:'▦', items:['academic-home','academic-school','academic-teachers','academic-subjects','academic-rooms','academic-students','academic-transfer','academic-timeslots','academic-builder','academic-teacher-builder','academic-auto','academic-teacher-view','academic-teacher-all','academic-workload','academic-conflict','academic-export','academic-substitute','academic-exchange','academic-leave','academic-calendar','academic-announcements','academic-storage'] },
+  { key:'academic', role:'timetable', id:'academic', label:'งานวิชาการ', icon:'▦', items:['academic-home','academic-school','academic-teachers','academic-subjects','academic-rooms','academic-students','academic-timeslots','academic-builder','academic-teacher-builder','academic-auto','academic-teacher-view','academic-teacher-all','academic-workload','academic-conflict','academic-export','academic-substitute','academic-exchange','academic-leave','academic-calendar','academic-announcements','academic-storage'] },
   {key:'results',role:'timetable',id:'results',label:'ผลการเรียน',icon:'▤',items:['academic-grade-import','academic-grades','academic-remedial']},
   { key:'attendance', role:'attendance', id:'student', label:'ดูแลนักเรียน', icon:'✓', items:['student-home','student-leave','student-morning','student-subject','student-behavior','student-reports','student-admin'] }
 ];

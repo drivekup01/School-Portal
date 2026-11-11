@@ -3,6 +3,7 @@ const $=id=>document.getElementById(id),esc=v=>String(v??'').replace(/[&<>"']/g,
 const statusNames={pending:'รออนุมัติ',approved:'อนุมัติแล้ว',returned:'ส่งกลับแก้ไข',rejected:'ไม่อนุมัติ'},types={sick:'ลาป่วย',personal:'ลากิจ',early:'ออกระหว่างวัน'},today=()=>new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Bangkok',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
 let catalog,requests=[],classes=[],busy=false,image='',editing=null,requestId=crypto.randomUUID(),moveId=crypto.randomUUID(),epoch=0,signature='',offProfile,rosterEpoch=0;
 const mode=new URLSearchParams(location.search).get('mode')==='transfer'?'transfer':'leave';
+if(new URLSearchParams(location.search).get('embedded')==='roster')document.body.classList.add('rosterEmbed');
 document.title=(mode==='transfer'?'ย้ายห้องนักเรียน':'แจ้งขอออกนอกโรงเรียน')+' · KBW School';
 function status(t,error=false){$('status').textContent=t;$('status').className=error?'error':''}
 function lock(v){busy=v;document.querySelectorAll('#workspace button,#workspace input,#workspace textarea,#workspace select').forEach(e=>e.disabled=v);if(!v&&editing){$('leaveClass').disabled=true;$('leaveStudent').disabled=true}}
