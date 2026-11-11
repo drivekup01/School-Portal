@@ -1,5 +1,9 @@
 import * as auth from '../shared/school-auth.js?v=20261107-academic1';
 const $=id=>document.getElementById(id),esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+// Upgrade the previous cached form before filling the automatic homeroom.
+const oldClassField=$('leaveClass');
+if(oldClassField&&!$('homeroomName')){const display=document.createElement('input');display.id='homeroomName';display.readOnly=true;display.setAttribute('aria-readonly','true');oldClassField.before(display);}
+if(oldClassField?.tagName==='SELECT'){const hidden=document.createElement('input');hidden.id='leaveClass';hidden.type='hidden';oldClassField.replaceWith(hidden);}
 const statusNames={pending:'รออนุมัติ',approved:'อนุมัติแล้ว',returned:'ส่งกลับแก้ไข',rejected:'ไม่อนุมัติ'},types={sick:'ลาป่วย',personal:'ลากิจ',early:'ออกระหว่างวัน'},today=()=>new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Bangkok',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
 let catalog,requests=[],classes=[],busy=false,image='',editing=null,requestId=crypto.randomUUID(),moveId=crypto.randomUUID(),epoch=0,signature='',offProfile,rosterEpoch=0;
 const mode=new URLSearchParams(location.search).get('mode')==='transfer'?'transfer':'leave';
