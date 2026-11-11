@@ -4,6 +4,8 @@ const $=id=>document.getElementById(id),esc=v=>String(v??'').replace(/[&<>"']/g,
 const oldClassField=$('leaveClass');
 if(oldClassField&&!$('homeroomName')){const display=document.createElement('input');display.id='homeroomName';display.readOnly=true;display.setAttribute('aria-readonly','true');oldClassField.before(display);}
 if(oldClassField?.tagName==='SELECT'){const hidden=document.createElement('input');hidden.id='leaveClass';hidden.type='hidden';oldClassField.replaceWith(hidden);}
+// Explicit HH:mm fields keep 24-hour display independent of device locale.
+for(const id of ['start','end']){const field=$(id);field.type='text';field.inputMode='numeric';field.pattern='([01][0-9]|2[0-3]):[0-5][0-9]';field.maxLength=5;field.placeholder='HH:mm';field.title='เวลา 24 ชั่วโมง เช่น 08:00 หรือ 16:30';field.addEventListener('input',()=>{if(/^\d{3,4}$/.test(field.value))field.value=field.value.slice(0,2)+':'+field.value.slice(2);});field.addEventListener('blur',()=>{if(/^\d{1,2}:\d{2}$/.test(field.value))field.value=field.value.padStart(5,'0');});}
 const statusNames={pending:'รออนุมัติ',approved:'อนุมัติแล้ว',returned:'ส่งกลับแก้ไข',rejected:'ไม่อนุมัติ'},types={sick:'ลาป่วย',personal:'ลากิจ',early:'ออกระหว่างวัน'},today=()=>new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Bangkok',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
 let catalog,requests=[],classes=[],busy=false,image='',editing=null,requestId=crypto.randomUUID(),moveId=crypto.randomUUID(),epoch=0,signature='',offProfile,rosterEpoch=0;
 const mode=new URLSearchParams(location.search).get('mode')==='transfer'?'transfer':'leave';
