@@ -47,7 +47,7 @@ addRoute('academic-leave','ประวัติการลาครู','ง�
 addRoute('academic-calendar','ปฏิทินโรงเรียน','งานวิชาการ','calendar','School-Portal/calendar/?mode=staff&v=20261108-calendar1');
 addRoute('academic-announcements','ประกาศ','งานวิชาการ','academic','School-OS/','announcements');
 addRoute('academic-storage','บันทึกและสำรองข้อมูล','งานวิชาการ','academic','School-OS/','storage');
-addRoute('student-leave','ขอลานักเรียน','ดูแลนักเรียน','services','School-Portal/student-services/?mode=leave');
+addRoute('student-leave','แจ้งขอออกนอกโรงเรียน','ดูแลนักเรียน','services','School-Portal/student-services/?mode=leave');
 addRoute('academic-transfer','ย้ายห้องนักเรียน','งานวิชาการ','services','School-Portal/student-services/?mode=transfer');
 addRoute('student-home','ภาพรวมดูแลนักเรียน','ดูแลนักเรียน','attendance','School-Portal/attendance/index.html');
 addRoute('student-morning','เช็กชื่อเข้าแถวเช้า','ดูแลนักเรียน','attendance','School-Portal/attendance/morning.html');

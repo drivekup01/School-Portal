@@ -83,7 +83,7 @@ const embeddedView = $('embeddedView');
 const frame = $('systemFrame');
 const appBase = 'https://drivekup01.github.io/';
 const routes = {
-  'student-leave':{title:'ขอลานักเรียน',category:'ดูแลนักเรียน',app:'services',url:appBase+'School-Portal/student-services/?mode=leave'},
+  'student-leave':{title:'แจ้งขอออกนอกโรงเรียน',category:'ดูแลนักเรียน',app:'services',url:appBase+'School-Portal/student-services/?mode=leave'},
   'academic-transfer':{title:'ย้ายห้องนักเรียน',category:'งานวิชาการ',app:'services',url:appBase+'School-Portal/student-services/?mode=transfer'},
   'student-accounts': { title: 'บัญชีนักเรียน', category: 'ศูนย์ผู้ดูแลระบบ', app: 'portal-admin', url: appBase + 'School-Portal/admin/students.html' },
   homepage: { title: 'แก้ไขหน้าแรก', category: 'ศูนย์ผู้ดูแลระบบ', app: 'portal-admin', url: appBase + 'School-Portal/admin/homepage.html?v=20261108-staff-roles1' },
