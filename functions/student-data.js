@@ -79,10 +79,10 @@ async function attendance(db,classId,studentId,range){
   for(let offset=0;offset<reads.length;offset+=200){const slice=reads.slice(offset,offset+200),snaps=await db.getAll(...slice.map(r=>r.ref));for(let i=0;i<snaps.length;i++){const value=snaps[i].data(),{ref,...source}=slice[i];if(!value){if(source.kind==='subject')rows.push({...source,planned:true});continue;}if(value.classId!==classId||value.studentId!==studentId)continue;rows.push({...source,status:value.status,note:String(value.note||'').slice(0,300),updatedAt:value.updatedAt});}}
   return {...summarizeMarks(rows),...range};
 }
-async function behavior(db,classId,studentId,detailed=false){
+async function behavior(db,classId,studentId,detailed=false,excludeTransfers=false){
   const result=await db.collection('attendance_behavior').where('classId','==',classId).where('studentId','==',studentId).limit(2001).get();
   if(result.docs.length>2000)fail('รายการคะแนนมีจำนวนมาก กรุณาติดต่อฝ่ายดูแลนักเรียน','resource-exhausted');
-  const rows=result.docs.map(d=>d.data()).filter(d=>d.classId===classId&&d.studentId===studentId);
+  const rows=result.docs.map(d=>d.data()).filter(d=>d.classId===classId&&d.studentId===studentId&&(!excludeTransfers||!d.transferBalance));
   if(rows.some(d=>!Number.isFinite(d.delta)))fail('ข้อมูลคะแนนต้นทางไม่ถูกต้อง','failed-precondition');
   return {baseScore:100,score:100+rows.reduce((sum,row)=>sum+row.delta,0),count:rows.length,events:rows.sort((a,b)=>epoch(b.createdAt)-epoch(a.createdAt)).slice(0,detailed?2000:10).map(row=>({date:dateOf(row.day),delta:row.delta,reason:(row.sourceRequestId?String(row.reason||'').replace(row.sourceRequestId,''):String(row.reason||'')).replace(/\s+/g,' ').trim().slice(0,300),category:row.category||'other',kind:row.requestRevision!==undefined||/^(แก้ไข|ยกเลิก)คำร้อง/.test(row.reason||'')?'correction':'record',author:String(row.authorName||'ครูผู้บันทึก').slice(0,150),recordedAt:row.createdAt?.toDate?.().toISOString()||''}))};
 }

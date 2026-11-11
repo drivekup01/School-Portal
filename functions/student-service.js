@@ -1,5 +1,5 @@
 'use strict';
-const D=require('./student-data'),{assertAdmin}=require('./content-model');
+const D=require('./student-data'),H=require('./student-roster-history'),{assertAdmin}=require('./content-model');
 const id=v=>typeof v==='string'&&/^[A-Za-z0-9_-]{1,100}$/.test(v);
 const emailOf=value=>{if(typeof value!=='string'||value.length>254||!/^\S+@[^\s@]+\.[^\s@]+$/.test(value.trim()))D.fail('อีเมลไม่ถูกต้อง');return value.trim().toLowerCase();};
 const photo=value=>{try{const url=new URL(value);return url.protocol==='https:'&&!url.username&&!url.password&&url.href.length<=2000?url.href:'';}catch{return '';}};
@@ -29,7 +29,7 @@ function service(db,stamp,clock=()=>new Date()){
   }
   async function dashboard(request,input){
     const ctx=await own(request),today=D.dayAt(clock()),month=input.month||today.slice(0,7),range=D.monthRange(month,clock());
-    const [table,marks,points,correction]=await Promise.allSettled([D.readTimetable(db),D.attendance(db,ctx.link.classId,ctx.link.studentId,range),D.behavior(db,ctx.link.classId,ctx.link.studentId),correctionRef(ctx.actor).get()]);
+    const [table,marks,points,correction]=await Promise.allSettled([D.readTimetable(db),ctx.student.rosterHistory?H.attendance(db,ctx,range):D.attendance(db,ctx.link.classId,ctx.link.studentId,range),ctx.student.rosterHistory?H.behavior(db,ctx):D.behavior(db,ctx.link.classId,ctx.link.studentId),correctionRef(ctx.actor).get()]);
     // Recheck mapping after reading private sources; an in-flight revoked binding must not return data.
     const live=await own(request);if(live.link.classId!==ctx.link.classId||live.link.studentId!==ctx.link.studentId)D.fail('การผูกบัญชีเปลี่ยนแล้ว กรุณาโหลดใหม่','aborted');
     const data=table.status==='fulfilled'?table.value?.data:null,plan=data?D.schedule(data,ctx.room,today):{ready:false,reason:'ยังโหลดข้อมูลจากระบบจัดตารางสอนไม่ได้',lessons:[],homeroomTeachers:[]};
@@ -79,7 +79,7 @@ function service(db,stamp,clock=()=>new Date()){
       tx.set(db.collection('school_student_audit').doc(),{action:input.method,email,classId:input.classId,studentId:input.studentId,uid:actor.uid,createdAt:stamp()});return {ok:true};
     });
   }
-  async function handle(request){const input=request.data||{};authenticated(request);validate(input);if(input.method==='dashboard')return dashboard(request,input);if(input.method==='behaviorDetails'){const ctx=await own(request),result=await D.behavior(db,ctx.link.classId,ctx.link.studentId,true),live=await own(request);if(live.link.classId!==ctx.link.classId||live.link.studentId!==ctx.link.studentId)D.fail('การผูกบัญชีเปลี่ยนแล้ว กรุณาโหลดใหม่','aborted');return result;}if(input.method==='requestCorrection')return requestCorrection(request,input);return admin(request,input);}
+  async function handle(request){const input=request.data||{};authenticated(request);validate(input);if(input.method==='dashboard')return dashboard(request,input);if(input.method==='behaviorDetails'){const ctx=await own(request),result=await (ctx.student.rosterHistory?H.behavior(db,ctx,true):D.behavior(db,ctx.link.classId,ctx.link.studentId,true)),live=await own(request);if(live.link.classId!==ctx.link.classId||live.link.studentId!==ctx.link.studentId)D.fail('การผูกบัญชีเปลี่ยนแล้ว กรุณาโหลดใหม่','aborted');return result;}if(input.method==='requestCorrection')return requestCorrection(request,input);return admin(request,input);}
   return {handle,own};
 }
 module.exports={service,validate,authenticated};
