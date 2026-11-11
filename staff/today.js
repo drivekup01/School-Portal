@@ -1,5 +1,5 @@
 import {moduleRole} from '../shared/school-auth.js?v=20261107-academic1';
-import {staffLinks} from './quick-links.js?v=20261111-leave1';
+import {staffLinks} from './quick-links.js?v=20261111-telegram1';
 export async function renderToday(host,profile,openRoute){
  host.replaceChildren();
  const section=document.createElement('section');section.className='panel staff-shortcuts';section.setAttribute('aria-label','เมนูลัดสำหรับครู');
@@ -9,6 +9,7 @@ export async function renderToday(host,profile,openRoute){
   {title:'เช็คชื่อเข้าแถว',description:'บันทึกการมาเรียนช่วงเช้าของห้องประจำชั้น',icon:'☀',route:'student-morning',allowed:moduleRole(profile,'attendance')!=='none'},
   {title:'เช็คชื่อรายคาบเรียน',description:'เช็คชื่อนักเรียนในคาบเรียนที่รับผิดชอบ',icon:'✓',route:'student-subject',allowed:moduleRole(profile,'attendance')!=='none'},
   {title:'ตารางสอนของฉัน',description:'เปิดตารางสอนของครูที่เข้าสู่ระบบ',icon:'▦',route:'academic-teacher-view',allowed:moduleRole(profile,'timetable')!=='none'&&Boolean(profile.teacherId),note:!profile.teacherId?'ยังไม่ได้ผูกบัญชีกับข้อมูลครู กรุณาติดต่อผู้ดูแล':''},
+  {title:'เข้ากลุ่ม Telegram',description:'เข้าร่วมกลุ่มรับข่าวสารและแจ้งเตือนสำหรับครู',icon:'✈',url:staffLinks.telegram},
   {title:'ใบลาออนไลน์',description:'เข้าใช้ระบบใบลาเดิมของโรงเรียน',icon:'↗',url:staffLinks.leave,note:'รอลิงก์ระบบใบลาเดิม'},
   {title:'รูปกิจกรรมโรงเรียน',description:'เปิดอัลบั้มภาพกิจกรรมใน Google Drive',icon:'▧',url:staffLinks.photos,note:'รอลิงก์โฟลเดอร์รูปกิจกรรม'}
  ];
