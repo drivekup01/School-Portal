@@ -5,8 +5,8 @@ function eventFor(id,before,after){
  if(!after)return null;
  const approved=after.status==='approved'&&before?.status!=='approved',cancelled=before?.status==='approved'&&after.status!=='approved';
  if(!approved&&!cancelled)return null;
- const d=approved?after:before,clean=v=>String(v||'').replace(/[\r\n]+/g,' ').slice(0,200);
- return {requestId:id,revision:after.revision,action:approved?'approved':'cancelled',status:after.status,text:[approved?'✅ อนุมัติออกนอกโรงเรียน':'🔴 ยกเลิกใบอนุญาตออกนอกโรงเรียนฉบับเดิม','นักเรียน: '+clean(d.studentName)+' · ห้อง '+clean(d.className),'วันที่ '+clean(d.date)+(d.endDate!==d.date?' ถึง '+clean(d.endDate):'')+' เวลา '+clean(d.start)+'–'+clean(d.end)+' น.','ครูประจำชั้น: '+clean(d.teacherName),approved?'ผู้อนุมัติ: '+clean(d.reviewerName):after.status==='pending'?'มีการแก้ไขคำขอ ต้องรอฝ่ายปกครองอนุมัติใหม่':'คำขอนี้ถูกยกเลิกหรือลบแล้ว','เลขที่คำขอ '+clean(id)+' · ฉบับ '+(approved?after.revision:before.revision),'ครูประจำวิชาโปรดรับทราบ · รายละเอียดในระบบตามสิทธิ์'].join('\n')};
+ const d=approved?after:before,clean=(v,max=200)=>String(v||'').replace(/[\r\n]+/g,' ').slice(0,max);
+ return {requestId:id,revision:after.revision,action:approved?'approved':'cancelled',status:after.status,text:[approved?'✅ อนุมัติออกนอกโรงเรียน':'🔴 ยกเลิกใบอนุญาตออกนอกโรงเรียนฉบับเดิม','นักเรียน: '+clean(d.studentName)+' · ห้อง '+clean(d.className),'วันที่ '+clean(d.date)+(d.endDate!==d.date?' ถึง '+clean(d.endDate):'')+' เวลา '+clean(d.start)+'–'+clean(d.end)+' น.','ครูประจำชั้น: '+clean(d.teacherName),approved?'ผู้อนุมัติ: '+clean(d.reviewerName):after.status==='pending'?'มีการแก้ไขคำขอ ต้องรอฝ่ายปกครองอนุมัติใหม่':'คำขอนี้ถูกยกเลิกหรือลบแล้ว','เหตุผล: '+(clean(d.reason,1000)||'ไม่ระบุ')].join('\n')};
 }
 async function send(event,token,fetchImpl=fetch){
  if(typeof token!=='string'||!/^\d+:[A-Za-z0-9_-]+$/.test(token))return {status:'failed'};
