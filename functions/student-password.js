@@ -41,6 +41,37 @@ function service(db,stamp,createToken,clock=()=>Date.now()){
    tx.set(db.collection('school_student_audit').doc(),{action:input.method,classId:input.classId,studentIds:hashes.map(h=>h.studentId),count,uid:request.auth.uid,createdAt:stamp()});return {ok:true,count};
   });
  }
- return {async handle(request){const input=request.data||{};return input.method==='login'?login(request,input):provision(request,input);}};
+ async function passwordHelp(request,input){
+  if(!request.auth)fail('กรุณาเข้าสู่ระบบผู้ดูแล','unauthenticated');
+  assertAdmin(request.auth,(await db.doc('school_users/'+request.auth.uid).get()).data());
+  const setting=input.method==='adminSetPassword',allowed=['method','classId','studentId',...(setting?['password','version']:[])];
+  if(Object.keys(input).some(k=>!allowed.includes(k))||!validId(input.classId)||!validId(input.studentId))fail('คำขอไม่ถูกต้อง');
+  if(setting&&(typeof input.password!=='string'||input.password.trim().length<6||input.password.length>128||/[\u0000-\u001f\u007f]/.test(input.password)||!Number.isInteger(input.version)||input.version<1))fail('รหัสผ่านใหม่ต้องมี 6–128 ตัวอักษร และไม่มีอักขระควบคุม');
+  const studentRef=db.doc('attendance_classes/'+input.classId+'/students/'+input.studentId),roomRef=db.doc('attendance_classes/'+input.classId),student=(await studentRef.get()).data();
+  const code=String(student?.code||'').trim();if(!student||student.active===false||!validCode(code))fail('ทะเบียนนักเรียนไม่พร้อมใช้งาน','failed-precondition');
+  const accountRef=ref(code),prior=(await accountRef.get()).data();
+  if(prior&&(prior.classId!==input.classId||prior.studentId!==input.studentId))fail('บัญชีผูกกับรายชื่ออื่น กรุณาตรวจสอบทะเบียน','failed-precondition');
+  let knownPassword=null,salt,passwordHash;
+  if(setting){salt=randomBytes(24).toString('hex');passwordHash=await digest(input.password,salt);}
+  else if(prior?.active&&typeof prior.salt==='string'&&/^[a-f0-9]{128}$/.test(prior.passwordHash||'')){
+   const candidate=prior.birthDate?birthdayPassword(prior.birthDate):'123456',actual=await digest(candidate,prior.salt);
+   if(timingSafeEqual(Buffer.from(actual,'hex'),Buffer.from(prior.passwordHash,'hex')))knownPassword=candidate;
+  }
+  return db.runTransaction(async tx=>{
+   await admin(request,tx);
+   const [liveStudent,room,account]=await Promise.all([tx.get(studentRef),tx.get(roomRef),tx.get(accountRef)]),old=account.data();
+   if(!room.data()?.active||!liveStudent.exists||liveStudent.data().active===false||String(liveStudent.data().code).trim()!==code)fail('ทะเบียนนักเรียนเปลี่ยน กรุณาโหลดใหม่','aborted');
+   if((old?.version||0)!==(prior?.version||0)||old?.passwordHash!==prior?.passwordHash||old?.active!==prior?.active||old&&(old.classId!==input.classId||old.studentId!==input.studentId))fail('บัญชีเปลี่ยนแปลง กรุณาเลือกนักเรียนใหม่','aborted');
+   if(!setting)return {version:old?.version||0,canSet:old?.active===true,knownPassword:old?.active?knownPassword:null,mode:old?.passwordMode||null};
+   if(!old?.active)fail('เปิดใช้บัญชีนักเรียนก่อนตั้งรหัสผ่าน','failed-precondition');
+   if(old.version!==input.version)fail('รหัสผ่านถูกเปลี่ยนโดยผู้ดูแลอื่นแล้ว กรุณาเลือกนักเรียนใหม่','aborted');
+   const version=old.version+1;
+   tx.set(accountRef,{...old,salt,passwordHash,passwordMode:'custom',version,updatedBy:request.auth.uid,updatedAt:stamp()});
+   tx.delete(db.doc('school_student_login_limits/code_'+hash(code)));
+   tx.set(db.collection('school_student_audit').doc(),{action:'adminSetPassword',classId:input.classId,studentId:input.studentId,uid:request.auth.uid,createdAt:stamp()});
+   return {ok:true,version};
+  });
+ }
+ return {async handle(request){const input=request.data||{};return input.method==='login'?login(request,input):['adminPasswordInfo','adminSetPassword'].includes(input.method)?passwordHelp(request,input):provision(request,input);}};
 }
 module.exports={service,digest,uidFor,validCode};

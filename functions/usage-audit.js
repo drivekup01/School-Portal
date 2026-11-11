@@ -11,7 +11,7 @@ writeMethods.add('clearAttendance');
 writeMethods.add('saveRegularAttendance');
 writeMethods.add('setCalendarPin');writeMethods.add('setCalendarAnnouncement');writeMethods.add('uploadStaffImage');labels.uploadStaffImage='อัปโหลดรูปบุคลากรสำหรับหน้าเว็บไซต์';labels.setCalendarAnnouncement='เลือกหรือยกเลิกประกาศจากปฏิทินบนหน้าแรก';
 labels.setCalendarPin='ปักหมุดหรือยกเลิกปักหมุดปฏิทินหน้าแรก';
-writeMethods.add('deleteRequest');labels.deleteRequest='ลบคำขอออกนอกโรงเรียน';writeMethods.add('move');writeMethods.add('review');labels.move='ย้ายห้องนักเรียน';labels.review='พิจารณาคำขอลานักเรียน';
+writeMethods.add('adminSetPassword');labels.adminSetPassword='ตั้งรหัสผ่านนักเรียนใหม่';writeMethods.add('deleteRequest');labels.deleteRequest='ลบคำขอออกนอกโรงเรียน';writeMethods.add('move');writeMethods.add('review');labels.move='ย้ายห้องนักเรียน';labels.review='พิจารณาคำขอลานักเรียน';
 const apiModules={schoolStudentWorkflow:'students',schoolCalendar:'academic',schoolStudentImport:'students',schoolBackup:'backup',schoolAcademicStudents:'academic',schoolRemedial:'academic',schoolGrades:'academic',schoolHomepage:'homepage',schoolStudent:'students',schoolStudentLogin:'students',schoolIdentity:'accounts',timetableApi:'academic',budgetApi:'budget',attendanceAdmin:'attendance',attendanceOverview:'attendance',attendanceBehavior:'behavior',attendanceBehaviorRequests:'behavior'};
 function moduleFor(path,section=''){
  if(/^(budget|procurement)/.test(section)||/^\/School-(Budget|Procurement)\//.test(path))return 'budget';

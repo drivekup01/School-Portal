@@ -85,7 +85,7 @@ const appBase = 'https://drivekup01.github.io/';
 const routes = {
   'student-leave':{title:'แจ้งขอออกนอกโรงเรียน',category:'ดูแลนักเรียน',app:'services',url:appBase+'School-Portal/student-services/?mode=leave&v=20261111-homeroom2'},
   'academic-transfer':{title:'ย้ายห้องนักเรียน',category:'งานวิชาการ',app:'services',url:appBase+'School-Portal/student-services/?mode=transfer'},
-  'student-accounts': { title: 'บัญชีนักเรียน', category: 'ศูนย์ผู้ดูแลระบบ', app: 'portal-admin', url: appBase + 'School-Portal/admin/students.html' },
+  'student-accounts': { title: 'บัญชีนักเรียน', category: 'ศูนย์ผู้ดูแลระบบ', app: 'portal-admin', url: appBase + 'School-Portal/admin/students.html?v=20261111-password1' },
   homepage: { title: 'แก้ไขหน้าแรก', category: 'ศูนย์ผู้ดูแลระบบ', app: 'portal-admin', url: appBase + 'School-Portal/admin/homepage.html?v=20261108-staff-roles1' },
   backup: {title:'ส่งออก Backup',category:'ศูนย์ผู้ดูแลระบบ',app:'portal-admin',url:appBase+'School-Portal/admin/backup.html?v=20261107-backup1'},
   accounts: { title: 'ผู้ใช้และสิทธิ์', category: 'ศูนย์ผู้ดูแลระบบ', app: 'accounts', url: appBase + 'School-Portal/users.html?v=20261107-order1' },
