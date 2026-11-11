@@ -1,4 +1,7 @@
 'use strict';
+const {onDocumentWritten}=require('firebase-functions/v2/firestore');
+const {defineSecret}=require('firebase-functions/params');
+const TELEGRAM_BOT_TOKEN=defineSecret('TELEGRAM_BOT_TOKEN');
 const {onCall,onRequest,HttpsError} = require('firebase-functions/v2/https');
 const {initializeApp,getApps} = require('firebase-admin/app');
 const {getFirestore,FieldValue} = require('firebase-admin/firestore');
@@ -36,6 +39,10 @@ exports.schoolStudent=audited('schoolStudent',{region:'asia-southeast1',invoker:
 function audited(name,options,handler){const db=require('firebase-admin/firestore').getFirestore(),stamp=()=>require('firebase-admin/firestore').FieldValue.serverTimestamp();const audit=require('./usage-audit').service(db,stamp);return onCall(options,request=>audit.track(name,request,()=>handler(request)));}
 
 exports.schoolUsage=onCall({region:'asia-southeast1',invoker:'public',memory:'256MiB',maxInstances:3,timeoutSeconds:30,cors:['https://drivekup01.github.io','http://127.0.0.1:4173']},async request=>{try{return await require('./usage-audit').service(getFirestore(),()=>FieldValue.serverTimestamp()).handle(request);}catch(error){const codes=['invalid-argument','unauthenticated','permission-denied','resource-exhausted'];throw new HttpsError(codes.includes(error.code)?error.code:'internal',codes.includes(error.code)?error.message:'โหลดประวัติไม่สำเร็จ กรุณาลองใหม่');}});
+
+const studentExit=require('./student-exit').service(getFirestore(),students.own);
+exports.schoolStudentExit=onCall({region:'asia-southeast1',invoker:'public',memory:'256MiB',maxInstances:3,timeoutSeconds:60,cors:['https://drivekup01.github.io','http://127.0.0.1:4173']},async request=>{try{return await studentExit.handle(request);}catch(error){const codes=['invalid-argument','unauthenticated','permission-denied','not-found','failed-precondition','aborted','resource-exhausted'];throw new HttpsError(codes.includes(error.code)?error.code:'internal',codes.includes(error.code)?error.message:'โหลดใบอนุญาตไม่สำเร็จ กรุณาลองใหม่');}});
+exports.schoolStudentExitNotify=onDocumentWritten({document:'school_student_leaves/{requestId}',region:'asia-southeast1',memory:'256MiB',maxInstances:3,timeoutSeconds:60,retry:true,secrets:[TELEGRAM_BOT_TOKEN]},async event=>{if(!event.data)return;await require('./student-leave-notifications').service(getFirestore(),()=>FieldValue.serverTimestamp(),()=>TELEGRAM_BOT_TOKEN.value()).handle(event.params.requestId,event.data.before.data(),event.data.after.data());});
 
 const studentReports=require('./student-reports').service(getFirestore(),require('firebase-admin/storage').getStorage(),students.own);
 exports.schoolStudentReports=onCall({region:'asia-southeast1',invoker:'public',memory:'256MiB',maxInstances:3,timeoutSeconds:90,cors:['https://drivekup01.github.io','http://127.0.0.1:4173']},async request=>{try{return await studentReports.handle(request);}catch(error){const codes=['invalid-argument','unauthenticated','permission-denied','not-found','failed-precondition','aborted'];throw new HttpsError(codes.includes(error.code)?error.code:'internal',codes.includes(error.code)?error.message:'โหลดผลการเรียนไม่สำเร็จ กรุณาลองใหม่');}});

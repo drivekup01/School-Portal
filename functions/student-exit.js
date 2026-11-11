@@ -1,0 +1,15 @@
+'use strict';
+const D=require('./student-data');
+const ownerKey=(code,name)=>JSON.stringify([code,String(name||'').normalize('NFKC').replace(/\s/g,'').replace(/^(เด็กชาย|เด็กหญิง|ด\.ช\.|ด\.ญ\.|นาย|นางสาว|น\.ส\.)/,'')]);
+const validId=v=>typeof v==='string'&&/^[A-Za-z0-9_-]{1,128}$/.test(v);
+function service(db,own,clock=()=>new Date()){
+ const time=v=>v?.toDate?.().toISOString()||'';
+ function belongs(d,ctx){const code=String(ctx.student.code||'').trim(),places=[{classId:ctx.link.classId,studentId:ctx.link.studentId},...(ctx.student.rosterHistory||[])];return d?.status==='approved'&&String(d.code).trim()===code&&ownerKey(code,d.studentName)===ownerKey(code,ctx.student.name)&&places.some(p=>p.classId===d.classId&&p.studentId===d.studentId);}
+ function project(id,d,now){const local=new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Bangkok',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).formatToParts(now),p=Object.fromEntries(local.map(x=>[x.type,x.value])),current=`${p.year}-${p.month}-${p.day}T${p.hour}:${p.minute}`,start=d.date+'T'+d.start,end=d.endDate+'T'+d.end;return {id,revision:d.revision,status:'approved',studentName:d.studentName,code:String(d.code),className:d.className,date:d.date,endDate:d.endDate,start:d.start,end:d.end,pickup:d.pickup,teacherName:d.teacherName,reviewerName:d.reviewerName||'',approvedAt:time(d.reviewedAt),checkedAt:now.toISOString(),validity:current<start?'upcoming':current>end?'expired':'current'};}
+ async function verify(request,ctx){const live=await own(request);if(live.link.classId!==ctx.link.classId||live.link.studentId!==ctx.link.studentId||String(live.student.code)!==String(ctx.student.code)||ownerKey(String(live.student.code),live.student.name)!==ownerKey(String(ctx.student.code),ctx.student.name))D.fail('ข้อมูลบัญชีเปลี่ยน กรุณาเข้าสู่ระบบใหม่','permission-denied');return live;}
+ return {async handle(request){const i=request.data||{};if(!['list','get'].includes(i.method)||Object.keys(i).some(k=>!['method',...(i.method==='get'?['id']:[])].includes(k))||i.method==='get'&&!validId(i.id))D.fail('คำขอไม่ถูกต้อง');const ctx=await own(request),code=String(ctx.student.code||'').trim();if(!/^\d{1,20}$/.test(code))D.fail('รหัสนักเรียนยังไม่พร้อมใช้งาน','failed-precondition');
+  if(i.method==='list'){const snaps=await db.collection('school_student_leaves').where('code','==',code).limit(1001).get();if(snaps.docs.length>1000)D.fail('รายการมีจำนวนมาก กรุณาติดต่อครูประจำชั้น','resource-exhausted');const live=await verify(request,ctx),now=clock();return {passes:snaps.docs.filter(s=>belongs(s.data(),live)).map(s=>project(s.id,s.data(),now)).sort((a,b)=>b.date.localeCompare(a.date)||b.start.localeCompare(a.start)).slice(0,100),checkedAt:now.toISOString()};}
+  const ref=db.doc('school_student_leaves/'+i.id),d=(await ref.get()).data();if(!belongs(d,ctx))D.fail('ไม่พบรายการที่อนุมัติแล้วสำหรับบัญชีนี้','not-found');const live=await verify(request,ctx),current=(await ref.get()).data();if(!belongs(current,live))D.fail('คำขอนี้ถูกเปลี่ยนแปลงหรือยกเลิกแล้ว กรุณาโหลดใหม่','not-found');return project(i.id,current,clock());
+ }};
+}
+module.exports={service};
