@@ -3,3 +3,5 @@
 body.rosterEmbed{background:transparent}body.rosterEmbed>header,body.rosterEmbed .heading,body.rosterEmbed nav{display:none}body.rosterEmbed main{padding:0;max-width:none}body.rosterEmbed #status:empty{display:none}
 
 button.danger{background:#fff0f2;color:#a22b45;border:1px solid #eccbd2}
+
+.time-picker{display:flex;gap:8px;margin-top:7px}.time-picker select{margin-top:0;min-width:0;flex:1;padding:10px 8px}
