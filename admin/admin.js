@@ -1,4 +1,5 @@
 import * as shared from '../shared/school-auth.js?v=20261107-academic1';
+window.schoolShowcaseSession=Object.freeze({firebase:shared.firebase,call:shared.call});
 
 import {mountActivity} from './activity.js?v=20261107-usage1';
 let activityView;
