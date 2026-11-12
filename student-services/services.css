@@ -5,3 +5,5 @@ body.rosterEmbed{background:transparent}body.rosterEmbed>header,body.rosterEmbed
 button.danger{background:#fff0f2;color:#a22b45;border:1px solid #eccbd2}
 
 .time-picker{display:flex;gap:8px;margin-top:7px}.time-picker select{margin-top:0;min-width:0;flex:1;padding:10px 8px}
+/* Embedded pages use the portal's navigation and account header. */
+.services-embedded body>header,.services-embedded .heading h1,.services-embedded .heading .eyebrow,.services-embedded #account{display:none}.services-embedded main{padding-top:12px}.services-embedded .heading{margin-bottom:10px}.services-embedded .heading p{margin:0}.services-embedded #gate{margin:20px auto}.services-embedded #gate h1{display:none}

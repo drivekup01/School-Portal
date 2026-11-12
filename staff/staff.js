@@ -1,5 +1,6 @@
 import * as shared from '../shared/school-auth.js?v=20261107-academic1';
-window.schoolShowcaseSession=Object.freeze({firebase:shared.firebase,call:shared.call});
+window.schoolPortalSession=Object.freeze({firebase:shared.firebase,call:shared.call,profile:shared.profile,observeProfile:shared.observeProfile});
+window.schoolShowcaseSession=window.schoolPortalSession;
 import {renderToday} from './today.js?v=20261111-telegram1';
 
 const $ = id => document.getElementById(id);

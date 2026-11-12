@@ -1,4 +1,4 @@
-import * as auth from './session.js?v=20261112-1';
+import * as auth from '../shared/portal-session.js?v=20261112-1';
 import {mountShowcase} from '../shared/showcase.js?v=20261112-tabs1';
 const $=id=>document.getElementById(id),embedded=window.self!==window.top,upload=new URLSearchParams(location.search).get('mode')==='upload',view=mountShowcase($('workspace'),{upload,request:(method,data={})=>auth.call('schoolShowcase',{method,...data})});let sequence=0,off;
 $('page-title').textContent=upload?'อัปโหลดเกียรติบัตร / ผลงาน':'เกียรติบัตร / ผลงาน';document.title=$('page-title').textContent+' · KBW School';
