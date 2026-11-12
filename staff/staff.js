@@ -70,7 +70,7 @@ const groups = [
   { key:'budget', role:'budget', id:'budget', label:'งานงบประมาณ', icon:'฿', items:['budget-home','budget-projects','budget-reports','budget-documents','budget-disbursement','budget-procurement','budget-inventory','budget-import'] },
   { key:'academic', role:'timetable', id:'academic', label:'งานวิชาการ', icon:'▦', items:['academic-home','academic-school','academic-teachers','academic-subjects','academic-rooms','academic-students','academic-timeslots','academic-builder','academic-teacher-builder','academic-auto','academic-teacher-view','academic-teacher-all','academic-workload','academic-conflict','academic-export','academic-substitute','academic-exchange','academic-leave','academic-calendar','academic-announcements','academic-storage'] },
   {key:'results',role:'timetable',id:'results',label:'ผลการเรียน',icon:'▤',items:['academic-grade-import','academic-grades','academic-remedial']},
-  { key:'attendance', role:'attendance', id:'student', label:'ดูแลนักเรียน', icon:'✓', items:['student-home','student-leave','student-showcase','student-showcase-upload','student-morning','student-subject','student-behavior','student-reports','student-admin'] }
+  { key:'attendance', role:'attendance', id:'student', label:'ดูแลนักเรียน', icon:'✓', items:['student-home','student-leave','student-showcase','student-morning','student-subject','student-behavior','student-reports','student-admin'] }
 ];
 let profile;
 let pendingAcademicPage = null;
