@@ -1,4 +1,4 @@
-import {mountShowcase} from '../shared/showcase.js?v=20261112-1';
+import {mountShowcase} from '../shared/showcase.js?v=20261112-media1';
 import {mountStudentExit} from './exit-passes.js?v=20261111-exit1';
 import {mountStudentRemedial} from './remedial.js?v=20261107-layout1';
 import {mountStudentReports} from './reports.js?v=20261107-period3';
