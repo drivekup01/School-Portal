@@ -1,5 +1,5 @@
 import * as auth from '../shared/portal-session.js?v=20261112-1';
-import {mountShowcase} from '../shared/showcase.js?v=20261112-media1';
+import {mountShowcase} from '../shared/showcase.js?v=20261112-clean1';
 const $=id=>document.getElementById(id),embedded=window.self!==window.top,upload=new URLSearchParams(location.search).get('mode')==='upload',view=mountShowcase($('workspace'),{upload,request:(method,data={})=>auth.call('schoolShowcase',{method,...data})});let sequence=0,off;
 $('page-title').textContent=upload?'อัปโหลดเกียรติบัตร / ผลงาน':'เกียรติบัตร / ผลงาน';document.title=$('page-title').textContent+' · KBW School';
 if(embedded){$('login').hidden=true;$('student-login').hidden=true;$('gate-title').hidden=true;}
