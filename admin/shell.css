@@ -20,3 +20,10 @@ html[data-school-ui] body{background:#f6f5f9}
 /* Match the shell geometry over shared defaults. */
 html[data-school-ui] #sidebar{width:var(--shell-sidebar)}html[data-school-ui] #appShell>.main-area{margin-left:var(--shell-sidebar)}html[data-school-ui] #embeddedView{left:var(--shell-sidebar)}html[data-school-ui] .sidebar .group-toggle.active{background:#ffffff12!important}html[data-school-ui] .sidebar .sub-nav a.active{background:#f3eafb!important;color:#613087!important}
 @media(max-width:760px){html[data-school-ui] #sidebar{width:min(292px,86vw)}.date-chip{max-width:none}.date-chip strong{white-space:nowrap}.date-chip small{display:none!important}}
+/* School identity: transparent emblem with a soft floating shadow. */
+html[data-school-ui] #sidebar .brand{flex-direction:column;align-items:center;text-align:center;gap:6px;padding:0 2px 20px}
+html[data-school-ui] #sidebar .brand img{display:block;width:132px;height:132px;object-fit:contain;background:transparent;border:0;border-radius:0;box-shadow:none;filter:drop-shadow(0 9px 7px #160b2270) drop-shadow(0 2px 2px #ffffff12)}
+html[data-school-ui] #sidebar .brand>span{display:block;width:100%}
+html[data-school-ui] #sidebar .brand strong{font-size:14px;line-height:1.7;font-weight:600;text-wrap:balance;color:#fff}
+html[data-school-ui] #sidebar .brand small{font-size:12px!important;line-height:1.6;margin-top:4px;color:#cdb9dd!important}
+@media(max-width:760px){html[data-school-ui] #sidebar .brand img{width:124px;height:124px}}
