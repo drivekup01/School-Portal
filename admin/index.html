@@ -14,7 +14,7 @@
   <title>ศูนย์ผู้ดูแลระบบ · โรงเรียนค่ายบางระจันวิทยาคม</title>
   <link rel="icon" href="../favicon.png">
   <link rel="stylesheet" href="https://drivekup01.github.io/School-Portal/styles/admin.css?v=20261107-usage1">
-<link rel="stylesheet" href="https://drivekup01.github.io/School-Portal/shared/school-ui.css?v=20261030-unified1"><script type="module" src="https://drivekup01.github.io/School-Portal/shared/usage-tracker.js?v=20261107-usage1"></script></head>
+<link rel="stylesheet" href="https://drivekup01.github.io/School-Portal/shared/school-ui.css?v=20261030-unified1"><script type="module" src="https://drivekup01.github.io/School-Portal/shared/usage-tracker.js?v=20261107-usage1"></script><link rel="stylesheet" href="shell.css?v=20261115-shell1"></head>
 <body>
   <div class="auth-gate" id="authGate" role="status" aria-live="polite">
     <img src="../school-logo.svg" alt="ตราโรงเรียน">
@@ -94,16 +94,16 @@
     <main class="main-area">
       <header class="topbar">
         <button class="icon-button menu-button" id="menuButton" aria-label="เปิดเมนู" aria-expanded="false">☰</button>
-        <div class="breadcrumbs"><span>ศูนย์ผู้ดูแลระบบ</span><b>/</b><strong id="pageCrumb">ภาพรวมระบบ</strong></div>
+        <div class="breadcrumbs"><button class="shell-home" id="backToOverview" title="กลับภาพรวมระบบ">ภาพรวมระบบ</button><b aria-hidden="true">/</b><span id="embeddedCategory">ศูนย์ผู้ดูแลระบบ</span><strong id="pageCrumb" aria-live="polite">ภาพรวมระบบ</strong></div>
         <div class="top-actions">
-          <span class="admin-badge"><i></i> ผู้ดูแลระบบ</span>
-          <div class="account-menu"><span class="avatar" id="avatarInitial">ผ</span><span class="account-copy"><strong id="adminName">ผู้ดูแลระบบ</strong><small id="adminEmail"></small></span><button class="text-button" id="logoutButton">ออกจากระบบ</button></div>
+          <a id="openStandalone" class="standalone-link" href="#" target="_blank" rel="noopener" hidden>เปิดเต็มหน้า ↗</a>
+          <details class="account-dropdown"><summary aria-label="บัญชีผู้ใช้"><span class="avatar" id="avatarInitial">ผ</span><span class="account-label">บัญชีผู้ดูแล</span><span aria-hidden="true">⌄</span></summary><div class="account-popover"><span class="account-copy"><strong id="adminName">ผู้ดูแลระบบ</strong><small id="adminEmail"></small></span><span class="account-role">ผู้ดูแลระบบ</span><button class="text-button" id="logoutButton">ออกจากระบบ</button></div></details>
         </div>
       </header>
 
       <div class="page-content" id="overview">
         <section class="welcome-row">
-          <div><p class="eyebrow">ADMIN CENTER</p><h1>ภาพรวมระบบ</h1><p class="muted">จัดการระบบงานโรงเรียนและตรวจสอบข้อมูลจากจุดเดียว</p></div>
+          <div><p class="eyebrow">ศูนย์บริหารโรงเรียน</p><h1>ภาพรวมระบบ</h1><p class="muted">จัดการระบบงานโรงเรียนและตรวจสอบข้อมูลจากจุดเดียว</p></div>
           <div class="date-chip"><span class="date-icon">▦</span><span><small>วันที่วันนี้</small><strong id="todayDate">—</strong></span></div>
         </section>
 
@@ -114,26 +114,26 @@
           <article class="summary-card"><div class="summary-top"><span>ผู้ดูแลระบบ</span><span class="summary-icon icon-green">✓</span></div><strong class="summary-value">2</strong><small>สิทธิ์ผู้ดูแลเท่ากันทั้ง 2 บัญชี</small></article>
         </section>
 
-        <section class="section-heading"><div><p class="eyebrow">SYSTEMS</p><h2>ระบบงานโรงเรียน</h2><p class="muted">เลือกเข้าสู่ระบบที่ต้องการจัดการ</p></div><span class="section-count">3 ระบบ</span></section>
+        <section class="section-heading"><div><p class="eyebrow">พื้นที่ทำงาน</p><h2>ระบบงานโรงเรียน</h2><p class="muted">เลือกเข้าสู่ระบบที่ต้องการจัดการ</p></div><span class="section-count">3 ระบบ</span></section>
         <section class="system-grid" aria-label="ระบบงานโรงเรียน">
           <a class="system-card budget-card" href="#" data-route="budget-home">
-            <div class="system-card-head"><span class="system-icon">฿</span><span class="open-arrow">↗</span></div><span class="system-kicker">FINANCE & PROCUREMENT</span><h3>ระบบงานงบประมาณ</h3><p>ภาพรวมงบ โครงการ เอกสารเบิกจ่าย และงานจัดซื้อจัดจ้าง</p><span class="system-link">เปิดระบบ <b>→</b></span>
+            <div class="system-card-head"><span class="system-icon">฿</span><span class="open-arrow">↗</span></div><span class="system-kicker">งบประมาณและพัสดุ</span><h3>ระบบงานงบประมาณ</h3><p>ภาพรวมงบ โครงการ เอกสารเบิกจ่าย และงานจัดซื้อจัดจ้าง</p><span class="system-link">เปิดระบบ <b>→</b></span>
           </a>
           <a class="system-card academic-card" href="#" data-route="academic-home">
-            <div class="system-card-head"><span class="system-icon">▦</span><span class="open-arrow">↗</span></div><span class="system-kicker">ACADEMIC</span><h3>ระบบงานวิชาการ</h3><p>ครู วิชา ห้องเรียน คาบเรียน ตารางสอน และการสอนแทน</p><span class="system-link">เปิดระบบ <b>→</b></span>
+            <div class="system-card-head"><span class="system-icon">▦</span><span class="open-arrow">↗</span></div><span class="system-kicker">การเรียนการสอน</span><h3>ระบบงานวิชาการ</h3><p>ครู วิชา ห้องเรียน คาบเรียน ตารางสอน และการสอนแทน</p><span class="system-link">เปิดระบบ <b>→</b></span>
           </a>
           <a class="system-card student-card" href="#" data-route="student-home">
-            <div class="system-card-head"><span class="system-icon">✓</span><span class="open-arrow">↗</span></div><span class="system-kicker">STUDENT SUPPORT</span><h3>ระบบดูแลนักเรียน</h3><p>เช็กชื่อเข้าแถว รายคาบ ความประพฤติ และรายงาน</p><span class="system-link">เปิดระบบ <b>→</b></span>
+            <div class="system-card-head"><span class="system-icon">✓</span><span class="open-arrow">↗</span></div><span class="system-kicker">งานดูแลและช่วยเหลือ</span><h3>ระบบดูแลนักเรียน</h3><p>เช็กชื่อเข้าแถว รายคาบ ความประพฤติ และรายงาน</p><span class="system-link">เปิดระบบ <b>→</b></span>
           </a>
         </section>
 
         <section class="lower-grid">
           <article class="panel activity-panel" id="activity">
-            <div class="panel-heading"><div><p class="eyebrow">AUDIT LOG</p><h2>ประวัติการใช้งานล่าสุด</h2></div></div>
+            <div class="panel-heading"><div><p class="eyebrow">ติดตามการใช้งาน</p><h2>ประวัติการใช้งานล่าสุด</h2></div></div>
             <div class="empty-state"><span class="empty-icon">◷</span><strong>กำลังโหลดประวัติการใช้งาน</strong><p>ข้อมูลจะแสดงเมื่อยืนยันสิทธิ์ผู้ดูแลเรียบร้อยแล้ว</p></div>
           </article>
           <article class="panel quick-panel" id="quickActions">
-            <div class="panel-heading"><div><p class="eyebrow">QUICK ACTIONS</p><h2>จัดการด่วน</h2></div></div>
+            <div class="panel-heading"><div><p class="eyebrow">ทางลัด</p><h2>จัดการด่วน</h2></div></div>
             <a class="quick-action" href="#" data-route="accounts"><span class="quick-icon">♙</span><span><strong>จัดการบัญชีและสิทธิ์</strong><small>เพิ่ม แก้ไข หรือระงับบัญชีผู้ใช้</small></span><b>→</b></a>
             <a class="quick-action" href="../readiness.html"><span class="quick-icon quick-icon-alt">✓</span><span><strong>ตรวจความพร้อมบัญชีครู</strong><small>ดูสถานะการเชื่อมบัญชี</small></span><b>→</b></a>
           </article>
@@ -141,11 +141,11 @@
         <footer class="page-footer">โรงเรียนค่ายบางระจันวิทยาคม <span>•</span> ศูนย์ผู้ดูแลระบบ</footer>
       </div>
       <section class="embedded-view" id="embeddedView" hidden aria-label="ระบบงานที่เลือก">
-        <div class="embedded-toolbar"><button class="back-to-overview" id="backToOverview">← ภาพรวมระบบ</button><div><small id="embeddedCategory">ระบบงานโรงเรียน</small><strong id="embeddedTitle">กำลังเปิดระบบ</strong></div><a id="openStandalone" href="#" target="_blank" rel="noopener">เปิดเต็มหน้า ↗</a></div>
+        <span id="embeddedTitle" class="visually-hidden" role="status">กำลังเปิดระบบ</span>
         <iframe id="systemFrame" allowfullscreen title="พื้นที่ทำงานระบบโรงเรียน" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
       </section>
     </main>
   </div>
-      <script type="module" src="admin.js?student-services=20261112-portal-session3&v=20261109-overview1"></script>
+      <script type="module" src="admin.js?v=20261115-shell1"></script>
 </body>
 </html>

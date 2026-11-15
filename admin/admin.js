@@ -41,7 +41,7 @@ async function openDashboard() {
     shell.hidden = false;
     await loadUserSummary();
     activityView ||= mountActivity($('activity'));
-    if(location.hash==='#activity')showDashboard();
+    if(routes[location.hash.slice(1)])openRoute(location.hash.slice(1));else showDashboard();
   } catch (error) {
     gateState('เชื่อมต่อระบบบัญชีไม่ได้', error?.message || 'ลองโหลดหน้าใหม่อีกครั้ง');
   }
@@ -141,12 +141,14 @@ function closeMobileMenu() {
   sidebar.classList.remove('is-open');
   scrim.classList.remove('is-visible');
   menuButton.setAttribute('aria-expanded', 'false');
+  document.body.classList.remove('menu-open');
 }
 menuButton.addEventListener('click', () => {
   const open = !sidebar.classList.contains('is-open');
   sidebar.classList.toggle('is-open', open);
   scrim.classList.toggle('is-visible', open);
   menuButton.setAttribute('aria-expanded', String(open));
+  document.body.classList.toggle('menu-open',open);
 });
 scrim.addEventListener('click', closeMobileMenu);
 sidebar.querySelectorAll('a').forEach(link => link.addEventListener('click', closeMobileMenu));
@@ -221,7 +223,9 @@ frame.addEventListener('load', () => {
 function setActiveRoute(routeId) {
   document.querySelectorAll('[data-section]').forEach(item=>item.classList.remove('active'));
   document.querySelectorAll('[data-route]').forEach(item => item.classList.toggle('active', item.dataset.route === routeId));
-  const activeLink = document.querySelector(`[data-route="${routeId}"]`);
+  document.querySelectorAll('.side-nav [data-route]').forEach(item=>{if(item.dataset.route===routeId)item.setAttribute('aria-current','page');else item.removeAttribute('aria-current');});
+  document.querySelectorAll('.group-toggle').forEach(item=>item.classList.remove('active'));
+  const activeLink = document.querySelector(`.side-nav [data-route="${routeId}"]`);
   const group = activeLink?.closest('.nav-group');
   if (group) {
     document.querySelectorAll('.nav-group').forEach(other => {
@@ -234,15 +238,18 @@ function setActiveRoute(routeId) {
     group.classList.add('open');
     const toggle = group.querySelector('.group-toggle');
     toggle?.setAttribute('aria-expanded', 'true');
+    toggle?.classList.add('active');
     const sub = group.querySelector('.sub-nav');
     if (sub) sub.hidden = false;
   }
 }
 
 function showEmbedded(title, category, url, app) {
+  shell.classList.add('is-workspace');
   dashboardView.hidden = true;
   embeddedView.hidden = false;
   $('pageCrumb').textContent = title;
+  document.title=title+' · โรงเรียนค่ายบางระจันวิทยาคม';
   $('embeddedCategory').textContent = category;
   $('embeddedTitle').textContent = title;
   $('openStandalone').href = url;
@@ -262,6 +269,8 @@ function loadRouteUrl(url, app, title) {
   if (app === 'academic') { const target = new URL(url); target.searchParams.set('ui','20261107-academic1'); url = target.href; }
   if (app === 'budget' || app === 'procurement') { const target = new URL(url); target.searchParams.set('ui',app === 'budget' ? '20261107-academic1' : '20261107-academic1'); url = target.href; }
   const category = app === 'budget' || app === 'procurement' ? 'งานงบประมาณ' : (app === 'academic'||app === 'grades') ? 'งานวิชาการ' : app === 'attendance' ? 'ดูแลนักเรียน' : 'ศูนย์ผู้ดูแลระบบ';
+  const matched=Object.entries(routes).find(([,r])=>{const a=new URL(r.url),b=new URL(url);return r.app===app&&a.pathname===b.pathname&&(app!=='academic'||r.page===b.hash.slice(1));});
+  if(matched){setActiveRoute(matched[0]);history.replaceState(null,'','#'+matched[0]);}
   showEmbedded(title, category, url, app);
   if (app === 'academic') pendingAcademicPage = null;
 }
@@ -269,6 +278,7 @@ function loadRouteUrl(url, app, title) {
 function openRoute(routeId) {
   const route = routes[routeId];
   if (!route) return;
+  history.replaceState(null,'','#'+routeId);
   setActiveRoute(routeId);
   if (route.app === 'academic' && frame.dataset.app === 'academic' && frame.contentWindow?.nav) {
     pendingAcademicPage = null;
@@ -281,6 +291,11 @@ function openRoute(routeId) {
 }
 
 function showDashboard() {
+  shell.classList.remove('is-workspace');
+  $('openStandalone').hidden=true;
+  document.title='ภาพรวมระบบ · โรงเรียนค่ายบางระจันวิทยาคม';
+  document.querySelectorAll('.group-toggle').forEach(item=>item.classList.remove('active'));
+  document.querySelectorAll('[aria-current]').forEach(item=>item.removeAttribute('aria-current'));
   embeddedView.hidden = true;
   dashboardView.hidden = false;
   $('pageCrumb').textContent = location.hash==='#activity'?'ประวัติการใช้งาน':location.hash==='#quickActions'?'จัดการด่วน':'ภาพรวมระบบ';
@@ -297,3 +312,6 @@ document.querySelectorAll('[data-route]').forEach(link => link.addEventListener(
 $('backToOverview').addEventListener('click', ()=>{history.replaceState(null,'','#overview');showDashboard();});
 
 openDashboard();
+
+document.addEventListener('keydown',event=>{if(event.key==='Escape'){const wasOpen=sidebar.classList.contains('is-open');closeMobileMenu();if(wasOpen)menuButton.focus();document.querySelector('.account-dropdown')?.removeAttribute('open');}});
+document.addEventListener('click',event=>{const account=document.querySelector('.account-dropdown');if(account&&!account.contains(event.target))account.removeAttribute('open');});
