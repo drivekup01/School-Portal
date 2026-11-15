@@ -17,7 +17,7 @@ function addRoute(id, title, category, app, path, page) {
   if(app === 'attendance')target.searchParams.set('ui','20261031-student1');
   routes[id] = { id, title, category, app, url: target.href, page };
 }
-addRoute('budget-home','ภาพรวมงบประมาณ','งานงบประมาณ','budget','School-Budget/budget-dashboard.html?v=20261031-colors1');
+addRoute('budget-home','ภาพรวมงบประมาณ','งานงบประมาณ','budget','School-Budget/budget-dashboard.html?v=20261115-overview1');
 addRoute('budget-projects','โครงการและกิจกรรม','งานงบประมาณ','budget','School-Budget/budget-projects.html');
 addRoute('budget-reports','รายงานงบประมาณ','งานงบประมาณ','budget','School-Budget/budget-reports.html?v=20261105-reportfix4');
 addRoute('budget-import','อัปเดตข้อมูลปีงบประมาณ','งานงบประมาณ','budget','School-Budget/budget-import.html?year=2570&v=20261030-allocation1');
@@ -224,7 +224,7 @@ function openRoute(id) {
 function loadUrl(url,app,title) {
   {const target=new URL(url);if(target.pathname==='/School-Budget/budget-reports.html'){target.searchParams.set('v','20261105-reportfix4');url=target.href;const q=target.searchParams,funds=['เงินอุดหนุนรายหัว','เงินกิจกรรมพัฒนาผู้เรียน','เงินรายได้สถานศึกษา','อื่น ๆ'];title=[q.get('projectName')||(q.has('project')?'โครงการ '+q.get('project'):'ทุกโครงการ'),funds[q.get('fund')]||'ทุกประเภทเงิน',q.get('department')||'ทุกฝ่าย'].join(' · ');}}
 
-  {const target=new URL(url);if(target.pathname === "/School-Budget/budget-dashboard.html")target.searchParams.set("v","20261031-colors1");url=target.href;}
+  {const target=new URL(url);if(target.pathname === "/School-Budget/budget-dashboard.html")target.searchParams.set("v","20261115-overview1");url=target.href;}
   if(app === "attendance"){const target=new URL(url);target.searchParams.set("ui","20261031-student1");url=target.href;}
   if (app === 'academic') { const target = new URL(url); target.searchParams.set('ui','20261107-academic1'); url = target.href; }
   if (app === 'budget' || app === 'procurement') { const target = new URL(url); target.searchParams.set('ui',app === 'budget' ? '20261107-academic1' : '20261107-academic1'); url = target.href; }

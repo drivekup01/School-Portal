@@ -93,7 +93,7 @@ const routes = {
   homepage: { title: 'แก้ไขหน้าแรก', category: 'ศูนย์ผู้ดูแลระบบ', app: 'portal-admin', url: appBase + 'School-Portal/admin/homepage.html?v=20261108-staff-roles1' },
   backup: {title:'ส่งออก Backup',category:'ศูนย์ผู้ดูแลระบบ',app:'portal-admin',url:appBase+'School-Portal/admin/backup.html?v=20261107-backup1'},
   accounts: { title: 'ผู้ใช้และสิทธิ์', category: 'ศูนย์ผู้ดูแลระบบ', app: 'accounts', url: appBase + 'School-Portal/users.html?v=20261107-order1' },
-  'budget-home': { title: 'ภาพรวมงบประมาณ', category: 'งานงบประมาณ', app: 'budget', url: appBase + 'School-Budget/budget-dashboard.html?v=20261031-colors1' },
+  'budget-home': { title: 'ภาพรวมงบประมาณ', category: 'งานงบประมาณ', app: 'budget', url: appBase + 'School-Budget/budget-dashboard.html?v=20261115-overview1' },
   'budget-projects': { title: 'โครงการและกิจกรรม', category: 'งานงบประมาณ', app: 'budget', url: appBase + 'School-Budget/budget-projects.html' },
   'budget-import': { title: 'อัปเดตข้อมูลปีงบประมาณ', category: 'งานงบประมาณ', app: 'budget', url: appBase + 'School-Budget/budget-import.html?year=2570&v=20261030-allocation1' },
   'budget-reports': { title: 'รายงานงบประมาณ', category: 'งานงบประมาณ', app: 'budget', url: appBase + 'School-Budget/budget-reports.html' },
@@ -264,7 +264,7 @@ function showEmbedded(title, category, url, app) {
 }
 
 function loadRouteUrl(url, app, title) {
-  {const target=new URL(url);if(target.pathname === "/School-Budget/budget-dashboard.html")target.searchParams.set("v","20261031-colors1");url=target.href;}
+  {const target=new URL(url);if(target.pathname === "/School-Budget/budget-dashboard.html")target.searchParams.set("v","20261115-overview1");url=target.href;}
   if(app === "attendance"){const target=new URL(url);target.searchParams.set("ui","20261031-student1");url=target.href;}
   if (app === 'academic') { const target = new URL(url); target.searchParams.set('ui','20261107-academic1'); url = target.href; }
   if (app === 'budget' || app === 'procurement') { const target = new URL(url); target.searchParams.set('ui',app === 'budget' ? '20261107-academic1' : '20261107-academic1'); url = target.href; }
