@@ -97,7 +97,7 @@ const routes = {
   'budget-projects': { title: 'โครงการและกิจกรรม', category: 'งานงบประมาณ', app: 'budget', url: appBase + 'School-Budget/budget-projects.html' },
   'budget-import': { title: 'อัปเดตข้อมูลปีงบประมาณ', category: 'งานงบประมาณ', app: 'budget', url: appBase + 'School-Budget/budget-import.html?year=2570&v=20261030-allocation1' },
   'budget-reports': { title: 'รายงานงบประมาณ', category: 'งานงบประมาณ', app: 'budget', url: appBase + 'School-Budget/budget-reports.html' },
-  'budget-documents': { title: 'เอกสารงบ 1 และงบ 2', category: 'งานงบประมาณ', app: 'budget', url: appBase + 'School-Budget/budget-documents.html' },
+  'budget-documents': { title: 'เอกสารงบ 1 และงบ 2', category: 'งานงบประมาณ', app: 'budget', url: appBase + 'School-Budget/budget-documents.html?v=20261119-editor-link3' },
   'budget-disbursement': { title: 'เอกสารเบิกจ่าย', category: 'งานงบประมาณ', app: 'budget', url: appBase + 'School-Budget/disbursement.html' },
   'budget-procurement': { title: 'จัดซื้อและจัดจ้าง', category: 'งานงบประมาณ', app: 'procurement', url: appBase + 'School-Procurement/history.html#history' },
   'academic-grade-import': {title:'นำเข้าผลการเรียน',category:'ผลการเรียน',app:'grades',url:appBase+'School-OS/grades.html?mode=import&v=20261107-importui1'},
